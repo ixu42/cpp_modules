@@ -6,7 +6,7 @@
 #    By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/22 18:00:10 by ixu               #+#    #+#              #
-#    Updated: 2024/05/23 10:26:47 by ixu              ###   ########.fr        #
+#    Updated: 2024/05/23 11:36:55 by ixu              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,9 +16,9 @@ SRCS := megaphone.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
-CFLAGS := -Wall -Wextra -Werror -std=c++11
+FLAGS := -Wall -Wextra -Werror -std=c++11
 
-COMPILER := g++
+COMPILER := c++
 
 all: $(NAME)
 
@@ -26,7 +26,7 @@ $(NAME): $(OBJS)
 	$(COMPILER) -o $(NAME) $(OBJS) 
 
 %.o: %.cpp
-	$(COMPILER) $(CFLAGS) -c $< -o $@
+	$(COMPILER) $(FLAGS) -c $< -o $@
 
 clean:
 	rm -f $(OBJS)
