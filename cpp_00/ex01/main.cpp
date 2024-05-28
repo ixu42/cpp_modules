@@ -6,32 +6,60 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 13:59:18 by ixu               #+#    #+#             */
-/*   Updated: 2024/05/27 16:56:54 by ixu              ###   ########.fr       */
+/*   Updated: 2024/05/28 17:13:22 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <iostream>
+#include <sstream>
 #include "PhoneBook.hpp"
 
-int	main(void)
+static int getIntegerFromUser()
 {
-	std::string	command;
-	PhoneBook phoneBook;
+	std::string	input;
+	int			number;
+
 	while (true)
 	{
-		std::cout << "Enter a command (ADD/SEARCH/EXIT): ";
-		std::cin >> command;
+		std::cout << "\033[0;36m" << "Enter index of the entry to display: " << "\033[0m";
+		std::getline(std::cin, input);
+		std::istringstream	iss(input);
+		if (iss >> number)
+			return number;
+		else
+			std::cout << "Invalid input. Please enter an integer." << std::endl;
+	}
+}
+
+static void	search(PhoneBook &phoneBook)
+{
+	phoneBook.displayContacts();
+	if (phoneBook.getContactCount() == 0)
+		return ;
+	while (true)
+	{
+		int	index = getIntegerFromUser();
+		if (phoneBook.getContact(index) == 0)
+			break ;
+	}
+}
+
+int	main()
+{
+	std::string	command;
+	PhoneBook	phoneBook;
+	while (true)
+	{
+		std::cout << "\033[0;36m" << "Enter a command (ADD/SEARCH/EXIT): " << "\033[0m";
+		std::getline(std::cin, command);
 		if (command == "ADD")
-		phoneBook.addContact();
+			phoneBook.addContact();
 		else if (command == "SEARCH")
-			std::cout << "SEARCH entered" << std::endl; // remove
+			search(phoneBook);
 		else if (command == "EXIT")
 			break ;
 		else
-		{
-			std::cout << "Invalid command!" << std::endl;
-			std::cout << "Please enter one of the three commands: ADD/SEARCH/EXIT" << std::endl;
-		}
+			std::cout << "Invalid command." << std::endl;
 	}
-	std::cout << "Exiting program..." << std::endl;
 	return (0);
 }

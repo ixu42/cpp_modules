@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:00:33 by ixu               #+#    #+#             */
-/*   Updated: 2024/05/27 16:50:29 by ixu              ###   ########.fr       */
+/*   Updated: 2024/05/28 16:03:02 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,17 @@
 class PhoneBook
 {
 	private:
-		Contact	contacts[8];
-		int		contactCount;
+		Contact				contacts[8];
+		int					contactCount;
+		int					oldestContactIndex;
 	public:
 		PhoneBook();
-		void	addContact(void);
-		void	displayContact(Contact contact); // TODO
+		void				addContact();
+		void				displayContacts();
+		int					getContact(int index);
+		int					getContactCount();
+	private:
+		static std::string	formatStr(const std::string &str);
 };
 
 #endif
