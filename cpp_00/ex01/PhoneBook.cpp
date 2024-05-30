@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:00:35 by ixu               #+#    #+#             */
-/*   Updated: 2024/05/30 21:24:50 by ixu              ###   ########.fr       */
+/*   Updated: 2024/05/30 21:31:43 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ void	PhoneBook::displayContacts()
 	{
 		std::cout << std::right 
 					<< std::setw(10) << i << "|"
-					<< std::setw(10) << formatStr(contacts[i].firstName) << "|"
-					<< std::setw(10) << formatStr(contacts[i].lastName) << "|"
-					<< std::setw(10) << formatStr(contacts[i].nickname) << std::endl;
+					<< std::setw(10) << formatStr(contacts[i].getFirstName()) << "|"
+					<< std::setw(10) << formatStr(contacts[i].getLastName()) << "|"
+					<< std::setw(10) << formatStr(contacts[i].getNickname()) << std::endl;
 	}
 }
 

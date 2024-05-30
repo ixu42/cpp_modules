@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:02:09 by ixu               #+#    #+#             */
-/*   Updated: 2024/05/30 12:10:52 by ixu              ###   ########.fr       */
+/*   Updated: 2024/05/30 21:31:12 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,19 @@ void	Contact::fillField(int field, std::string &data)
 			std::cout << "Invalid field" << std::endl;
 			break;
 	}
+}
+
+std::string	Contact::getFirstName()
+{
+	return (firstName);
+}
+
+std::string	Contact::getLastName()
+{
+	return (lastName);
+}
+
+std::string	Contact::getNickname()
+{
+	return (nickname);
 }
