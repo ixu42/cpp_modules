@@ -6,19 +6,20 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 10:24:29 by ixu               #+#    #+#             */
-/*   Updated: 2024/05/27 13:09:18 by ixu              ###   ########.fr       */
+/*   Updated: 2024/05/30 20:14:59 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
+#include <string>
+#include <cctype>
 
-static void	str_upper(char *arg)
+static std::string	str_upper(char *arg)
 {
-	for (int i = 0; arg[i] != '\0'; i++)
-	{
-		if (arg[i] >= 'a' && arg[i] <= 'z')
-			arg[i] -= 32;
-	}
+	std::string	arg_cpy(arg);
+	for (char &c : arg_cpy)
+		c = std::toupper(static_cast<unsigned char>(c));
+	return (arg_cpy);
 }
 
 int	main(int argc, char **argv)
@@ -29,8 +30,8 @@ int	main(int argc, char **argv)
 	{
 		for (int i = 1; i < argc; i++)
 		{
-			str_upper(argv[i]);
-			std::cout << argv[i];
+			std::string arg_cpy = str_upper(argv[i]);
+			std::cout << arg_cpy;
 		}
 		std::cout << std::endl;
 	}
