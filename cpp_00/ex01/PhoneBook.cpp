@@ -6,15 +6,18 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:00:35 by ixu               #+#    #+#             */
-/*   Updated: 2024/05/30 12:11:27 by ixu              ###   ########.fr       */
+/*   Updated: 2024/05/30 21:24:50 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include <iomanip>
+#include <cstdlib>
 #include "PhoneBook.hpp"
 
 PhoneBook::PhoneBook() : contactCount(0), oldestContactIndex(0) {}
+
+void	exitOnInputReadFailure();
 
 void	PhoneBook::addContact()
 {
@@ -27,7 +30,8 @@ void	PhoneBook::addContact()
 	while (i < 5)
 	{
 		newContact.promptField(i);
-		std::getline(std::cin, input);
+		if (!std::getline(std::cin, input))
+			exitOnInputReadFailure();
 		if (input == "")
 		{
 			std::cout << "A saved contact can't have empty fields.\n";
