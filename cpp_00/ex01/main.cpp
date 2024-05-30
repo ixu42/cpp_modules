@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 13:59:18 by ixu               #+#    #+#             */
-/*   Updated: 2024/05/28 17:13:22 by ixu              ###   ########.fr       */
+/*   Updated: 2024/05/30 11:46:50 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,12 @@ static int getIntegerFromUser()
 
 static void	search(PhoneBook &phoneBook)
 {
-	phoneBook.displayContacts();
 	if (phoneBook.getContactCount() == 0)
+	{
+		std::cout << "No entry in the phonebook.\n"; 
 		return ;
+	}
+	phoneBook.displayContacts();
 	while (true)
 	{
 		int	index = getIntegerFromUser();
