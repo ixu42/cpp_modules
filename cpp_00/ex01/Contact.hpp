@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:02:07 by ixu               #+#    #+#             */
-/*   Updated: 2024/05/28 17:19:17 by ixu              ###   ########.fr       */
+/*   Updated: 2024/05/30 12:09:31 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ class Contact
 	public:
 		std::string	firstName;
 		std::string	lastName;
-		std::string	nickName;
+		std::string	nickname;
 		std::string	phoneNumber;
 		std::string	darkestSecret;
 	private:
 		enum field
 		{
-			FirstName, LastName, NickName, PhoneNumber, DarkestSecret
+			FirstName, LastName, Nickname, PhoneNumber, DarkestSecret
 		};
 	public:
 		Contact();

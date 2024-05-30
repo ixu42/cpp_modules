@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:02:09 by ixu               #+#    #+#             */
-/*   Updated: 2024/05/28 17:12:28 by ixu              ###   ########.fr       */
+/*   Updated: 2024/05/30 12:10:52 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 #include "Contact.hpp"
 
 Contact::Contact() 
-	: firstName(""), lastName(""), nickName(""), phoneNumber(""), darkestSecret("") {}
+	: firstName(""), lastName(""), nickname(""), phoneNumber(""), darkestSecret("") {}
 
 void	Contact::displayContactInfo()
 {
 	std::cout << std::left;
 	std::cout << std::setw(15) << "FirstName: " << firstName << std::endl;
 	std::cout << std::setw(15) << "LastName: " << lastName << std::endl;
-	std::cout << std::setw(15) << "NickName: " << nickName << std::endl;
+	std::cout << std::setw(15) << "Nickname: " << nickname << std::endl;
 	std::cout << std::setw(15) << "PhoneNumber: " << phoneNumber << std::endl;
 	std::cout << std::setw(15) << "DarkestSecret: " << darkestSecret << std::endl;
 }
@@ -38,8 +38,8 @@ void	Contact::promptField(int field)
 		case LastName:
 			std::cout << std::setw(15) << "LastName: ";
 			break;
-		case NickName:
-			std::cout << std::setw(15) << "NickName: ";
+		case Nickname:
+			std::cout << std::setw(15) << "Nickname: ";
 			break;
 		case PhoneNumber:
 			std::cout << std::setw(15) << "PhoneNumber: ";
@@ -63,8 +63,8 @@ void	Contact::fillField(int field, std::string &data)
 		case LastName:
 			lastName = data;
 			break ;
-		case NickName:
-			nickName = data;
+		case Nickname:
+			nickname = data;
 			break ;
 		case PhoneNumber:
 			phoneNumber = data;
