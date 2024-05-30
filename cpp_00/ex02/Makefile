@@ -6,7 +6,7 @@
 #    By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/28 17:28:21 by ixu               #+#    #+#              #
-#    Updated: 2024/05/29 12:00:43 by ixu              ###   ########.fr        #
+#    Updated: 2024/05/30 12:20:05 by ixu              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRCS = $(addsuffix .cpp, Account tests)
 
 OBJS = $(addprefix $(OBJS_DIR), $(SRCS:.cpp=.o))
 
-FLAGS := -Wall -Wextra -Werror -std=c++11
+FLAGS := -Wall -Wextra -Werror -std=c++98
 
 COMPILER := c++
 
