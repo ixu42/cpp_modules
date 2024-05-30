@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 13:59:18 by ixu               #+#    #+#             */
-/*   Updated: 2024/05/30 11:46:50 by ixu              ###   ########.fr       */
+/*   Updated: 2024/05/30 12:48:13 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,14 @@ static void	search(PhoneBook &phoneBook)
 	}
 }
 
-int	main()
+int	main(int argc, char **argv)
 {
+	(void)argv;
+	if (argc != 1)
+	{
+		std::cout << "Invalid number of arguments\n";
+		return (1);
+	}
 	std::string	command;
 	PhoneBook	phoneBook;
 	while (true)
