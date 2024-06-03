@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 11:06:29 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/03 14:56:03 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/03 15:47:29 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,24 +32,25 @@ std::string	FileReplacer::readFile()
 	return (buffer.str());
 }
 
-void	FileReplacer::writeFile(const std::string& content)
+int	FileReplacer::writeFile(const std::string& content)
 {
 	std::ofstream	outFile(filename + ".replace");
 	if (!outFile)
 	{
 		std::cout << "Unable to create the file " << filename + ".replace" << std::endl;
-		return ;
+		return (1);
 	}
 	outFile << content;
+	return (0);
 }
 
-void	FileReplacer::replace()
+int	FileReplacer::replace()
 {
 	std::string	content = readFile();
 	if (content.empty())
 	{
 		std::cout << "Failed to read the file or file is empty" << std::endl;
-		return ;
+		return (1);
 	}
 	std::string	newContent;
 	size_t		pos = 0;
@@ -63,5 +64,7 @@ void	FileReplacer::replace()
 		pos = foundPos + s1.length();
 	}
 	newContent.append(content, pos, std::string::npos);
-	writeFile(newContent);
+	if (writeFile(newContent))
+		return (1);
+	return (0);
 }

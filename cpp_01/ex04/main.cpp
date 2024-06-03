@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 10:47:42 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/03 14:44:04 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/03 15:48:09 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int	main(int argc, char **argv)
 		std::string		s1 = argv[2];
 		std::string		s2 = argv[3];
 		FileReplacer	replacer(filename, s1, s2);
-		replacer.replace();
+		if (replacer.replace())
+			return (1);
 	}
 	return (0);
 }

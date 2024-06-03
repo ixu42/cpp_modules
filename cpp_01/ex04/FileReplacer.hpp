@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 11:06:26 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/03 14:56:47 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/03 15:46:57 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ class FileReplacer
 		std::string	s2;
 	public:
 		FileReplacer(const std::string& filename, const std::string& s1, const std::string& s2);
-		void		replace();
+		int			replace();
 	private:
 		std::string	readFile();
-		void		writeFile(const std::string& content);
+		int			writeFile(const std::string& content);
 };
 
 #endif
