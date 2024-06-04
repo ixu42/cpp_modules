@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 11:06:29 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/03 15:47:29 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/04 15:20:13 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <cstddef>
 
 FileReplacer::FileReplacer(const std::string& filename, const std::string& s1, const std::string& s2)
 	: filename(filename), s1(s1), s2(s2) {}
