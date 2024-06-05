@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 12:49:54 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/05 10:47:44 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/05 14:35:35 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ class Fixed
 	public:
 		Fixed();
 		Fixed(const Fixed& other);
-		Fixed&				operator=(const Fixed& other);
 		~Fixed();
+		Fixed&				operator=(const Fixed& other);
 		int					getRawBits(void) const;
 		void				setRawBits(int const raw);
 };
