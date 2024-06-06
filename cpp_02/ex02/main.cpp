@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 16:25:34 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/06 11:35:23 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/06 11:43:46 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int main()
 	std::cout << "e - f: " << (e - f) << std::endl; // should yield approx. 3.3
 	std::cout << "e * f: " << (e * f) << std::endl; // should yield approx. 21.8
 	std::cout << "e / f: " << (e / f) << std::endl; // should yield 2
+	Fixed	zero(0);
+	std::cout << "c / zero: " << (c / zero) << std::endl;
 
 	return (0);
 }

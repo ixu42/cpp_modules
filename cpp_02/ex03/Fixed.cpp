@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 16:25:41 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/05 23:43:59 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/06 11:44:08 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,11 @@ Fixed	Fixed::operator*(const Fixed& other) const
 
 Fixed	Fixed::operator/(const Fixed& other) const
 {
+	if (other.fixedPointValue == 0)
+	{
+		std::cout << "Cannot divide by ";
+		return (0);
+	}
 	return (Fixed(this->toFloat() / other.toFloat()));
 }
 
