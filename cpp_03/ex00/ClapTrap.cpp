@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 14:16:38 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/07 12:49:37 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/07 17:00:04 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ ClapTrap&	ClapTrap::operator=(const ClapTrap& other)
 		hitPoint = other.hitPoint;
 		energyPoint = other.energyPoint;
 		attackDamage = other.attackDamage;
-		std::cout << "Copy assignment operator called.\n";
+		std::cout << "ClapTrap copy assignment operator called.\n";
 	}
 	return (*this);
 }
@@ -60,7 +60,7 @@ void	ClapTrap::attack(const std::string& target)
 	if (energyPoint == 0)
 		std::cout << "ClapTrap " << name << " has no energy left to attack.\n";
 	else if (hitPoint == 0)
-		std::cout << "ClapTrap " << name << " is dead. Cannot attack anymore\n";
+		std::cout << "ClapTrap " << name << " is dead. Cannot attack anymore.\n";
 	else
 	{
 		energyPoint--;
@@ -73,7 +73,7 @@ void	ClapTrap::takeDamage(unsigned int amount)
 {
 	if (hitPoint == 0)
 	{
-		std::cout << "ClapTrap " << name << " is dead. Cannot take more damage\n";
+		std::cout << "ClapTrap " << name << " is dead. Cannot take more damage.\n";
 		return ;
 	}
 	unsigned int	actualDamage;
@@ -93,7 +93,7 @@ void	ClapTrap::beRepaired(unsigned int amount)
 	if (energyPoint == 0)
 		std::cout << "ClapTrap " << name << " has no energy left to repair.\n";
 	else if (hitPoint == 0)
-		std::cout << "ClapTrap " << name << " is dead. Cannot repair anymore\n";
+		std::cout << "ClapTrap " << name << " is dead. Cannot repair anymore.\n";
 	else
 	{
 		energyPoint--;
