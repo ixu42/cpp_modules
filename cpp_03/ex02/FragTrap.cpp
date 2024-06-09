@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 20:33:35 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/09 16:30:13 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/09 17:36:12 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,16 @@
 
 FragTrap::FragTrap() : ClapTrap()
 {
-	hitPoint = 100;
-	energyPoint = 100;
+	hitPoints = 100;
+	energyPoints = 100;
 	attackDamage = 30;
 	std::cout << "FragTrap default constructor called.\n";
 }
 
 FragTrap::FragTrap(const std::string& name) : ClapTrap(name)
 {
-	hitPoint = 100;
-	energyPoint = 100;
+	hitPoints = 100;
+	energyPoints = 100;
 	attackDamage = 30;
 	std::cout << "FragTrap " << name << " constructed.\n";
 }
@@ -56,13 +56,13 @@ FragTrap&	FragTrap::operator=(const FragTrap& other)
 
 void	FragTrap::attack(const std::string& target)
 {
-	if (energyPoint == 0)
+	if (energyPoints == 0)
 		std::cout << "FragTrap " << name << " has no energy left to attack.\n";
-	else if (hitPoint == 0)
+	else if (hitPoints == 0)
 		std::cout << "FragTrap " << name << " is dead. Cannot attack anymore.\n";
 	else
 	{
-		energyPoint--;
+		energyPoints--;
 		std::cout << "FragTrap " << name << " attacked " << target
 					<< ", causing " << attackDamage << " points of damage!\n";
 	}

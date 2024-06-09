@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 14:12:07 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/09 16:33:53 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/09 17:36:12 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,16 @@
 
 ScavTrap::ScavTrap() : ClapTrap()
 {
-	hitPoint = 100;
-	energyPoint = 50;
+	hitPoints = 100;
+	energyPoints = 50;
 	attackDamage = 20;
 	std::cout << "ScavTrap default constructor called.\n";
 }
 
 ScavTrap::ScavTrap(const std::string& name) : ClapTrap(name)
 {
-	hitPoint = 100;
-	energyPoint = 50;
+	hitPoints = 100;
+	energyPoints = 50;
 	attackDamage = 20;
 	std::cout << "ScavTrap " << name << " constructed.\n";
 }
@@ -56,13 +56,13 @@ ScavTrap&	ScavTrap::operator=(const ScavTrap& other)
 
 void	ScavTrap::attack(const std::string& target)
 {
-	if (energyPoint == 0)
+	if (energyPoints == 0)
 		std::cout << "ScavTrap " << name << " has no energy left to attack.\n";
-	else if (hitPoint == 0)
+	else if (hitPoints == 0)
 		std::cout << "ScavTrap " << name << " is dead. Cannot attack anymore.\n";
 	else
 	{
-		energyPoint--;
+		energyPoints--;
 		std::cout << "ScavTrap " << name << " attacked " << target
 					<< ", causing " << attackDamage << " points of damage!\n";
 	}
