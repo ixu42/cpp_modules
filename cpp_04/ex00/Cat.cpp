@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 17:55:57 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/08 19:17:20 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/09 16:35:41 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,10 @@ Cat::~Cat()
 
 Cat&	Cat::operator=(const Cat& other)
 {
-	if (this != &other)
-	{
-		Animal::operator=(other);
-		std::cout << "Cat copy assignment operator called\n";
-	}
+	std::cout << "Cat copy assignment operator called\n";
+	if (this == &other)
+		return (*this);
+	Animal::operator=(other);
 	return (*this);
 }
 

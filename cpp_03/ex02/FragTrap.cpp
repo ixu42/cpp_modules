@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 20:33:35 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/07 20:46:08 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/09 16:30:13 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,10 @@ FragTrap::~FragTrap()
 
 FragTrap&	FragTrap::operator=(const FragTrap& other)
 {
-	if (this != &other)
-	{
-		// call base class's copy assignment operator
-		ClapTrap::operator=(other);
-		std::cout << "FragTrap copy assignment operator called.\n";
-	}
+	std::cout << "FragTrap copy assignment operator called.\n";
+	if (this == &other)
+		return (*this);
+	ClapTrap::operator=(other);
 	return (*this);
 }
 

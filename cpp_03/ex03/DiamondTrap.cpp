@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 21:06:49 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/07 22:37:23 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/09 16:31:46 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,13 @@ DiamondTrap::~DiamondTrap()
 
 DiamondTrap&	DiamondTrap::operator=(const DiamondTrap& other)
 {
-	if (this != &other)
-	{
-		ClapTrap::operator=(other);
-		ScavTrap::operator=(other);
-		FragTrap::operator=(other);
-		name = other.name;
-		std::cout << "DiamondTrap " << name << " assigned.\n";
-	}
+	std::cout << "DiamondTrap " << name << " assigned.\n";
+	if (this == &other)
+		return (*this);
+	ClapTrap::operator=(other);
+	ScavTrap::operator=(other);
+	FragTrap::operator=(other);
+	name = other.name;
 	return (*this);
 }
 

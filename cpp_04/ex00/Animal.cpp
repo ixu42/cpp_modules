@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 17:54:17 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/08 19:17:44 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/09 16:35:00 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,10 @@ Animal::~Animal()
 
 Animal&	Animal::operator=(const Animal& other)
 {
-	if (this != &other)
-	{
-		this->type = other.type;
-		std::cout << "Animal copy assignment operator called\n";
-	}
+	std::cout << "Animal copy assignment operator called\n";
+	if (this == &other)
+		return (*this);
+	this->type = other.type;
 	return (*this);
 }
 

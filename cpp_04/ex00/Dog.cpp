@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 17:55:54 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/08 19:17:27 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/09 16:36:19 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,10 @@ Dog::~Dog()
 
 Dog&	Dog::operator=(const Dog& other)
 {
-	if (this != &other)
-	{
-		Animal::operator=(other);
-		std::cout << "Dog copy assignment operator called\n";
-	}
+	std::cout << "Dog copy assignment operator called\n";
+	if (this == &other)
+		return (*this);
+	Animal::operator=(other);
 	return (*this);
 }
 

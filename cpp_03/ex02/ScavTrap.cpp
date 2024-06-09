@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 14:12:07 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/07 18:02:23 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/09 16:30:07 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,10 @@ ScavTrap::~ScavTrap()
 
 ScavTrap&	ScavTrap::operator=(const ScavTrap& other)
 {
-	if (this != &other)
-	{
-		// call base class's copy assignment operator
-		ClapTrap::operator=(other);
-		std::cout << "ScavTrap copy assignment operator called.\n";
-	}
+	std::cout << "ScavTrap copy assignment operator called.\n";
+	if (this == &other)
+		return (*this);
+	ClapTrap::operator=(other);
 	return (*this);
 }
 
