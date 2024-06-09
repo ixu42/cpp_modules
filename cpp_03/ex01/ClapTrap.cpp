@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 14:16:38 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/09 17:36:12 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/09 21:19:45 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,27 +16,27 @@
 /* CONSTRUCTORS AND DESTRUCTOR */
 
 ClapTrap::ClapTrap()
-	: name("Unknown"), hitPoints(10), energyPoints(10), attackDamage(0)
+	: _name("Unknown"), _hitPoints(10), _energyPoints(10), _attackDamage(0)
 {
 	std::cout << "ClapTrap default constructor called.\n";
 }
 
 ClapTrap::ClapTrap(const std::string& name)
-	: name(name), hitPoints(10), energyPoints(10), attackDamage(0)
+	: _name(name), _hitPoints(10), _energyPoints(10), _attackDamage(0)
 {
-	std::cout << "ClapTrap " << name << " constructed.\n";
+	std::cout << "ClapTrap " << _name << " constructed.\n";
 }
 
 ClapTrap::ClapTrap(const ClapTrap& other)
-	: name(other.name), hitPoints(other.hitPoints), energyPoints(other.energyPoints),
-		attackDamage(other.attackDamage)
+	: _name(other._name), _hitPoints(other._hitPoints), _energyPoints(other._energyPoints),
+		_attackDamage(other._attackDamage)
 {
-	std::cout << "ClapTrap " << name << " copy constructor called.\n";
+	std::cout << "ClapTrap " << _name << " copy constructor called.\n";
 }
 
 ClapTrap::~ClapTrap()
 {
-	std::cout << "ClapTrap " << name << " destroyed.\n";
+	std::cout << "ClapTrap " << _name << " destroyed.\n";
 }
 
 /* OPERATOR OVERLOADING */
@@ -46,10 +46,10 @@ ClapTrap&	ClapTrap::operator=(const ClapTrap& other)
 	std::cout << "ClapTrap copy assignment operator called.\n";
 	if (this == &other)
 		return (*this);
-	name = other.name;
-	hitPoints = other.hitPoints;
-	energyPoints = other.energyPoints;
-	attackDamage = other.attackDamage;
+	_name = other._name;
+	_hitPoints = other._hitPoints;
+	_energyPoints = other._energyPoints;
+	_attackDamage = other._attackDamage;
 	return (*this);
 }
 
@@ -57,48 +57,48 @@ ClapTrap&	ClapTrap::operator=(const ClapTrap& other)
 
 void	ClapTrap::attack(const std::string& target)
 {
-	if (energyPoints == 0)
-		std::cout << "ClapTrap " << name << " has no energy left to attack.\n";
-	else if (hitPoints == 0)
-		std::cout << "ClapTrap " << name << " is dead. Cannot attack anymore.\n";
+	if (_energyPoints == 0)
+		std::cout << "ClapTrap " << _name << " has no energy left to attack.\n";
+	else if (_hitPoints == 0)
+		std::cout << "ClapTrap " << _name << " is dead. Cannot attack anymore.\n";
 	else
 	{
-		energyPoints--;
-		std::cout << "ClapTrap " << name << " attacked " << target
-					<< ", causing " << attackDamage << " points of damage!\n";
+		_energyPoints--;
+		std::cout << "ClapTrap " << _name << " attacked " << target
+					<< ", causing " << _attackDamage << " points of damage!\n";
 	}
 }
 
 void	ClapTrap::takeDamage(unsigned int amount)
 {
-	if (hitPoints == 0)
+	if (_hitPoints == 0)
 	{
-		std::cout << "ClapTrap " << name << " is dead. Cannot take more damage.\n";
+		std::cout << "ClapTrap " << _name << " is dead. Cannot take more damage.\n";
 		return ;
 	}
 	unsigned int	actualDamage;
-	if (hitPoints >= amount)
+	if (_hitPoints >= amount)
 		actualDamage = amount;
 	else
-		actualDamage = hitPoints;
-	hitPoints -= actualDamage;
-	std::cout << "ClapTrap " << name << " took " << actualDamage 
+		actualDamage = _hitPoints;
+	_hitPoints -= actualDamage;
+	std::cout << "ClapTrap " << _name << " took " << actualDamage 
 				<< " points of damage.\n";
-	if (hitPoints == 0)
-		std::cout << "ClapTrap " << name << " died.\n";
+	if (_hitPoints == 0)
+		std::cout << "ClapTrap " << _name << " died.\n";
 }
 
 void	ClapTrap::beRepaired(unsigned int amount)
 {
-	if (energyPoints == 0)
-		std::cout << "ClapTrap " << name << " has no energy left to repair.\n";
-	else if (hitPoints == 0)
-		std::cout << "ClapTrap " << name << " is dead. Cannot repair anymore.\n";
+	if (_energyPoints == 0)
+		std::cout << "ClapTrap " << _name << " has no energy left to repair.\n";
+	else if (_hitPoints == 0)
+		std::cout << "ClapTrap " << _name << " is dead. Cannot repair anymore.\n";
 	else
 	{
-		energyPoints--;
-		hitPoints += amount;
-		std::cout << "ClapTrap " << name << " repaired itself, getting " << amount
+		_energyPoints--;
+		_hitPoints += amount;
+		std::cout << "ClapTrap " << _name << " repaired itself, getting " << amount
 					<< " hit points back.\n";
 	}
 }

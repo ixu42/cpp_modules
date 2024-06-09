@@ -6,7 +6,7 @@
 #    By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/06 14:15:32 by ixu               #+#    #+#              #
-#    Updated: 2024/06/07 20:44:00 by ixu              ###   ########.fr        #
+#    Updated: 2024/06/09 21:05:17 by ixu              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRCS = $(addsuffix .cpp, main ClapTrap ScavTrap FragTrap)
 
 OBJS = $(addprefix $(OBJS_DIR), $(SRCS:.cpp=.o))
 
-FLAGS := -Wall -Wextra -Werror -std=c++11
+FLAGS := -Wall -Wextra -Werror -Wshadow -std=c++11
 
 COMPILER := c++
 

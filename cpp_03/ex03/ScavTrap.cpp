@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 14:12:07 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/09 17:36:12 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/09 21:25:30 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,35 +17,35 @@
 
 ScavTrap::ScavTrap() : ClapTrap()
 {
-	hitPoints = 100;
-	energyPoints = 50;
-	attackDamage = 20;
+	_hitPoints = 100;
+	_energyPoints = 50;
+	_attackDamage = 20;
 	std::cout << "ScavTrap default constructor called.\n";
 }
 
 ScavTrap::ScavTrap(const std::string& name) : ClapTrap(name)
 {
-	hitPoints = 100;
-	energyPoints = 50;
-	attackDamage = 20;
-	std::cout << "ScavTrap " << name << " constructed.\n";
+	_hitPoints = 100;
+	_energyPoints = 50;
+	_attackDamage = 20;
+	std::cout << "ScavTrap " << _name << " constructed.\n";
 }
 
 ScavTrap::ScavTrap(const ScavTrap& other) : ClapTrap(other)
 {
-	std::cout << "ScavTrap " << name << " copied.\n";
+	std::cout << "ScavTrap " << _name << " copied.\n";
 }
 
 ScavTrap::~ScavTrap()
 {
-	std::cout << "ScavTrap " << name << " destroyed.\n";
+	std::cout << "ScavTrap " << _name << " destroyed.\n";
 }
 
 /* OPERATOR OVERLOADING */
 
 ScavTrap&	ScavTrap::operator=(const ScavTrap& other)
 {
-	std::cout << "ScavTrap " << name << " assigned.\n";
+	std::cout << "ScavTrap " << _name << " assigned.\n";
 	if (this == &other)
 		return (*this);
 	ClapTrap::operator=(other);
@@ -56,19 +56,19 @@ ScavTrap&	ScavTrap::operator=(const ScavTrap& other)
 
 void	ScavTrap::attack(const std::string& target)
 {
-	if (energyPoints == 0)
-		std::cout << "ScavTrap " << name << " has no energy left to attack.\n";
-	else if (hitPoints == 0)
-		std::cout << "ScavTrap " << name << " is dead. Cannot attack anymore.\n";
+	if (_energyPoints == 0)
+		std::cout << "ScavTrap " << _name << " has no energy left to attack.\n";
+	else if (_hitPoints == 0)
+		std::cout << "ScavTrap " << _name << " is dead. Cannot attack anymore.\n";
 	else
 	{
-		energyPoints--;
-		std::cout << "ScavTrap " << name << " attacked " << target
-					<< ", causing " << attackDamage << " points of damage!\n";
+		_energyPoints--;
+		std::cout << "ScavTrap " << _name << " attacked " << target
+					<< ", causing " << _attackDamage << " points of damage!\n";
 	}
 }
 
 void	ScavTrap::guardGate()
 {
-	std::cout << "ScavTrap " << name << " is now in Gate keeper mode.\n";
+	std::cout << "ScavTrap " << _name << " is now in Gate keeper mode.\n";
 }

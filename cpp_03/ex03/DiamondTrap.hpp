@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 21:06:51 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/07 22:36:25 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/09 21:26:47 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 class DiamondTrap : public ScavTrap, public FragTrap
 {
 	private:
-		std::string		name;
+		std::string		_name;
 	public:
 		DiamondTrap();
 		DiamondTrap(const std::string& name);
