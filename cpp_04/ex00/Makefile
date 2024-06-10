@@ -6,7 +6,7 @@
 #    By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/08 17:44:55 by ixu               #+#    #+#              #
-#    Updated: 2024/06/08 18:27:28 by ixu              ###   ########.fr        #
+#    Updated: 2024/06/10 11:46:35 by ixu              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME := animals
 
 OBJS_DIR := objs/
 
-SRCS = $(addsuffix .cpp, main Animal Cat Dog)
+SRCS = $(addsuffix .cpp, main Animal Cat Dog WrongAnimal WrongCat)
 
 OBJS = $(addprefix $(OBJS_DIR), $(SRCS:.cpp=.o))
 

@@ -6,12 +6,13 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 17:51:28 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/08 19:18:11 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/10 11:50:38 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Cat.hpp"
 #include "Dog.hpp"
+#include "WrongCat.hpp"
 #include <iostream>
 
 static void	testAnimal()
@@ -56,6 +57,14 @@ int	main()
 	delete meta;
 	delete j;
 	delete i;
+
+	std::cout << "\n---TEST WRONGCAT & WRONGANIMAL---\n\n";
+	const WrongAnimal*	wrongCat = new WrongCat();
+
+	std::cout << wrongCat->getType() << " " << std::endl;
+	wrongCat->makeSound(); // will output wrong animal sound!
+
+	delete wrongCat;
 
 	return (0);	
 }
