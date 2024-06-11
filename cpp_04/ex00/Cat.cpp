@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 17:55:57 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/09 16:35:41 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/11 16:11:08 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ Cat::Cat(const Cat& other) : Animal(other)
 
 Cat::~Cat()
 {
-	std::cout << "Cat default destructor called\n";
+	std::cout << "Cat destructor called\n";
 }
 
 Cat&	Cat::operator=(const Cat& other)

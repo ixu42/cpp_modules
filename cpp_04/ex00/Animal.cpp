@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 17:54:17 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/09 16:35:00 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/11 16:11:33 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ Animal::Animal(const Animal& other) : type(other.type)
 
 Animal::~Animal()
 {
-	std::cout << "Animal default destructor called\n";
+	std::cout << "Animal destructor called\n";
 }
 
 Animal&	Animal::operator=(const Animal& other)

@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:39:16 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/10 11:43:39 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/11 16:11:20 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ WrongAnimal::WrongAnimal(const WrongAnimal& other) : type(other.type)
 
 WrongAnimal::~WrongAnimal()
 {
-	std::cout << "WrongAnimal default destructor called\n";
+	std::cout << "WrongAnimal destructor called\n";
 }
 
 WrongAnimal&	WrongAnimal::operator=(const WrongAnimal& other)

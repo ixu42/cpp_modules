@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:39:21 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/10 11:43:48 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/11 16:11:24 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ WrongCat::WrongCat(const WrongCat& other) : WrongAnimal(other)
 
 WrongCat::~WrongCat()
 {
-	std::cout << "WrongCat default destructor called\n";
+	std::cout << "WrongCat destructor called\n";
 }
 
 WrongCat&	WrongCat::operator=(const WrongCat& other)
