@@ -6,68 +6,79 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 17:51:28 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/10 17:04:29 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/11 15:47:04 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Cat.hpp"
 #include "Dog.hpp"
-#include "WrongCat.hpp"
 #include <iostream>
 
-static void	testAnimal()
+static void	testFromSubject()
 {
-	Animal	a;
-	a.makeSound();
-}
-
-static void	testCat()
-{
-	Cat	a;
-	a.makeSound();
-}
-
-static void	testDog()
-{
-	Dog	a;
-	a.makeSound();
-}
-
-int	main()
-{	
-	std::cout << "\n---OWN TESTS---\n";
-	std::cout << "\n---Animal---\n\n";
-	testAnimal();
-	std::cout << "\n---Cat---\n\n";
-	testCat();
-	std::cout << "\n---Dog---\n\n";
-	testDog();
-
-	std::cout << "\n---TEST FROM SUBJECT---\n\n";
-	const Animal*	meta = new Animal();
 	const Animal*	j = new Dog();
 	const Animal*	i = new Cat();
 
-	std::cout << j->getType() << " " << std::endl;
-	std::cout << i->getType() << " " << std::endl;
-	i->makeSound(); // will output the cat sound!
-	j->makeSound(); // will output the dog sound!
-	meta->makeSound();
-
-	delete meta;
-	delete j;
+	delete j; // should not create a leak
 	delete i;
+}
 
-	std::cout << "\n---TEST WRONGCAT & WRONGANIMAL---\n\n";
-	const WrongAnimal*	wrongCat = new WrongCat();
+static void	testAnimalArray()
+{
+	const int		animalCount = 6;
+	const Animal*	animals[animalCount];
 
-	std::cout << wrongCat->getType() << " " << std::endl;
-	wrongCat->makeSound(); // will output wrong animal sound!
+	std::cout << "\033[36m" << "\n---Constructing dogs---\n\n" << "\033[0m";
+	for (int i = 0; i < animalCount / 2; i++)
+		animals[i] = new Dog();
 
-	delete wrongCat;
+	std::cout << "\033[36m" << "\n---Constructing cats---\n\n" << "\033[0m";
+	for (int i = animalCount / 2; i < animalCount; i++)
+		animals[i] = new Cat();
 
-	std::cout << "\n---TEST AN ARRAY OF ANIMALS---\n\n";
-	// TODO
+	std::cout << "\033[36m" << "\n---Animals making sounds---\n\n" << "\033[0m";
+	for (int i = 0; i < animalCount; i++)
+		animals[i]->makeSound();
+
+	std::cout << "\033[36m" << "\n---Destructing objs---\n\n" << "\033[0m";
+	for (int i = 0; i < animalCount; i++)
+		delete animals[i];
+}
+
+static void	testDeepCopies()
+{
+	std::cout << "\033[36m" << "\n---Original cat---\n\n" << "\033[0m";
+	Cat	catOriginal;
+	catOriginal.getBrain()->addIdea("Experts suggest investing in premium wet food");
+	catOriginal.getBrain()->addIdea("Veterinarians endorse a steady supply of laser pointers");
+	catOriginal.getBrain()->addIdea("Analysts highlight the benefits of catnip investments");
+	std::cout << "\033[5;93m" << "\n---Original ideas---\n\n" << "\033[0m";
+	catOriginal.getBrain()->printIdeas();
+
+	std::cout << "\033[36m" << "\n---Copy constructor---\n\n" << "\033[0m";
+	Cat	catCopy1(catOriginal);
+	std::cout << "\033[5;93m" << "\n---Copied ideas---\n\n" << "\033[0m";
+	catCopy1.getBrain()->printIdeas();
+
+	std::cout << "\033[36m" << "\n---Copy assignment operator---\n\n" << "\033[0m";
+	Cat	catCopy2;
+	catCopy2 = catOriginal;
+	std::cout << "\033[5;93m" << "\n---Copied ideas---\n\n" << "\033[0m";
+	catCopy2.getBrain()->printIdeas();
+
+	std::cout << "\033[36m" << "\n---Destructing objs---\n\n" << "\033[0m";
+}
+
+int	main()
+{
+	std::cout << "\033[96m" << "\n---TEST FROM SUBJECT---\n\n" << "\033[0m";
+	testFromSubject();
+
+	std::cout << "\033[96m" << "\n---AN ARRAY OF ANIMALS---\n" << "\033[0m";
+	testAnimalArray();
+
+	std::cout << "\033[96m" << "\n---DEEP COPIES---\n" << "\033[0m";
+	testDeepCopies();
 
 	return (0);	
 }

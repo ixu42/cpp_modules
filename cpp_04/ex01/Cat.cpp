@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 17:55:57 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/10 17:01:04 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/11 13:18:01 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,9 @@ Cat&	Cat::operator=(const Cat& other)
 void	Cat::makeSound() const
 {
 	std::cout << "Meow~\n";
+}
+
+Brain*	Cat::getBrain()
+{
+	return (brain);
 }

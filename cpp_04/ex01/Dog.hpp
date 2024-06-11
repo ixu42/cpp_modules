@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 17:49:37 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/10 15:28:49 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/11 15:37:08 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ class Dog : public Animal
 		~Dog() override;
 		Dog&	operator=(const Dog& other);
 		void	makeSound() const override;
+		Brain*	getBrain();
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 14:55:06 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/10 17:04:41 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/11 13:21:29 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ class Brain
 		Brain(const Brain& other);
 		~Brain();
 		Brain&	operator=(const Brain& other);
+		void	printIdeas();
+		void	addIdea(const std::string& newIdea);
 };
 
 #endif

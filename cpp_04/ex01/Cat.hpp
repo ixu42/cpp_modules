@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 17:49:30 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/10 14:57:09 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/11 13:18:49 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ class Cat : public Animal
 		~Cat() override;
 		Cat&	operator=(const Cat& other);
 		void	makeSound() const override;
+		Brain*	getBrain();
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 17:55:54 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/10 17:01:09 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/11 15:36:57 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,9 @@ Dog&	Dog::operator=(const Dog& other)
 void	Dog::makeSound() const
 {
 	std::cout << "Woof!\n";
+}
+
+Brain*	Dog::getBrain()
+{
+	return (brain);
 }
