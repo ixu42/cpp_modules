@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:47:59 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/13 12:50:21 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/13 16:07:15 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,8 @@ MateriaSource::MateriaSource(const MateriaSource& other)
 {
 	for (int i = 0; i < 4; i++)
 	{
-		delete _inventory[i];
 		if (other._inventory[i] != nullptr)	
-			_inventory[i] = other._inventory[i];
+			_inventory[i] = other._inventory[i]->clone();
 		else
 			_inventory[i] = nullptr;
 	}
@@ -64,7 +63,7 @@ MateriaSource&	MateriaSource::operator=(const MateriaSource& other)
 	{
 		delete _inventory[i];
 		if (other._inventory[i] != nullptr)	
-			_inventory[i] = other._inventory[i];
+			_inventory[i] = other._inventory[i]->clone();
 		else
 			_inventory[i] = nullptr;
 	}
