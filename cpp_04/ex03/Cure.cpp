@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:13:33 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/12 10:35:37 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/13 11:03:12 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ std::string const &	Cure::getType() const
 	return (this->_type);
 }
 
-Cure*	Cure::clone() const
+AMateria*	Cure::clone() const
 {
 	return (new Cure());
 }

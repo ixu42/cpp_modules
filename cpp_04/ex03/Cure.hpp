@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:13:36 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/12 10:54:23 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/13 11:03:16 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ class Cure : public AMateria
 		~Cure() override;
 		Cure&				operator=(const Cure&);
 		std::string const&	getType() const;
-		Cure*				clone() const override;
+		AMateria*			clone() const override;
 		void				use(ICharacter& target) override;
 };
 

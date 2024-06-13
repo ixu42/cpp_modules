@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:13:38 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/12 10:35:17 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/13 11:03:19 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ std::string const &	Ice::getType() const
 	return (this->_type);
 }
 
-Ice*	Ice::clone() const
+AMateria*	Ice::clone() const
 {
 	return (new Ice());
 }

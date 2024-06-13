@@ -6,11 +6,12 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:47:59 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/12 10:55:48 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/13 11:03:27 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "MateriaSource.hpp"
+#include "MateriaSource.hpp"
+#include <iostream>
 
 MateriaSource::MateriaSource()
 {
@@ -59,10 +60,13 @@ void	MateriaSource::learnMateria(AMateria* m)
 	{
 		if (_inventory[i] == nullptr)
 		{
+			std::cout << "MateriaSource: learned " << m->getType() << std::endl;
 			_inventory[i] = m; // copy the Materia so it can be cloned later
-			break ;
+			return ;
 		}
 	}
+	std::cout << "MateriaSource: can know at most 4 Materias\n";
+	delete m;
 }
 
 AMateria*	MateriaSource::createMateria(std::string const & type)
