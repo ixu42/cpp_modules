@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cure.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
+/*   By: ixu <ixu@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:13:33 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/13 11:03:12 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/13 15:31:48 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 Cure::Cure() : AMateria("cure") {}
 
-Cure::Cure(const Cure&) : AMateria("Cure") {}
+Cure::Cure(const Cure&) : AMateria("cure") {}
 
 Cure::~Cure() {}
 

@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:04:50 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/13 12:51:49 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/13 15:54:36 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ static void	testFromSubject()
 	delete src;
 }
 
-static void	useAllFromInventory(ICharacter* me, ICharacter* bob)
+static void	useAllFromInventory(ICharacter* player, ICharacter* target)
 {
-	me->use(0, *bob);
-	me->use(1, *bob);
-	me->use(2, *bob);
-	me->use(3, *bob);
+	player->use(0, *target);
+	player->use(1, *target);
+	player->use(2, *target);
+	player->use(3, *target);
 }
 
 int	main()
@@ -96,7 +96,8 @@ int	main()
 	for (int i = 0; i < 10; i++)
     	floor[i] = nullptr;
 	Character*	me_copy = dynamic_cast<Character*>(me);
-
+	if (me_copy == nullptr)
+		return (1);
 	floor[0] = me_copy->getInventory(1);
 	me->unequip(1);
 	me->unequip(1); // should output nothing
@@ -115,7 +116,21 @@ int	main()
 
 	useAllFromInventory(me, bob);
 
+	std::cout << "\033[36m" << "test3: Character copy constructor\n" << "\033[0m";
+	Character	bar0(*me_copy);
+	ICharacter*	bar = &bar0;
+	useAllFromInventory(bar, bob);
+
+	std::cout << "\033[36m" << "test4: Character copy assignment operator\n" << "\033[0m";
+	std::cout << "--before copy assignment operator--\n";
+	ICharacter*	foo = new Character("foo");
+	useAllFromInventory(foo, bob);
+	*dynamic_cast<Character*>(foo) = *me_copy;
+	std::cout << "--after copy assignment operator--\n";
+	useAllFromInventory(foo, bob);
+
 	// clean up
+	delete foo;
 	delete bob;
 	delete me;
 	delete src;

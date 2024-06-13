@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:33:36 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/13 11:57:07 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/13 15:51:35 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,8 @@ Character::Character(const Character& other) : _name(other._name)
 {
 	for (int i = 0; i < 4; i++)
 	{
-		delete _inventory[i];
 		if (other._inventory[i] != nullptr)	
-			_inventory[i] = other._inventory[i];
+			_inventory[i] = other._inventory[i]->clone();
 		else
 			_inventory[i] = nullptr;
 	}
@@ -51,8 +50,8 @@ Character&	Character::operator=(const Character& other)
 	for (int i = 0; i < 4; i++)
 	{
 		delete _inventory[i];
-		if (other._inventory[i] != nullptr)	
-			_inventory[i] = other._inventory[i];
+		if (other._inventory[i] != nullptr)
+			_inventory[i] = other._inventory[i]->clone();
 		else
 			_inventory[i] = nullptr;
 	}
