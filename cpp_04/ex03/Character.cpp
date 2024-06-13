@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Character.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
+/*   By: ixu <ixu@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:33:36 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/13 10:44:30 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/13 11:57:07 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,20 +67,15 @@ std::string const &	Character::getName() const
 void	Character::equip(AMateria* m)
 {
 	if (m == nullptr)
-	{
-		std::cout << "Character::equip(): invalid Materia\n";
 		return ;
-	}
 	for (int i = 0; i < 4; i++)
 	{
 		if (_inventory[i] == nullptr)
 		{
 			_inventory[i] = m;
-			std::cout << "Character::equip(): equipped " << m->getType() << std::endl;
 			return ;
 		}
 	}
-	std::cout << "Character::equip(): inventory full\n";
 }
 
 // Save the address of the Materia to be unequipped before calling unequip()
@@ -88,7 +83,7 @@ void	Character::equip(AMateria* m)
 void	Character::unequip(int idx)
 {
 	if (idx < 0 || idx > 3)
-		std::cout << "Character::unequip(): idx out of bounds\n";
+		return ;
 	else if (_inventory[idx] == nullptr)
 		return ;
 	else
@@ -98,19 +93,14 @@ void	Character::unequip(int idx)
 void	Character::use(int idx, ICharacter& target)
 {
 	if (idx < 0 || idx > 3)
-		std::cout << "Character::use(): idx out of bounds\n";
+		return ;
 	else if (_inventory[idx] != nullptr)
 		_inventory[idx]->use(target);
-	else
-		std::cout << "Character::use(): no Materia at slot " << idx << std::endl;
 }
 
 AMateria*	Character::getInventory(int idx)
 {
 	if (idx < 0 || idx > 3)
-	{
-		std::cout << "Character::use(): idx out of bounds\n";
 		return (nullptr);
-	}
 	return (_inventory[idx]);
 }
