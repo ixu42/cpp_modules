@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   MateriaSource.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ixu <ixu@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:47:59 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/13 16:07:15 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/16 20:19:53 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "MateriaSource.hpp"
 #include <iostream>
+#include "debug.hpp"
 
 MateriaSource::MateriaSource()
 {
@@ -73,15 +74,20 @@ MateriaSource&	MateriaSource::operator=(const MateriaSource& other)
 void	MateriaSource::learnMateria(AMateria* m)
 {
 	if (m == nullptr)
+	{
+		DEBUG_MSG("MateriaSource::learnMateria(): invalid Materia");
 		return ;
+	}
 	for (int i = 0; i < 4; i++)
 	{
 		if (_inventory[i] == nullptr)
 		{
+			DEBUG_MSG("MateriaSource::learnMateria(): learned " << m->getType());
 			_inventory[i] = m; // copy the Materia so it can be cloned later
 			return ;
 		}
 	}
+	DEBUG_MSG("MateriaSource::learnMateria(): can know at most 4 Materias");
 	for (int i = 0; i < 4; i++)
 	{
 		if (_inventory[i] == m)

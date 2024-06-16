@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ixu <ixu@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:04:50 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/13 15:54:36 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/16 20:25:37 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,13 +100,13 @@ int	main()
 		return (1);
 	floor[0] = me_copy->getInventory(1);
 	me->unequip(1);
-	me->unequip(1); // should output nothing
-	me->use(1, *bob); // should output nothing
+	me->unequip(1);
+	me->use(1, *bob);
 
 	floor[1] = me_copy->getInventory(2);
 	me->unequip(2);
-	me->unequip(2); // should output nothing
-	me->use(2, *bob); // should output nothing
+	me->unequip(2);
+	me->use(2, *bob);
 
 	me->equip(floor[1]);
 	floor[1] = nullptr;
