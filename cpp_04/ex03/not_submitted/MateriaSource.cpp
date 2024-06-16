@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   MateriaSource.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
+/*   By: ixu <ixu@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:47:59 by ixu               #+#    #+#             */
-/*   Updated: 2024/06/13 11:03:27 by ixu              ###   ########.fr       */
+/*   Updated: 2024/06/13 16:07:15 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,8 @@ MateriaSource::MateriaSource(const MateriaSource& other)
 {
 	for (int i = 0; i < 4; i++)
 	{
-		delete _inventory[i];
 		if (other._inventory[i] != nullptr)	
-			_inventory[i] = other._inventory[i];
+			_inventory[i] = other._inventory[i]->clone();
 		else
 			_inventory[i] = nullptr;
 	}
@@ -33,8 +32,27 @@ MateriaSource::MateriaSource(const MateriaSource& other)
 
 MateriaSource::~MateriaSource()
 {
+	void*	freedObjects[4] = {nullptr};
+	int		freedCount = 0;
+
 	for (int i = 0; i < 4; i++)
-		delete _inventory[i];
+	{
+		int	already_freed = 0;
+		for (int j = 0; j < freedCount; j++)
+		{
+			if (_inventory[i] == freedObjects[j])
+			{
+				already_freed = 1;
+				break;
+			}
+		}
+		if (!already_freed)
+		{
+			freedObjects[freedCount] = _inventory[i];
+			delete _inventory[i];
+			freedCount++;
+		}
+	}
 }
 
 MateriaSource&	MateriaSource::operator=(const MateriaSource& other)
@@ -45,7 +63,7 @@ MateriaSource&	MateriaSource::operator=(const MateriaSource& other)
 	{
 		delete _inventory[i];
 		if (other._inventory[i] != nullptr)	
-			_inventory[i] = other._inventory[i];
+			_inventory[i] = other._inventory[i]->clone();
 		else
 			_inventory[i] = nullptr;
 	}
@@ -60,12 +78,15 @@ void	MateriaSource::learnMateria(AMateria* m)
 	{
 		if (_inventory[i] == nullptr)
 		{
-			std::cout << "MateriaSource: learned " << m->getType() << std::endl;
 			_inventory[i] = m; // copy the Materia so it can be cloned later
 			return ;
 		}
 	}
-	std::cout << "MateriaSource: can know at most 4 Materias\n";
+	for (int i = 0; i < 4; i++)
+	{
+		if (_inventory[i] == m)
+			return ; // to prevent double free
+	}
 	delete m;
 }
 
