@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 11:15:41 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/08 12:00:07 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/16 12:28:57 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,25 +24,34 @@ class Bureaucrat
 
 		class GradeTooHighException : public std::exception
 		{
-			virtual const char* what() const noexcept;
+			private:
+				std::string _message;
+			public:
+				GradeTooHighException(const std::string& msg);
+				virtual const char* what() const noexcept override;
 		};
 
 		class GradeTooLowException : public std::exception
 		{
-			virtual const char* what() const noexcept;
+			private:
+				std::string _message;
+			public:
+				GradeTooLowException(const std::string& msg);
+				virtual const char* what() const noexcept override;
 		};
 
 	public:
 		Bureaucrat() = delete;
 		Bureaucrat(const std::string name, int grade);
+		Bureaucrat(const Bureaucrat& other);
 		~Bureaucrat();
 		Bureaucrat&			operator=(const Bureaucrat& other);
-
-		std::string& getName() const;
-		int getGrade() const;
-
+		const std::string&	getName() const;
+		int					getGrade() const;
 		void				incrementGrade();
 		void				decrementGrade();
 };
+
+std::ostream& operator<<(std::ostream& stream, const Bureaucrat& bureau);
 
 #endif
