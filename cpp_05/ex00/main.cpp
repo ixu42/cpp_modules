@@ -6,20 +6,19 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 11:15:43 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/16 13:37:13 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/16 16:17:34 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Bureaucrat.hpp"
 
-static void printString(const std::string& title)
-{ 
-	std::cout << std::endl << "\033[46;30m" << title << "\033[0m" << std:: endl;
+static void printString(const std::string& msg)
+{
+	std::cout << std::endl << "\033[46;30m" << msg << "\033[0m" << std:: endl;
 }
 
-static int testExceptionInConstructor()
+static void testExceptionInConstructor()
 {
-	int status = 0;
 	try
 	{
 		Bureaucrat foo = Bureaucrat("Foo", 1);
@@ -28,7 +27,6 @@ static int testExceptionInConstructor()
 	catch (std::exception & e)
 	{
 		std::cerr << "\033[0;31m" << "Error: " << e.what() << "\033[0m" << std:: endl;
-		status = 1;
 	}
 
 	try
@@ -39,14 +37,11 @@ static int testExceptionInConstructor()
 	catch (std::exception & e)
 	{
 		std::cerr << "\033[0;31m" << "Error: " << e.what() << "\033[0m" << std:: endl;
-		status = 1;
 	}
-	return status;
 }
 
-static int testChangingGrades()
+static void testChangingGrades()
 {
-	int status = 0;
 	try
 	{
 		Bureaucrat foo = Bureaucrat("Foo", 43);
@@ -63,7 +58,6 @@ static int testChangingGrades()
 	catch (std::exception & e)
 	{
 		std::cerr << "\033[0;31m" << "Error: " << e.what() << "\033[0m" << std:: endl;
-		status = 1;
 	}
 
 	try
@@ -82,12 +76,10 @@ static int testChangingGrades()
 	catch (std::exception & e)
 	{
 		std::cerr << "\033[0;31m" << "Error: " << e.what() << "\033[0m" << std:: endl;
-		status = 1;
 	}
-	return status;
 }
 
-void testOperatorOverloading()
+static void testOperatorOverloading()
 {
 	Bureaucrat foo = Bureaucrat("Foo", 80);
 	Bureaucrat bar = Bureaucrat("Bar", 120);
@@ -98,13 +90,11 @@ void testOperatorOverloading()
 
 int main()
 {
-	int status = 0;
-
 	printString("Exception in constructor");
-	status = testExceptionInConstructor();
+	testExceptionInConstructor();
 
 	printString("Exception in incrementGrade(), decrementGrade()");
-	status = testChangingGrades();
+	testChangingGrades();
 
 	printString("Operator overloading");
 	testOperatorOverloading();
@@ -122,6 +112,4 @@ int main()
 		Bureaucrat random = Bureaucrat();
 		std::cout << random;
 	}
-
-	return status;
 }
