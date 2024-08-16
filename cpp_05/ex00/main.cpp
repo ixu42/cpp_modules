@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 11:15:43 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/16 12:41:18 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/16 13:37:13 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,10 +110,18 @@ int main()
 	testOperatorOverloading();
 
 	printString("Copy constructor");
-	Bureaucrat foo = Bureaucrat("Foo", 25);
-	Bureaucrat foo_cpy = Bureaucrat(foo);
-	std::cout << "Original: " << foo;
-	std::cout << "Copy: " << foo_cpy;
+	{
+		Bureaucrat foo = Bureaucrat("Foo", 25);
+		Bureaucrat foo_cpy = Bureaucrat(foo);
+		std::cout << "Original: " << foo;
+		std::cout << "Copy: " << foo_cpy;
+	}
+
+	printString("Default constructor");
+	{
+		Bureaucrat random = Bureaucrat();
+		std::cout << random;
+	}
 
 	return status;
 }

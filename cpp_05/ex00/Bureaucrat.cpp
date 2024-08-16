@@ -6,13 +6,18 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 11:15:39 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/16 12:38:36 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/16 13:44:10 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Bureaucrat.hpp"
 
 /* Constructor & destructor */
+
+Bureaucrat::Bureaucrat() : _name("Unknown"), _grade(42)
+{
+	std::cout << "Default bureaucrat constructed!" << std::endl;
+}
 
 Bureaucrat::Bureaucrat(const std::string name, int grade)
 	: _name(name)

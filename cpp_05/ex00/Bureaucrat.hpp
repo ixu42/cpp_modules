@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 11:15:41 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/16 12:28:57 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/16 13:31:57 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ class Bureaucrat
 		};
 
 	public:
-		Bureaucrat() = delete;
+		Bureaucrat();
 		Bureaucrat(const std::string name, int grade);
 		Bureaucrat(const Bureaucrat& other);
 		~Bureaucrat();
