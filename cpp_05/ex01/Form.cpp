@@ -6,20 +6,20 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 13:24:32 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/16 16:30:46 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/20 12:44:13 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Form.hpp"
 
-/* Constructor & destructor */
+/* Constructors & destructor */
 
 Form::Form() : _name("Unknown"), _isSigned(false), _gradeToSign(42), _gradeToExecute(42)
 {
 	std::cout << "Default form constructed!" << std::endl;
 }
 
-Form::Form(const std::string name, int gradeToSign, int gradeToExecute)
+Form::Form(const std::string& name, int gradeToSign, int gradeToExecute)
 	: _name(name), _isSigned(false), _gradeToSign(gradeToSign), _gradeToExecute(gradeToExecute)
 {
 	std::cout << "Constructing form " << name << "..." << std::endl;

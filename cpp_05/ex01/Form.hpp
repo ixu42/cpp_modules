@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 13:24:35 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/16 16:25:39 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/20 12:18:20 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ class Form
 
 	public:
 		Form();
-		Form(const std::string name, int gradeToSign, int gradeToExecute);
+		Form(const std::string& name, int gradeToSign, int gradeToExecute);
 		Form(const Form& other);
 		~Form();
 		Form&				operator=(const Form& other);
