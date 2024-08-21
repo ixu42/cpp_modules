@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 13:24:32 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/21 17:06:44 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/22 00:47:03 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,20 @@
 
 /* Constructors & destructor */
 
-AForm::AForm() : _name("unknown"), _isSigned(false), _signGrade(42), _execGrade(42), _target("unknown")
+AForm::AForm()
+	: _name("unknown"), _isSigned(false), _signGrade(42), _execGrade(42), _target("unknown")
 {
-	std::cout << "AForm unknown constructed!" << std::endl;
+	std::cout << "AForm default constructor called" << std::endl;
 }
 
 AForm::AForm(const std::string& name, int signGrade, int execGrade, const std::string& target)
 	: _name(name), _isSigned(false), _signGrade(signGrade), _execGrade(execGrade), _target(target)
 {
-	std::cout << "Constructing AForm " << name << "..." << std::endl;
 	if (signGrade < 1 || execGrade < 1)
-		throw GradeTooHighException("Failed to construct AForm (grade too high) 🙁");
+		throw GradeTooHighException("Failed to construct AForm (grade too high)");
 	else if (signGrade > 150 || execGrade > 150)
-		throw GradeTooLowException("Failed to construct AForm (grade too low) 🙁");
-	std::cout << "AForm " << name << " constructed!" << std::endl;
+		throw GradeTooLowException("Failed to construct AForm (grade too low)");
+	std::cout << "AForm " << name << " for " << target << " constructed" << std::endl;
 }
 
 AForm::AForm(const AForm& other)
@@ -38,7 +38,7 @@ AForm::AForm(const AForm& other)
 
 AForm::~AForm()
 {
-	std::cout << "AForm " << _name << " destructed!" << std::endl;
+	std::cout << "AForm " << _name << " for " << _target << " destructed" << std::endl;
 }
 
 /* Operator overloading */
@@ -123,5 +123,5 @@ void AForm::beSigned(Bureaucrat& bureau)
 	if (bureau.getGrade() <= _signGrade)
 		_isSigned = true;
 	else
-		throw GradeTooLowException("the grade is too low for signing 🙁");
+		throw GradeTooLowException("the grade is too low for signing");
 }

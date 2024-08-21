@@ -6,39 +6,38 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 11:15:39 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/21 16:22:35 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/22 00:52:42 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Bureaucrat.hpp"
 
-/* Constructor & destructor */
+/* Constructors & destructor */
 
 Bureaucrat::Bureaucrat() : _name("Unknown"), _grade(42)
 {
-	std::cout << "Default bureaucrat constructed!" << std::endl;
+	std::cout << "Default bureaucrat constructed" << std::endl;
 }
 
 Bureaucrat::Bureaucrat(const std::string name, int grade)
 	: _name(name)
 {
-	std::cout << "Constructing " << name << "..." << std::endl;
 	if (grade < 1)
-		throw GradeTooHighException("Failed to construct bureaucrat (grade too high) 🙁");
+		throw GradeTooHighException("Failed to construct bureaucrat (grade too high)");
 	else if (grade > 150)
-		throw GradeTooLowException("Failed to construct bureaucrat (grade too low) 🙁");
+		throw GradeTooLowException("Failed to construct bureaucrat (grade too low)");
 	_grade = grade;
-	std::cout << name << " constructed!" << std::endl;
+	std::cout << "Bureaucrat " << name << " constructed" << std::endl;
 }
 
 Bureaucrat::Bureaucrat(const Bureaucrat& other) : _name(other._name), _grade(other._grade)
 {
-	std::cout << "A copy of " << other._name << " constructed!" << std::endl;
+	std::cout << "A copy of bureaucrat " << other._name << " constructed" << std::endl;
 }
 
 Bureaucrat::~Bureaucrat()
 {
-	std::cout << _name << " destructed!" << std::endl;
+	std::cout << "Bureaucrat " << _name << " destructed" << std::endl;
 }
 
 /* Operator overloading */
@@ -94,14 +93,14 @@ int Bureaucrat::getGrade() const
 void Bureaucrat::incrementGrade()
 {
 	if (_grade == 1)
-		throw GradeTooHighException("Failed to increment grade 🙁");
+		throw GradeTooHighException("Failed to increment grade");
 	_grade--;
 }
 
 void Bureaucrat::decrementGrade()
 {
 	if (_grade == 150)
-		throw GradeTooLowException("Failed to decrement grade 🙁");
+		throw GradeTooLowException("Failed to decrement grade");
 	_grade++;
 }
 
@@ -110,7 +109,8 @@ void Bureaucrat::signForm(AForm& form)
 	try
 	{
 		form.beSigned(*this);
-		std::cout << _name << " signed " << form.getName() << std::endl;
+		std::cout << _name << " signed " << form.getName() << " for " 
+					<< form.getTarget() << std::endl;
 	}
 	catch(const std::exception& e)
 	{
@@ -124,11 +124,13 @@ void Bureaucrat::executeForm(AForm const& form)
 	try
 	{
 		form.execute(*this);
-		std::cout << _name << " executed " << form.getName() << std::endl;
+		std::cout << GREEN << _name << " executed " << form.getName() << " for "
+					<< form.getTarget() << " ✅" << RESET << std::endl;
 	}
 	catch(const std::exception& e)
 	{
-		std::cerr << RED << "Error in Bureaucrat::executeForm(): " << e.what()
+		std::cerr << RED << _name << " failed to execute " << form.getName()
+					<< " for " << form.getTarget() << ": " << e.what()
 					<< RESET << std::endl;
 	}
 }

@@ -6,18 +6,19 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 11:15:43 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/21 17:39:15 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/21 23:52:11 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Bureaucrat.hpp"
 #include "ShrubberyCreationForm.hpp"
 #include "RobotomyRequestForm.hpp"
+#include "PresidentialPardonForm.hpp"
 #include <memory>
 
 static void printString(const std::string& msg, const std::string& color)
 {
-	std::cout << color << msg << RESET << std::endl;
+	std::cout << std::endl << color << msg << RESET << std::endl;
 }
 
 // static void testExceptionInConstructor()
@@ -147,6 +148,60 @@ static void printString(const std::string& msg, const std::string& color)
 // 	}
 // }
 
+static void	testShrubberyCreationForm()
+{
+	printString("ShrubberyCreationForm::execute()", CYAN_BG);
+
+	Bureaucrat foo = Bureaucrat("Foo", 42);
+	std::unique_ptr<AForm> form_0(new ShrubberyCreationForm("home"));
+	foo.signForm(*form_0);
+	foo.executeForm(*form_0); // should succeed
+
+	std::unique_ptr<AForm> form_1(new ShrubberyCreationForm("office"));
+	foo.executeForm(*form_1); // should fail, as form is not signed
+
+	Bureaucrat bar = Bureaucrat("Bar", 140);
+	std::unique_ptr<AForm> form_2(new ShrubberyCreationForm("park"));
+	bar.signForm(*form_2);
+	bar.executeForm(*form_2); // should fail, as grade is not enough for execution
+}
+
+static void testRobotomyRequestForm()
+{
+	printString("RobotomyRequestForm::execute()", CYAN_BG);
+
+	Bureaucrat foo = Bureaucrat("Foo", 42);
+	std::unique_ptr<AForm> form_0(new RobotomyRequestForm("Baz"));
+	foo.signForm(*form_0);
+	foo.executeForm(*form_0); // should succeed
+
+	std::unique_ptr<AForm> form_1(new RobotomyRequestForm("Bar"));
+	foo.executeForm(*form_1); // should fail, as form is not signed
+
+	Bureaucrat alice = Bureaucrat("Alice", 46);
+	std::unique_ptr<AForm> form_2(new RobotomyRequestForm("Bob"));
+	alice.signForm(*form_2);
+	alice.executeForm(*form_2); // should fail, as grade is not enough for execution 
+}
+
+static void testPresidentialPardonForm()
+{
+	printString("PresidentialPardonForm::execute()", CYAN_BG);
+
+	Bureaucrat foo = Bureaucrat("Foo", 1);
+	std::unique_ptr<AForm> form_0(new PresidentialPardonForm("Baz"));
+	foo.signForm(*form_0);
+	foo.executeForm(*form_0); // should succeed
+
+	std::unique_ptr<AForm> form_1(new PresidentialPardonForm("Bar"));
+	foo.executeForm(*form_1); // should fail, as form is not signed
+
+	Bureaucrat charlie = Bureaucrat("Charlie", 10);
+	std::unique_ptr<AForm> form_2(new PresidentialPardonForm("David"));
+	charlie.signForm(*form_2);
+	charlie.executeForm(*form_2); // should fail, as grade is not enough for execution 
+}
+
 int main()
 {
 	// printString("TESTS FOR EX00", YELLOW_BG);
@@ -184,77 +239,7 @@ int main()
 	// 	std::cout << a.getGradeToExecute() << std::endl;
 	// }
 
-	printString("ShrubberyCreationForm::execute()", CYAN_BG);
-	try
-	{
-		Bureaucrat foo = Bureaucrat("Foo", 42);
-		std::unique_ptr<AForm> home_shrubbery(new ShrubberyCreationForm("home"));
-		foo.signForm(*home_shrubbery);
-		home_shrubbery->execute(foo);
-		printString("ShrubberyCreationForm executed for home_shrubbery ✅", GREEN);
-
-		std::unique_ptr<AForm> office_shrubbery(new ShrubberyCreationForm("office"));
-		office_shrubbery->execute(foo);
-		printString("ShrubberyCreationForm executed for office_shrubbery✅", GREEN);
-	}
-	catch(const std::exception& e)
-	{
-		std::cerr << RED << e.what() << RESET << std::endl;
-	}
-
-	try
-	{
-		Bureaucrat bar = Bureaucrat("Bar", 140);
-		std::unique_ptr<AForm> park_shrubbery(new ShrubberyCreationForm("park"));
-		bar.signForm(*park_shrubbery);
-		park_shrubbery->execute(bar);
-		printString("ShrubberyCreationForm executed for park_shrubbery ✅", GREEN);
-	}
-	catch(const std::exception& e)
-	{
-		std::cerr << RED << e.what() << RESET << std::endl;
-	}
-
-	printString("Bureaucrat::executeForm()", CYAN_BG);
-	try
-	{
-		Bureaucrat foo = Bureaucrat("Foo", 42);
-		std::unique_ptr<AForm> home_shrubbery(new ShrubberyCreationForm("home"));
-		foo.executeForm(*home_shrubbery);
-	}
-	catch(const std::exception& e)
-	{
-		std::cerr << RED << e.what() << RESET << std::endl;
-	}
-
-	printString("RobotomyRequestForm::execute()", CYAN_BG);
-	try
-	{
-		Bureaucrat foo = Bureaucrat("Foo", 42);
-		std::unique_ptr<AForm> baz(new RobotomyRequestForm("Baz"));
-		foo.signForm(*baz);
-		baz->execute(foo);
-		printString("RobotomyRequestForm executed for Baz ✅", GREEN);
-
-		std::unique_ptr<AForm> bar(new RobotomyRequestForm("Bar"));
-		bar->execute(foo);
-		printString("RobotomyRequestForm executed for Bar ✅", GREEN);
-	}
-	catch(const std::exception& e)
-	{
-		std::cerr << RED << e.what() << RESET << std::endl;
-	}
-
-	try
-	{
-		Bureaucrat alice = Bureaucrat("Alice", 46);
-		std::unique_ptr<AForm> bob(new RobotomyRequestForm("Bob"));
-		alice.signForm(*bob);
-		bob->execute(alice);
-		printString("RobotomyRequestForm executed for bob ✅", GREEN);
-	}
-	catch(const std::exception& e)
-	{
-		std::cerr << RED << e.what() << RESET << std::endl;
-	}
+	testShrubberyCreationForm();
+	testRobotomyRequestForm();
+	testPresidentialPardonForm();
 }
