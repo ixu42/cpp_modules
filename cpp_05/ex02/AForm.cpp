@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 13:24:32 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/21 12:27:06 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/21 17:06:44 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ AForm::AForm(const std::string& name, int signGrade, int execGrade, const std::s
 AForm::AForm(const AForm& other)
 	: _name(other._name), _isSigned(other._isSigned),_signGrade(other._signGrade), _execGrade(other._execGrade)
 {
-	std::cout << "A copy of AForm " << other._name << " constructed!" << std::endl;
+	std::cout << "AForm copy constructor called" << std::endl;
 }
 
 AForm::~AForm()

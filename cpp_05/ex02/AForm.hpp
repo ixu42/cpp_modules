@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 13:24:35 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/21 13:20:01 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/21 17:06:35 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,9 @@ class AForm
 		AForm();
 		AForm(const std::string& name, int signGrade, int execGrade, const std::string& target);
 		AForm(const AForm& other);
+		AForm& operator=(const AForm& other);
 		virtual ~AForm();
-		AForm&				operator=(const AForm& other);
+
 		const std::string&	getName() const;
 		const std::string&	getTarget() const;
 		bool				getIsSigned() const;

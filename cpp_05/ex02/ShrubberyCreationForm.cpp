@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 11:58:43 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/21 16:52:18 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/21 17:11:01 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,14 @@ ShrubberyCreationForm::~ShrubberyCreationForm()
 
 void ShrubberyCreationForm::execute(const Bureaucrat &executor) const
 {
-	// create filename based on target
-	std::string filename = this->getTarget() + "_shrubbery";
-
 	// ensure that the form is signed and that the executor's grade is sufficient
 	if (!getIsSigned())
-		throw FormNotSignedException("Failed to execute " + filename + ": form not signed");
+		throw FormNotSignedException("Failed to execute ShrubberyCreationForm: form not signed");
 	if (executor.getGrade() > this->getExecGrade())
-		throw GradeTooLowException("Failed to execute " + filename + ": grade too low");
+		throw GradeTooLowException("Failed to execute ShrubberyCreationForm: grade too low");
+
+	// create filename based on target
+	std::string filename = this->getTarget() + "_shrubbery";
 
 	// open the file for writing
 	std::ofstream outfile(filename.c_str());
