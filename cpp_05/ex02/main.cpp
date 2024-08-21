@@ -6,12 +6,13 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 11:15:43 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/21 16:29:15 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/21 17:39:15 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Bureaucrat.hpp"
 #include "ShrubberyCreationForm.hpp"
+#include "RobotomyRequestForm.hpp"
 #include <memory>
 
 static void printString(const std::string& msg, const std::string& color)
@@ -190,11 +191,11 @@ int main()
 		std::unique_ptr<AForm> home_shrubbery(new ShrubberyCreationForm("home"));
 		foo.signForm(*home_shrubbery);
 		home_shrubbery->execute(foo);
-		printString("home_shrubbery executed ✅", GREEN);
+		printString("ShrubberyCreationForm executed for home_shrubbery ✅", GREEN);
 
 		std::unique_ptr<AForm> office_shrubbery(new ShrubberyCreationForm("office"));
 		office_shrubbery->execute(foo);
-		printString("office_shrubbery executed ✅", GREEN);
+		printString("ShrubberyCreationForm executed for office_shrubbery✅", GREEN);
 	}
 	catch(const std::exception& e)
 	{
@@ -207,7 +208,7 @@ int main()
 		std::unique_ptr<AForm> park_shrubbery(new ShrubberyCreationForm("park"));
 		bar.signForm(*park_shrubbery);
 		park_shrubbery->execute(bar);
-		printString("park_shrubbery executed ✅", GREEN);
+		printString("ShrubberyCreationForm executed for park_shrubbery ✅", GREEN);
 	}
 	catch(const std::exception& e)
 	{
@@ -225,5 +226,35 @@ int main()
 	{
 		std::cerr << RED << e.what() << RESET << std::endl;
 	}
-	
+
+	printString("RobotomyRequestForm::execute()", CYAN_BG);
+	try
+	{
+		Bureaucrat foo = Bureaucrat("Foo", 42);
+		std::unique_ptr<AForm> baz(new RobotomyRequestForm("Baz"));
+		foo.signForm(*baz);
+		baz->execute(foo);
+		printString("RobotomyRequestForm executed for Baz ✅", GREEN);
+
+		std::unique_ptr<AForm> bar(new RobotomyRequestForm("Bar"));
+		bar->execute(foo);
+		printString("RobotomyRequestForm executed for Bar ✅", GREEN);
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << RED << e.what() << RESET << std::endl;
+	}
+
+	try
+	{
+		Bureaucrat alice = Bureaucrat("Alice", 46);
+		std::unique_ptr<AForm> bob(new RobotomyRequestForm("Bob"));
+		alice.signForm(*bob);
+		bob->execute(alice);
+		printString("RobotomyRequestForm executed for bob ✅", GREEN);
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << RED << e.what() << RESET << std::endl;
+	}
 }
