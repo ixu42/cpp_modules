@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 13:24:32 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/20 12:56:47 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/21 12:27:06 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,13 @@ const char* AForm::GradeTooHighException::what() const noexcept
 AForm::GradeTooLowException::GradeTooLowException(const std::string& msg) : _message(msg) {}
 
 const char* AForm::GradeTooLowException::what() const noexcept
+{
+	return _message.c_str();
+}
+
+AForm::FormNotSignedException::FormNotSignedException(const std::string& msg) : _message(msg) {}
+
+const char* AForm::FormNotSignedException::what() const noexcept
 {
 	return _message.c_str();
 }

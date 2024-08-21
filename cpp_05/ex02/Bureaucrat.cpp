@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 11:15:39 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/16 15:22:27 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/21 12:48:38 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void Bureaucrat::decrementGrade()
 	_grade++;
 }
 
-void Bureaucrat::signForm(Form& form)
+void Bureaucrat::signForm(AForm& form)
 {
 	try
 	{

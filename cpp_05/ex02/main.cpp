@@ -6,143 +6,145 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 11:15:43 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/20 12:42:06 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/21 13:20:00 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Bureaucrat.hpp"
+#include "ShrubberyCreationForm.hpp"
+#include <memory>
 
 static void printString(const std::string& msg, const std::string& color)
 {
-	std::cout << std::endl << color << msg << RESET << std:: endl;
+	std::cout << color << msg << RESET << std::endl;
 }
 
-static void testExceptionInConstructor()
-{
-	try
-	{
-		Bureaucrat foo = Bureaucrat("Foo", 1);
-		Bureaucrat bar = Bureaucrat("Bar", 0); // grade too high
-	}
-	catch (std::exception & e)
-	{
-		std::cerr << RED << "Error: " << e.what() << RESET << std:: endl;
-	}
+// static void testExceptionInConstructor()
+// {
+// 	try
+// 	{
+// 		Bureaucrat foo = Bureaucrat("Foo", 1);
+// 		Bureaucrat bar = Bureaucrat("Bar", 0); // grade too high
+// 	}
+// 	catch (std::exception & e)
+// 	{
+// 		std::cerr << RED << "Error: " << e.what() << RESET << std:: endl;
+// 	}
 
-	try
-	{
-		Bureaucrat foo = Bureaucrat("Foo", 150);
-		Bureaucrat bar = Bureaucrat("Bar", 151); // grade too low
-	}
-	catch (std::exception & e)
-	{
-		std::cerr << RED << "Error: " << e.what() << RESET << std:: endl;
-	}
-}
+// 	try
+// 	{
+// 		Bureaucrat foo = Bureaucrat("Foo", 150);
+// 		Bureaucrat bar = Bureaucrat("Bar", 151); // grade too low
+// 	}
+// 	catch (std::exception & e)
+// 	{
+// 		std::cerr << RED << "Error: " << e.what() << RESET << std:: endl;
+// 	}
+// }
 
-static void testChangingGrades()
-{
-	try
-	{
-		Bureaucrat foo = Bureaucrat("Foo", 43);
-		std::cout << foo.getName() << "'s grade before increment: " << foo.getGrade() << std::endl;
-		foo.incrementGrade();
-		std::cout << foo.getName() << "'s grade after increment: " << foo.getGrade() << std::endl;
+// static void testChangingGrades()
+// {
+// 	try
+// 	{
+// 		Bureaucrat foo = Bureaucrat("Foo", 43);
+// 		std::cout << foo.getName() << "'s grade before increment: " << foo.getGrade() << std::endl;
+// 		foo.incrementGrade();
+// 		std::cout << foo.getName() << "'s grade after increment: " << foo.getGrade() << std::endl;
 
-		Bureaucrat bar = Bureaucrat("Bar", 1);
-		std::cout << bar.getName() << "'s grade before increment: " << bar.getGrade() << std::endl;
-		bar.incrementGrade();
-		std::cout << bar.getName() << "'s grade after increment: " << bar.getGrade() << std::endl;
+// 		Bureaucrat bar = Bureaucrat("Bar", 1);
+// 		std::cout << bar.getName() << "'s grade before increment: " << bar.getGrade() << std::endl;
+// 		bar.incrementGrade();
+// 		std::cout << bar.getName() << "'s grade after increment: " << bar.getGrade() << std::endl;
 
-	}
-	catch (std::exception & e)
-	{
-		std::cerr << RED << "Error: " << e.what() << RESET << std:: endl;
-	}
+// 	}
+// 	catch (std::exception & e)
+// 	{
+// 		std::cerr << RED << "Error: " << e.what() << RESET << std:: endl;
+// 	}
 
-	try
-	{
-		Bureaucrat foo = Bureaucrat("Foo", 41);
-		std::cout << foo.getName() << "'s grade before decrement: " << foo.getGrade() << std::endl;
-		foo.decrementGrade();
-		std::cout << foo.getName() << "'s grade after decrement: " << foo.getGrade() << std::endl;
+// 	try
+// 	{
+// 		Bureaucrat foo = Bureaucrat("Foo", 41);
+// 		std::cout << foo.getName() << "'s grade before decrement: " << foo.getGrade() << std::endl;
+// 		foo.decrementGrade();
+// 		std::cout << foo.getName() << "'s grade after decrement: " << foo.getGrade() << std::endl;
 
-		Bureaucrat bar = Bureaucrat("Bar", 150);
-		std::cout << bar.getName() << "'s grade before decrement: " << bar.getGrade() << std::endl;
-		bar.decrementGrade();
-		std::cout << bar.getName() << "'s grade after decrement: " << bar.getGrade() << std::endl;
+// 		Bureaucrat bar = Bureaucrat("Bar", 150);
+// 		std::cout << bar.getName() << "'s grade before decrement: " << bar.getGrade() << std::endl;
+// 		bar.decrementGrade();
+// 		std::cout << bar.getName() << "'s grade after decrement: " << bar.getGrade() << std::endl;
 
-	}
-	catch (std::exception & e)
-	{
-		std::cerr << RED << "Error: " << e.what() << RESET << std:: endl;
-	}
-}
+// 	}
+// 	catch (std::exception & e)
+// 	{
+// 		std::cerr << RED << "Error: " << e.what() << RESET << std:: endl;
+// 	}
+// }
 
-static void testOperatorOverloading()
-{
-	Bureaucrat foo = Bureaucrat("Foo", 80);
-	Bureaucrat bar = Bureaucrat("Bar", 120);
-	std::cout << bar;
-	bar = foo;
-	std::cout << bar;
-}
+// static void testOperatorOverloading()
+// {
+// 	Bureaucrat foo = Bureaucrat("Foo", 80);
+// 	Bureaucrat bar = Bureaucrat("Bar", 120);
+// 	std::cout << bar;
+// 	bar = foo;
+// 	std::cout << bar;
+// }
 
-static void testForEx00()
-{
-	printString("Exception in constructor", CYAN_BG);
-	testExceptionInConstructor();
+// static void testForEx00()
+// {
+// 	printString("Exception in constructor", CYAN_BG);
+// 	testExceptionInConstructor();
 
-	printString("Exception in incrementGrade(), decrementGrade()", CYAN_BG);
-	testChangingGrades();
+// 	printString("Exception in incrementGrade(), decrementGrade()", CYAN_BG);
+// 	testChangingGrades();
 
-	printString("Operator overloading", CYAN_BG);
-	testOperatorOverloading();
+// 	printString("Operator overloading", CYAN_BG);
+// 	testOperatorOverloading();
 
-	printString("Copy constructor", CYAN_BG);
-	{
-		Bureaucrat foo = Bureaucrat("Foo", 25);
-		Bureaucrat foo_cpy = Bureaucrat(foo);
-		std::cout << "Original: " << foo;
-		std::cout << "Copy: " << foo_cpy;
-	}
+// 	printString("Copy constructor", CYAN_BG);
+// 	{
+// 		Bureaucrat foo = Bureaucrat("Foo", 25);
+// 		Bureaucrat foo_cpy = Bureaucrat(foo);
+// 		std::cout << "Original: " << foo;
+// 		std::cout << "Copy: " << foo_cpy;
+// 	}
 
-	printString("Default constructor", CYAN_BG);
-	{
-		Bureaucrat random = Bureaucrat();
-		std::cout << random;
-	}
-}
+// 	printString("Default constructor", CYAN_BG);
+// 	{
+// 		Bureaucrat random = Bureaucrat();
+// 		std::cout << random;
+// 	}
+// }
 
-static void testFormConstructors()
-{
-	printString("Form parameterized constructor", CYAN);
-	{
-		try
-		{
-			Form a = Form("a", 150, 1);
-			Form b = Form("a", 0, 1); // grade to high
-		}
-		catch(const std::exception& e)
-		{
-			std::cerr << RED << "Error: " << e.what() << RESET << std:: endl;
-		}
-	}
+// static void testFormConstructors()
+// {
+// 	printString("Form parameterized constructor", CYAN);
+// 	{
+// 		try
+// 		{
+// 			Form a = Form("a", 150, 1);
+// 			Form b = Form("a", 0, 1); // grade to high
+// 		}
+// 		catch(const std::exception& e)
+// 		{
+// 			std::cerr << RED << "Error: " << e.what() << RESET << std:: endl;
+// 		}
+// 	}
 
-	printString("Form copy constructor", CYAN);
-	{
-		Form a = Form("a", 42, 42);
-		Form b = Form(a);
-		std::cout << "Original:\n" << a;
-		std::cout << "Copy:\n" << b;
-	}
+// 	printString("Form copy constructor", CYAN);
+// 	{
+// 		Form a = Form("a", 42, 42);
+// 		Form b = Form(a);
+// 		std::cout << "Original:\n" << a;
+// 		std::cout << "Copy:\n" << b;
+// 	}
 
-	printString("Form default constructor", CYAN);
-	{
-		Form random = Form();
-		std::cout << random;
-	}
-}
+// 	printString("Form default constructor", CYAN);
+// 	{
+// 		Form random = Form();
+// 		std::cout << random;
+// 	}
+// }
 
 int main()
 {
@@ -180,4 +182,35 @@ int main()
 	// 	std::cout << a.getGradeToSign() << std::endl;
 	// 	std::cout << a.getGradeToExecute() << std::endl;
 	// }
+
+	printString("Check requirements in ShrubberyCreationForm", CYAN_BG);
+	try
+	{
+		Bureaucrat foo = Bureaucrat("Foo", 42);
+		std::unique_ptr<AForm> home_shrubbery(new ShrubberyCreationForm("home"));
+		foo.signForm(*home_shrubbery);
+		home_shrubbery->execute(foo);
+		printString("home_shrubbery executed ✅", GREEN);
+
+		std::unique_ptr<AForm> office_shrubbery(new ShrubberyCreationForm("office"));
+		office_shrubbery->execute(foo);
+		printString("office_shrubbery executed ✅", GREEN);
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << RED << e.what() << RESET << std::endl;
+	}
+
+	try
+	{
+		Bureaucrat bar = Bureaucrat("Bar", 140);
+		std::unique_ptr<AForm> park_shrubbery(new ShrubberyCreationForm("park"));
+		bar.signForm(*park_shrubbery);
+		park_shrubbery->execute(bar);
+		printString("park_shrubbery executed ✅", GREEN);
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << RED << e.what() << RESET << std::endl;
+	}
 }

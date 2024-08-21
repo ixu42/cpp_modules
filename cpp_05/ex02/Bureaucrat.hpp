@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 11:15:41 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/16 15:19:37 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/21 12:48:28 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 
 # include <string>
 # include <iostream>
-# include "Form.hpp"
+# include "AForm.hpp"
 
-class Form;
+class AForm;
 
 class Bureaucrat
 {
@@ -53,7 +53,7 @@ class Bureaucrat
 		int					getGrade() const;
 		void				incrementGrade();
 		void				decrementGrade();
-		void				signForm(Form& form);
+		void				signForm(AForm& form);
 };
 
 std::ostream& operator<<(std::ostream& stream, const Bureaucrat& bureau);

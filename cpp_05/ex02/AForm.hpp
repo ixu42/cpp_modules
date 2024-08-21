@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 13:24:35 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/20 13:18:07 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/21 13:20:01 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <fstream>
 
 # define RED "\033[0;31m"
+# define GREEN "\033[0;32m"
 # define YELLOW "\033[0;33m"
 # define CYAN "\033[0;36m"
 # define CYAN_BG "\033[46;30m"
@@ -33,6 +34,20 @@ class AForm
 		const int			_signGrade;
 		const int			_execGrade;
 		const std::string	_target;
+
+	public:
+		AForm();
+		AForm(const std::string& name, int signGrade, int execGrade, const std::string& target);
+		AForm(const AForm& other);
+		virtual ~AForm();
+		AForm&				operator=(const AForm& other);
+		const std::string&	getName() const;
+		const std::string&	getTarget() const;
+		bool				getIsSigned() const;
+		const int&			getSignGrade() const;
+		const int&			getExecGrade() const;
+		void				beSigned(Bureaucrat& bureau);
+		virtual void		execute(Bureaucrat const & executor) const = 0;
 
 		class GradeTooHighException : public std::exception
 		{
@@ -52,19 +67,14 @@ class AForm
 				virtual const char* what() const noexcept override;
 		};
 
-	public:
-		AForm();
-		AForm(const std::string& name, int signGrade, int execGrade, const std::string& target);
-		AForm(const AForm& other);
-		virtual ~AForm();
-		AForm&				operator=(const AForm& other);
-		const std::string&	getName() const;
-		const std::string&	getTarget() const;
-		bool				getIsSigned() const;
-		const int&			getSignGrade() const;
-		const int&			getExecGrade() const;
-		void				beSigned(Bureaucrat& bureau);
-		virtual void		execute(Bureaucrat const & executor) const = 0;
+		class FormNotSignedException : public std::exception
+		{
+			private:
+				std::string _message;
+			public:
+				FormNotSignedException(const std::string& msg);
+				virtual const char* what() const noexcept override;
+		};
 };
 
 std::ostream& operator<<(std::ostream& stream, const AForm& form);

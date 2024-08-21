@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 11:58:43 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/20 13:27:14 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/21 13:19:58 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,20 @@ ShrubberyCreationForm::~ShrubberyCreationForm()
 
 void ShrubberyCreationForm::execute(const Bureaucrat &executor) const
 {
-	// ensure that the form is signed and that the executor's grade is sufficient
-
-
 	// create filename based on target
 	std::string filename = this->getTarget() + "_shrubbery";
+
+	// ensure that the form is signed and that the executor's grade is sufficient
+	if (!getIsSigned())
+		throw FormNotSignedException("Failed to execute " + filename + ": form not signed");
+		// throw FormNotSignedException("Failed to execute : the form is not yet signed");
+	if (executor.getGrade() > this->getExecGrade())
+		throw GradeTooLowException("Failed to execute " + filename + ": grade too low");
 
 	// open the file for writing
 	std::ofstream outfile(filename.c_str());
 	if (!outfile)
-		throw std::runtime_error("Error: Could not open file for writing.");
+		throw std::runtime_error("Error in ShrubberyCreationForm::execute(): could not open file for writing");
 
 	// write ASCII trees to the file
 	outfile << "    /\\    " << std::endl;
