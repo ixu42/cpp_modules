@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 11:15:41 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/21 12:48:28 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/21 16:03:09 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ class Bureaucrat
 		void				incrementGrade();
 		void				decrementGrade();
 		void				signForm(AForm& form);
+		void				executeForm(AForm const& form);
 };
 
 std::ostream& operator<<(std::ostream& stream, const Bureaucrat& bureau);

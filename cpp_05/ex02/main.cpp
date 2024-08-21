@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 11:15:43 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/21 13:20:00 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/21 16:29:15 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ int main()
 	// 	std::cout << a.getGradeToExecute() << std::endl;
 	// }
 
-	printString("Check requirements in ShrubberyCreationForm", CYAN_BG);
+	printString("ShrubberyCreationForm::execute()", CYAN_BG);
 	try
 	{
 		Bureaucrat foo = Bureaucrat("Foo", 42);
@@ -213,4 +213,17 @@ int main()
 	{
 		std::cerr << RED << e.what() << RESET << std::endl;
 	}
+
+	printString("Bureaucrat::executeForm()", CYAN_BG);
+	try
+	{
+		Bureaucrat foo = Bureaucrat("Foo", 42);
+		std::unique_ptr<AForm> home_shrubbery(new ShrubberyCreationForm("home"));
+		foo.executeForm(*home_shrubbery);
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << RED << e.what() << RESET << std::endl;
+	}
+	
 }
