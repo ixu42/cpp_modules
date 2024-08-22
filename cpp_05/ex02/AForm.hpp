@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 13:24:35 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/22 13:02:48 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/22 19:49:14 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ class AForm
 		bool				_isSigned;
 		const int			_signGrade;
 		const int			_execGrade;
-		std::string			_target;
+		const std::string	_target;
 
 	public:
 		AForm();

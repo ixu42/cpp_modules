@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 13:24:32 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/22 12:50:47 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/22 20:22:45 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ AForm& AForm::operator=(const AForm& other)
 	if (this == &other)
 		return *this;
 	_isSigned = other._isSigned;
-	_target = other._target;
 	return *this;
 }
 
