@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 11:15:39 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/22 00:52:42 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/22 11:51:16 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ Bureaucrat::Bureaucrat(const std::string name, int grade)
 	: _name(name)
 {
 	if (grade < 1)
-		throw GradeTooHighException("Failed to construct bureaucrat (grade too high)");
+		throw GradeTooHighException("Failed to construct bureaucrat " + name + " (grade too high)");
 	else if (grade > 150)
-		throw GradeTooLowException("Failed to construct bureaucrat (grade too low)");
+		throw GradeTooLowException("Failed to construct bureaucrat " + name + " (grade too low)");
 	_grade = grade;
 	std::cout << "Bureaucrat " << name << " constructed" << std::endl;
 }
@@ -44,7 +44,8 @@ Bureaucrat::~Bureaucrat()
 
 Bureaucrat& Bureaucrat::operator=(const Bureaucrat& other)
 {
-	std::cout << "Copy assignment operator called" << std::endl;
+	std::cout << "Copy assignment operator called: " << other._name << "->"
+				<< this->_name << std::endl;
 	if (this == &other)
 		return *this;
 	this->_grade = other._grade;
@@ -53,7 +54,7 @@ Bureaucrat& Bureaucrat::operator=(const Bureaucrat& other)
 
 std::ostream& operator<<(std::ostream& stream, const Bureaucrat& bureau)
 {
-	stream << bureau.getName() << ", bureaucrat grade " << bureau.getGrade() << "." << std::endl;
+	stream << bureau.getName() << ", bureaucrat grade " << bureau.getGrade() << std::endl;
 	return (stream);
 }
 
@@ -93,14 +94,14 @@ int Bureaucrat::getGrade() const
 void Bureaucrat::incrementGrade()
 {
 	if (_grade == 1)
-		throw GradeTooHighException("Failed to increment grade");
+		throw GradeTooHighException("Failed to increment " + _name + "'s grade");
 	_grade--;
 }
 
 void Bureaucrat::decrementGrade()
 {
 	if (_grade == 150)
-		throw GradeTooLowException("Failed to decrement grade");
+		throw GradeTooLowException("Failed to decrement " + _name + "'s grade");
 	_grade++;
 }
 

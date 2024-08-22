@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 13:24:35 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/21 17:06:35 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/22 13:02:48 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # define YELLOW "\033[0;33m"
 # define CYAN "\033[0;36m"
 # define CYAN_BG "\033[46;30m"
-# define YELLOW_BG "\033[43;30m"
+# define YELLOW_BG "\033[103;30m"
 # define RESET "\033[0m"
 
 class Bureaucrat;
@@ -33,7 +33,7 @@ class AForm
 		bool				_isSigned;
 		const int			_signGrade;
 		const int			_execGrade;
-		const std::string	_target;
+		std::string			_target;
 
 	public:
 		AForm();

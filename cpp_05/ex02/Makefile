@@ -6,7 +6,7 @@
 #    By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/08 11:14:14 by ixu               #+#    #+#              #
-#    Updated: 2024/08/20 11:58:48 by ixu              ###   ########.fr        #
+#    Updated: 2024/08/22 12:54:03 by ixu              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,8 +43,8 @@ $(OBJS_DIR)%.o: %.cpp
 	@echo "$(YELLOW)Built $@$(COLOR_RESET)"
 
 clean:
-	@rm -fr $(OBJS_DIR)
-	@echo "$(YELLOW)Removed object files$(COLOR_RESET)"
+	@rm -fr $(OBJS_DIR) *_shrubbery
+	@echo "$(YELLOW)Removed object files and <target>_shrubbery $(COLOR_RESET)"
 
 fclean: clean
 	@rm -f $(NAME)

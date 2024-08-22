@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 13:24:32 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/22 00:47:03 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/22 12:50:47 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ AForm::AForm(const std::string& name, int signGrade, int execGrade, const std::s
 }
 
 AForm::AForm(const AForm& other)
-	: _name(other._name), _isSigned(other._isSigned),_signGrade(other._signGrade), _execGrade(other._execGrade)
+	: _name(other._name), _isSigned(other._isSigned), _signGrade(other._signGrade),
+	  _execGrade(other._execGrade), _target(other._target)
 {
 	std::cout << "AForm copy constructor called" << std::endl;
 }
@@ -48,17 +49,19 @@ AForm& AForm::operator=(const AForm& other)
 	std::cout << "AForm copy assignment operator called" << std::endl;
 	if (this == &other)
 		return *this;
-	this->_isSigned = other._isSigned;
+	_isSigned = other._isSigned;
+	_target = other._target;
 	return *this;
 }
 
 std::ostream& operator<<(std::ostream& stream, const AForm& form)
 {
 	stream << YELLOW
-			<< "Name of form: " << form.getName() << std::endl
+			<< "Name of form:     " << form.getName() << std::endl
 			<< "Is form signed:   " << form.getIsSigned() << std::endl
 			<< "Grade to sign:    " << form.getSignGrade() << std::endl
-			<< "Grade to execute: " << form.getExecGrade()
+			<< "Grade to execute: " << form.getExecGrade() << std::endl
+			<< "Target of form:   " << form.getTarget()
 			<< RESET << std::endl;
 	return (stream);
 }
