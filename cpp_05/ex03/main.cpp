@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 11:15:43 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/22 22:06:42 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/23 16:32:12 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,15 +124,15 @@ static void	testShrubberyCreationForm()
 	printString("ShrubberyCreationForm::execute()", CYAN_BG);
 
 	Bureaucrat foo = Bureaucrat("Foo", 42);
-	std::unique_ptr<AForm> form_0(new ShrubberyCreationForm("home"));
+	std::unique_ptr<AForm> form_0 = std::make_unique<ShrubberyCreationForm>("home");
 	foo.signForm(*form_0);
 	foo.executeForm(*form_0); // should succeed
 
-	std::unique_ptr<AForm> form_1(new ShrubberyCreationForm("office"));
+	std::unique_ptr<AForm> form_1 = std::make_unique<ShrubberyCreationForm>("office");
 	foo.executeForm(*form_1); // should fail, as form is not signed
 
 	Bureaucrat bar = Bureaucrat("Bar", 140);
-	std::unique_ptr<AForm> form_2(new ShrubberyCreationForm("park"));
+	std::unique_ptr<AForm> form_2 = std::make_unique<ShrubberyCreationForm>("park");
 	bar.signForm(*form_2);
 	bar.executeForm(*form_2); // should fail, as grade is not enough for execution
 }
@@ -142,15 +142,15 @@ static void testRobotomyRequestForm()
 	printString("RobotomyRequestForm::execute()", CYAN_BG);
 
 	Bureaucrat foo = Bureaucrat("Foo", 42);
-	std::unique_ptr<AForm> form_0(new RobotomyRequestForm("Baz"));
+	std::unique_ptr<AForm> form_0 = std::make_unique<RobotomyRequestForm>("Baz");
 	foo.signForm(*form_0);
 	foo.executeForm(*form_0); // should succeed
 
-	std::unique_ptr<AForm> form_1(new RobotomyRequestForm("Bar"));
+	std::unique_ptr<AForm> form_1 = std::make_unique<RobotomyRequestForm>("Bar");
 	foo.executeForm(*form_1); // should fail, as form is not signed
 
 	Bureaucrat alice = Bureaucrat("Alice", 46);
-	std::unique_ptr<AForm> form_2(new RobotomyRequestForm("Bob"));
+	std::unique_ptr<AForm> form_2 = std::make_unique<RobotomyRequestForm>("Bob");
 	alice.signForm(*form_2);
 	alice.executeForm(*form_2); // should fail, as grade is not enough for execution 
 }
@@ -160,15 +160,15 @@ static void testPresidentialPardonForm()
 	printString("PresidentialPardonForm::execute()", CYAN_BG);
 
 	Bureaucrat foo = Bureaucrat("Foo", 1);
-	std::unique_ptr<AForm> form_0(new PresidentialPardonForm("Baz"));
+	std::unique_ptr<AForm> form_0 = std::make_unique<PresidentialPardonForm>("Baz");
 	foo.signForm(*form_0);
 	foo.executeForm(*form_0); // should succeed
 
-	std::unique_ptr<AForm> form_1(new PresidentialPardonForm("Bar"));
+	std::unique_ptr<AForm> form_1 = std::make_unique<PresidentialPardonForm>("Bar");
 	foo.executeForm(*form_1); // should fail, as form is not signed
 
 	Bureaucrat charlie = Bureaucrat("Charlie", 10);
-	std::unique_ptr<AForm> form_2(new PresidentialPardonForm("David"));
+	std::unique_ptr<AForm> form_2 = std::make_unique<PresidentialPardonForm>("David");
 	charlie.signForm(*form_2);
 	charlie.executeForm(*form_2); // should fail, as grade is not enough for execution 
 }
