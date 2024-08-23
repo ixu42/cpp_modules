@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 11:15:39 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/20 12:44:27 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/23 22:02:13 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void Bureaucrat::signForm(Form& form)
 		form.beSigned(*this);
 		std::cout << _name << " signed " << form.getName() << std::endl;
 	}
-	catch(const std::exception& e)
+	catch (const std::exception& e)
 	{
 		std::cerr << _name << " couldn't sign " << form.getName() << " because " << e.what() << std::endl;
 	}

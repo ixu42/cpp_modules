@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 11:15:39 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/22 11:51:16 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/23 22:02:31 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void Bureaucrat::signForm(AForm& form)
 		std::cout << _name << " signed " << form.getName() << " for " 
 					<< form.getTarget() << std::endl;
 	}
-	catch(const std::exception& e)
+	catch (const std::exception& e)
 	{
 		std::cerr << RED << _name << " couldn't sign " << form.getName()
 					<< " because " << e.what() << RESET <<  std::endl;
@@ -128,7 +128,7 @@ void Bureaucrat::executeForm(AForm const& form)
 		std::cout << GREEN << _name << " executed " << form.getName() << " for "
 					<< form.getTarget() << " ✅" << RESET << std::endl;
 	}
-	catch(const std::exception& e)
+	catch (const std::exception& e)
 	{
 		std::cerr << RED << _name << " failed to execute " << form.getName()
 					<< " for " << form.getTarget() << ": " << e.what()

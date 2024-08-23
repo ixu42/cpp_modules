@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 11:15:43 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/23 16:32:12 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/23 22:03:36 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void testExceptionInConstructor()
 		Bureaucrat foo = Bureaucrat("Foo", 1);
 		Bureaucrat bar = Bureaucrat("Bar", 0); // grade too high
 	}
-	catch (std::exception & e)
+	catch (const std::exception& e)
 	{
 		std::cerr << RED << "Error: " << e.what() << RESET << std:: endl;
 	}
@@ -39,7 +39,7 @@ static void testExceptionInConstructor()
 		Bureaucrat foo = Bureaucrat("Foo", 150);
 		Bureaucrat bar = Bureaucrat("Bar", 151); // grade too low
 	}
-	catch (std::exception & e)
+	catch (const std::exception& e)
 	{
 		std::cerr << RED << "Error: " << e.what() << RESET << std:: endl;
 	}
@@ -60,7 +60,7 @@ static void testChangingGrades()
 		std::cout << bar.getName() << "'s grade after increment: " << bar.getGrade() << std::endl;
 
 	}
-	catch (std::exception & e)
+	catch (const std::exception& e)
 	{
 		std::cerr << RED << "Error: " << e.what() << RESET << std:: endl;
 	}
@@ -78,7 +78,7 @@ static void testChangingGrades()
 		std::cout << bar.getName() << "'s grade after decrement: " << bar.getGrade() << std::endl;
 
 	}
-	catch (std::exception & e)
+	catch (const std::exception& e)
 	{
 		std::cerr << RED << "Error: " << e.what() << RESET << std:: endl;
 	}
@@ -212,7 +212,7 @@ int main()
 		printString("Intern::makeForm()", YELLOW_BG);
 		testForIntern();
 	}
-	catch(const std::exception& e)
+	catch (const std::exception& e)
 	{
 		std::cerr << RED << "Error: " << e.what() << RESET << std::endl;
 	}

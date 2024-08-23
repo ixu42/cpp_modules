@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 11:15:43 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/23 16:38:03 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/23 22:00:11 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ static void testExceptionInConstructor()
 		Bureaucrat foo = Bureaucrat("Foo", 1);
 		Bureaucrat bar = Bureaucrat("Bar", 0); // grade too high
 	}
-	catch (std::exception & e)
+	catch (const std::exception& e)
 	{
 		std::cerr << RED << "Error: " << e.what() << RESET << std:: endl;
 	}
@@ -107,7 +107,7 @@ static void testExceptionInConstructor()
 		Bureaucrat foo = Bureaucrat("Foo", 150);
 		Bureaucrat bar = Bureaucrat("Bar", 151); // grade too low
 	}
-	catch (std::exception & e)
+	catch (const std::exception& e)
 	{
 		std::cerr << RED << "Error: " << e.what() << RESET << std:: endl;
 	}
@@ -128,7 +128,7 @@ static void testChangingGrades()
 		std::cout << bar.getName() << "'s grade after increment: " << bar.getGrade() << std::endl;
 
 	}
-	catch (std::exception & e)
+	catch (const std::exception& e)
 	{
 		std::cerr << RED << "Error: " << e.what() << RESET << std:: endl;
 	}
@@ -146,7 +146,7 @@ static void testChangingGrades()
 		std::cout << bar.getName() << "'s grade after decrement: " << bar.getGrade() << std::endl;
 
 	}
-	catch (std::exception & e)
+	catch (const std::exception& e)
 	{
 		std::cerr << RED << "Error: " << e.what() << RESET << std:: endl;
 	}
@@ -205,7 +205,7 @@ int main()
 		printString("exception (std::logic_error) will be thrown", YELLOW_BG);
 		std::unique_ptr<AForm> invalidForm = std::make_unique<ShrubberyCreationForm>(nullptr);
 	}
-	catch(const std::exception& e)
+	catch (const std::exception& e)
 	{
 		std::cerr << RED << "Error: " << e.what() << RESET << std::endl;
 	}
