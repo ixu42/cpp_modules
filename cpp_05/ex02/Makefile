@@ -6,7 +6,7 @@
 #    By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/08 11:14:14 by ixu               #+#    #+#              #
-#    Updated: 2024/08/22 12:54:03 by ixu              ###   ########.fr        #
+#    Updated: 2024/08/23 16:23:20 by ixu              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SRCS = $(addsuffix .cpp, main Bureaucrat AForm ShrubberyCreationForm \
 
 OBJS = $(addprefix $(OBJS_DIR), $(SRCS:.cpp=.o))
 
-FLAGS := -Wall -Wextra -Werror -Wshadow -std=c++11
+FLAGS := -Wall -Wextra -Werror -Wshadow -std=c++17
 
 COMPILER := c++
 
