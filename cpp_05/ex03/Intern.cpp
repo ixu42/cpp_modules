@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 16:16:42 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/22 22:02:21 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/23 16:51:48 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ std::unique_ptr<AForm> Intern::makeForm(const std::string& formName, const std::
 		i++;
 	if (i < 3)
 	{
-		std::cout << "Intern creates " << formName << " form" << std::endl;
+		std::cout << GREEN << "Intern creates " << formName << " form" << RESET << std::endl;
 		return (this->*formConstructors[i])(formTarget);
 	}
 	else
