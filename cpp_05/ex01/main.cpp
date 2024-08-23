@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 11:15:43 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/16 16:29:40 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/23 15:58:38 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,19 @@ static void testFormConstructors()
 	}
 }
 
+static void testFormOperatorOverloading()
+{
+	Form form_a = Form("a", 1, 2);
+	Bureaucrat foo = Bureaucrat("Foo", 1);
+	foo.signForm(form_a);
+	std::cout << form_a;
+
+	Form form_b = Form("b", 2, 3);
+	std::cout << form_b;
+	form_b = form_a;  // will only copy boolean _isSigned
+	std::cout << form_b;
+}
+
 int main()
 {
 	printString("TESTS FOR EX00", YELLOW_BG);
@@ -154,16 +167,10 @@ int main()
 	printString("Form constructors", CYAN_BG);
 	testFormConstructors();
 
-	printString("Operator overloading", CYAN_BG);
-	{
-		Form a = Form("a", 1, 2);
-		Form b = Form("b", 2, 3);
-		std::cout << b;
-		b = a;
-		std::cout << b;
-	}
+	printString("Form Operator overloading", CYAN_BG);
+	testFormOperatorOverloading();
 
-	printString("Bureaucrat::signForm(), Form::beSigned(), getters", CYAN_BG);
+	printString("Bureaucrat::signForm(), Form::beSigned()", CYAN_BG);
 	{
 		Bureaucrat foo = Bureaucrat("Foo", 43);
 		Bureaucrat bar = Bureaucrat("Bar", 41);
