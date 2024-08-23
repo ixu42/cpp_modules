@@ -1,8 +1,2 @@
 *.vscode
 *.o
-cpp_00/ex00/megaphone
-cpp_00/ex01/phoneBook
-cpp_00/ex02/account
-cpp_00/ex02/*.log
-cpp_01/ex00/zombie
-cpp_01/ex01/zombieHorde
