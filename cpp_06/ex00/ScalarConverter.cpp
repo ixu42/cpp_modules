@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 14:19:07 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/24 15:45:56 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/24 16:26:23 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,61 @@ void ScalarConverter::convert(const std::string& param)
 		std::cout << "double: impossible" << std::endl;
 		return ;
 	}
-	if (type == Type::Char)
-		std::cout << "is char\n";
-	if (type == Type::Int)
-		std::cout << "is int\n";
-	
+	char c = 0;
+	int i = 0;
+	float f = 0;
+	double d = 0;
+	cast(type, param, c, i, f, d);
+	displayValues(c, i, f, d);
+}
+
+void ScalarConverter::cast(Type type, const std::string& param, char& c, int& i, float& f, double& d)
+{
+	switch (type)
+	{
+		case Type::Char:
+			std::cout << "case char\n"; // remove later
+			c = param[0];
+			i = static_cast<int>(c);
+			f = static_cast<float>(c);
+			d = static_cast<double>(c);
+			break ;
+		case Type::Int:
+			std::cout << "case int\n"; // remove later
+			i = std::stoi(param); // protect?
+			c = static_cast<char>(i);
+			f = static_cast<float>(i);
+			d = static_cast<double>(i);
+			break ;
+		case Type::Float:
+			std::cout << "case float\n"; // remove later
+			f = std::stof(param);
+			c = static_cast<char>(f);
+			i = static_cast<int>(f);
+			d = static_cast<double>(f);
+			break ;
+		case Type::Double:
+			std::cout << "case double\n"; // remove later
+			d = std::stod(param);
+			c = static_cast<char>(d);
+			i = static_cast<int>(d);
+			f = static_cast<float>(d);
+			break ;
+		default:
+			std::cout << "ScalarConverter::cast() error: unknown type" << std::endl;
+	}
+}
+
+void ScalarConverter::displayValues(char c, int i, float f, double d)
+{
+	if (c >= 32 && c <= 126)
+		std::cout << "char: " << c << std::endl;
+	else
+		std::cout << "char: Non displayable" << std::endl;
+	std::cout << "int: " << i << std::endl;
+	std::cout << std::fixed << std::setprecision(1);
+	std::cout << "float: " << f << "f" << std::endl;
+	std::cout << "double: " << d << std::endl;
 }
 
 Type ScalarConverter::getType(const std::string& param)
@@ -58,6 +108,7 @@ Type ScalarConverter::getType(const std::string& param)
 		return Type::Char;
 	if (isInteger(param))
 		return Type::Int;
+	// check float, double
 	return Type::Unknown;
 }
 

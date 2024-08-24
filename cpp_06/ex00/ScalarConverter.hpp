@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 14:19:14 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/24 15:25:50 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/24 16:22:25 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <string>
 # include <iostream>
+# include <iomanip>
 # include <cctype>
 
 enum class Type {Char, Int,	Float, Double, Empty, Unknown};
@@ -32,6 +33,8 @@ class ScalarConverter
 
 		static Type getType(const std::string& param);
 		static bool isInteger(const std::string& param);
+		static void cast(Type type, const std::string& param, char& c, int& i, float& f, double& d);
+		static void displayValues(char c, int i, float f, double d);
 };
 
 #endif
