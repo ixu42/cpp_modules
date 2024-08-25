@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 14:19:07 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/24 16:26:23 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/25 22:32:53 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,28 +27,94 @@ ScalarConverter& ScalarConverter::operator=(const ScalarConverter& other)
 
 ScalarConverter::~ScalarConverter() {}
 
-void ScalarConverter::convert(const std::string& param)
+bool ScalarConverter::isInteger(const std::string& param)
 {
-	Type type = getType(param);
-	if (type == Type::Empty)
+	try
 	{
-		std::cout << "empty string passed as parameter";
-		return ;
+		std::size_t pos;
+		std::stoi(param, &pos);
+		return pos == param.size();
 	}
-	if (type == Type::Unknown)
+	catch (const std::invalid_argument& e)
 	{
-		std::cout << "char: impossible" << std::endl;
-		std::cout << "int: impossible" << std::endl;
-		std::cout << "float: impossible" << std::endl;
-		std::cout << "double: impossible" << std::endl;
-		return ;
+		std::cerr << "std::invalid_argument\n"; // remove later
+		return false;
 	}
-	char c = 0;
-	int i = 0;
-	float f = 0;
-	double d = 0;
-	cast(type, param, c, i, f, d);
-	displayValues(c, i, f, d);
+	catch (const std::out_of_range& e)
+	{
+		std::cerr << "std::out_of_range\n"; // remove later
+		return false;
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << "std::exception\n"; // remove later
+		return false;
+	}
+}
+
+bool ScalarConverter::isFloat(const std::string& param)
+{
+	try
+	{
+		std::size_t pos;
+		std::stof(param, &pos);
+		return param.back() == 'f' && pos + 1 == param.size();
+	}
+	catch (const std::invalid_argument& e)
+	{
+		std::cerr << "std::invalid_argument\n"; // remove later
+		return false;
+	}
+	catch (const std::out_of_range& e)
+	{
+		std::cerr << "std::out_of_range\n"; // remove later
+		return false;
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << "std::exception\n"; // remove later
+		return false;
+	}
+}
+
+bool ScalarConverter::isDouble(const std::string& param)
+{
+	try
+	{
+		std::size_t pos;
+		std::stod(param, &pos);
+		return pos == param.size();
+	}
+	catch (const std::invalid_argument& e)
+	{
+		std::cerr << "std::invalid_argument\n"; // remove later
+		return false;
+	}
+	catch (const std::out_of_range& e)
+	{
+		std::cerr << "std::out_of_range\n"; // remove later
+		return false;
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << "std::exception\n"; // remove later
+		return false;
+	}
+}
+
+Type ScalarConverter::getType(const std::string& param)
+{
+	if (param.empty())
+		return Type::Empty;
+	if (param.size() == 1 && std::isalpha(param[0]))
+		return Type::Char;
+	if (isInteger(param))
+		return Type::Int;
+	if (isFloat(param))
+		return Type::Float;
+	if (isDouble(param))
+		return Type::Double;
+	return Type::Unknown;
 }
 
 void ScalarConverter::cast(Type type, const std::string& param, char& c, int& i, float& f, double& d)
@@ -91,7 +157,7 @@ void ScalarConverter::cast(Type type, const std::string& param, char& c, int& i,
 void ScalarConverter::displayValues(char c, int i, float f, double d)
 {
 	if (c >= 32 && c <= 126)
-		std::cout << "char: " << c << std::endl;
+		std::cout << "char: '" << c << "'" << std::endl;
 	else
 		std::cout << "char: Non displayable" << std::endl;
 	std::cout << "int: " << i << std::endl;
@@ -100,41 +166,26 @@ void ScalarConverter::displayValues(char c, int i, float f, double d)
 	std::cout << "double: " << d << std::endl;
 }
 
-Type ScalarConverter::getType(const std::string& param)
+void ScalarConverter::convert(const std::string& param)
 {
-	if (param.empty())
-		return Type::Empty;
-	if (param.size() == 1 && std::isalpha(param[0]))
-		return Type::Char;
-	if (isInteger(param))
-		return Type::Int;
-	// check float, double
-	return Type::Unknown;
-}
-
-bool ScalarConverter::isInteger(const std::string& param)
-{
-	try
+	Type type = getType(param);
+	if (type == Type::Empty)
 	{
-		std::size_t pos;
-		std::stoi(param, &pos);
-		// std::cout << "pos:          " << pos << std::endl;
-		// std::cout << "param.size(): " << param.size() << std::endl;
-		return pos == param.size();
+		std::cout << "empty string passed as parameter" << std::endl;
+		return ;
 	}
-	catch (const std::invalid_argument& e)
+	if (type == Type::Unknown)
 	{
-		std::cerr << "std::invalid_argument\n"; // remove later
-		return false;
+		std::cout << "char: impossible" << std::endl;
+		std::cout << "int: impossible" << std::endl;
+		std::cout << "float: impossible" << std::endl;
+		std::cout << "double: impossible" << std::endl;
+		return ;
 	}
-	catch (const std::out_of_range& e)
-	{
-		std::cerr << "std::out_of_range\n"; // remove later
-		return false;
-	}
-	catch (const std::exception& e)
-	{
-		std::cerr << "std::exception\n"; // remove later
-		return false;
-	}
+	char c = 0;
+	int i = 0;
+	float f = 0;
+	double d = 0;
+	cast(type, param, c, i, f, d);
+	displayValues(c, i, f, d);
 }
