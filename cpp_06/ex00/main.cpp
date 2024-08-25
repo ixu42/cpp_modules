@@ -6,13 +6,11 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 14:19:19 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/24 15:24:58 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/25 23:42:48 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ScalarConverter.hpp"
-#include <iostream>
-#include <string>
 
 int main(int argc, char** argv)
 {
