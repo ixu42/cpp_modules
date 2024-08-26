@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 14:19:07 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/26 01:48:37 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/26 15:43:13 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,26 +160,22 @@ void ScalarConverter::cast(Type type, const std::string& param, char& c, int& i,
 			d = static_cast<double>(c);
 			break ;
 		case Type::Int:
-			std::cout << "case int\n";
 			i = std::stoi(param);
 			c = static_cast<char>(i);
 			f = static_cast<float>(i);
 			d = static_cast<double>(i);
 			break ;
 		case Type::Float:
-			std::cout << "case float\n";
 			f = std::stof(param);
 			c = static_cast<char>(f);
 			i = static_cast<int>(f);
 			d = static_cast<double>(f);
 			break ;
 		case Type::SpecialFloat:
-			std::cout << "case special float\n";
 			f = std::stof(param);
 			d = static_cast<double>(f);
 			break ;
 		case Type::Double:
-			std::cout << "case double\n";
 			d = std::stod(param);
 			c = static_cast<char>(d);
 			i = static_cast<int>(d);
