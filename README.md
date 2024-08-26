@@ -20,3 +20,6 @@
 
 ### cpp_05
 > try/catch and exceptions
+
+### cpp_06
+> Different casts in C++
