@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 21:22:30 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/28 22:07:35 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/28 23:36:31 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,21 @@ void iter(T* array, size_t length, F func)
 		func(array[i]);
 }
 
+// template func to print non-pointer elements
 template<typename T>
-void printArray(const T& elem)
+void printElem(const T& elem)
 {
 	std::cout << elem << std::endl;
+}
+
+// template func to print elements of pointer type
+template<typename T>
+void printPtrValue(const T& elem)
+{
+	if (elem)
+		std::cout << *elem << std::endl;
+	else
+		std::cout << "(null)" << std::endl;	
 }
 
 #endif
