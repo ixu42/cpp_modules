@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 11:28:15 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/29 16:01:58 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/29 17:46:46 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ Array<T>::Array(unsigned int n) : _size(n)
 	else
 	{
 		_data = new T[_size];
-		for (size_t i = 0; i < _size; ++i)
+		for (unsigned int i = 0; i < _size; ++i)
 			_data[i] = T();
 	}
 }
@@ -33,9 +33,19 @@ Array<T>::Array(const Array<T>& other) : _size(other._size)
 		_data = nullptr;
 	else
 	{
-		_data = new T[_size];
-		for (size_t i = 0; i < _size; ++i)
-			_data[i] = other._data[i];
+		T* tempData = new T[_size];
+		try
+		{
+			for (unsigned int i = 0; i < _size; ++i)
+				tempData[i] = other._data[i];
+			_data = tempData;
+		}
+		catch (...)
+		{
+			delete tempData;
+			_data = nullptr;
+			throw ;
+		}
 	}
 }
 
@@ -44,15 +54,27 @@ Array<T>& Array<T>::operator=(const Array<T>& other)
 {
 	if (this == &other)
 		return *this;
-	delete[] this->_data;
 	_size = other._size;
 	if (_size == 0)
+	{
+		delete[] _data;
 		_data = nullptr;
+	}
 	else
 	{
-		_data = new T[_size];
-		for (size_t i = 0; i < _size; ++i)
-			_data[i] = other._data[i];
+		T* tempData = new T[_size];
+		try
+		{
+			for (unsigned int i = 0; i < _size; ++i)
+				tempData[i] = other._data[i];
+			delete[] _data;
+			_data = tempData;
+		}
+		catch (...)
+		{
+			delete[] tempData;
+			throw ;
+		}
 	}
 	return *this;
 }

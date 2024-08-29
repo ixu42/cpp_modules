@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 11:19:37 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/29 16:18:45 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/29 17:49:25 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int main()
 	{
 		arr2[-1];
 	}
-	catch(const std::exception& e)
+	catch (const std::exception& e)
 	{
 		std::cout << RED << e.what() << RESET << std::endl;
 	}
