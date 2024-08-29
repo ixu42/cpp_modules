@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 21:22:32 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/28 23:54:11 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/29 11:32:32 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <string>
 #include <memory>
 
-void printString(const std::string& message)
+static void printString(const std::string& message)
 {
 	std::cout << "\033[0;32m" << "[ " << message << " ]" << "\033[0m" << std::endl;
 }
