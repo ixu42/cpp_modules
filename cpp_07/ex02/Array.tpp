@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 11:28:15 by ixu               #+#    #+#             */
-/*   Updated: 2024/08/29 17:46:46 by ixu              ###   ########.fr       */
+/*   Updated: 2024/08/29 22:19:20 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ Array<T>::Array(const Array<T>& other) : _size(other._size)
 		}
 		catch (...)
 		{
-			delete tempData;
+			delete[] tempData;
 			_data = nullptr;
 			throw ;
 		}
