@@ -23,3 +23,6 @@
 
 ### cpp_06
 > Different casts in C++
+
+### cpp_07
+> Templates
