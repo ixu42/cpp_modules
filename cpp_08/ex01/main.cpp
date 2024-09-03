@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 12:21:08 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/02 17:36:07 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/03 18:50:12 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ int main()
 	{
 		printString("Exception in longestSpan()");
 		Span sp = Span(1);
+		sp.addNumber(42);
 		std::cout << sp.longestSpan() << std::endl;
 	}
 	catch(const std::exception& e)
