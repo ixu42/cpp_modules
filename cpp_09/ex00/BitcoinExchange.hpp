@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 12:27:12 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/03 15:11:22 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/03 17:46:04 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <sstream>
 #include <iostream>
 #include <stdexcept>
+#include <map>
 
 class BitcoinExchange
 {
@@ -25,7 +26,9 @@ class BitcoinExchange
 
 	private:
 		BitcoinExchange();
-		~BitcoinExchange();
 		BitcoinExchange(const BitcoinExchange&);
 		BitcoinExchange& operator=(const BitcoinExchange&);
+		~BitcoinExchange();
+
+		std::map<std::string, double> _data;
 };

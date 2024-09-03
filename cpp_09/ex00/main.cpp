@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 12:27:10 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/03 15:11:10 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/03 17:46:02 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int main(int argc, char** argv)
 {
 	if (argc != 2)
 	{
-		std::cout << "Error: Invalid number of arguments" << std::endl;
+		std::cout << "Error: invalid number of arguments" << std::endl;
 		std::cout << "Usage: ./btc <filename>" << std::endl;
 		return 1;
 	}
