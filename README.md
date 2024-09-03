@@ -26,3 +26,6 @@
 
 ### cpp_07
 > Templates
+
+### cpp_08
+> Templated containers, iterators, algorithms
