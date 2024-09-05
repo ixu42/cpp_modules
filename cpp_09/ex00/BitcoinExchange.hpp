@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 12:27:12 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/05 13:44:20 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/05 14:25:30 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ class BitcoinExchange
 		static void run(const std::string&);
 
 		static const std::map<std::string, double>& getData();
+		static const std::map<std::string, double>& getExchangeRates();
 
 	private:
 		BitcoinExchange();
@@ -37,5 +38,9 @@ class BitcoinExchange
 		static bool isValidDate(const std::string&);
 		static bool isValidValue(const std::string&, double&);
 
+		static void loadExchangeRates();
+		static double findExchangeRate(const std::string&);
+
 		static std::map<std::string, double> _data;
+		static std::map<std::string, double> _exchangeRates;
 };

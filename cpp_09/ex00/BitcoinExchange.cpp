@@ -6,13 +6,14 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 12:27:14 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/05 13:44:22 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/05 14:29:11 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "BitcoinExchange.hpp"
 
 std::map<std::string, double> BitcoinExchange::_data;
+std::map<std::string, double> BitcoinExchange::_exchangeRates;
 
 BitcoinExchange::BitcoinExchange() {}
 
@@ -25,6 +26,36 @@ BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange&)
 
 BitcoinExchange::~BitcoinExchange() {}
 
+bool BitcoinExchange::isLeapYear(int year)
+{
+	return ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0);
+}
+bool BitcoinExchange::isValidDate(const std::string& date)
+{
+	// regular expression to match the date format: YYYY-MM-DD
+	const std::regex datePattern(R"(^(\d{4})-(\d{2})-(\d{2})$)");
+	std::smatch match;
+
+	if (!std::regex_match(date, match, datePattern))
+		return false;
+	
+	int year = std::stoi(match[1].str());
+	int month = std::stoi(match[2].str());
+	int day = std::stoi(match[3].str());
+	
+	if (month < 1 || month > 12)
+		return false;
+	
+	int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+	if (month == 2 && isLeapYear(year))
+		daysInMonth[1] = 29;
+
+	if (day < 1 || day > daysInMonth[month - 1])
+		return false;
+	
+	return true;
+}
 bool BitcoinExchange::isValidValue(const std::string& valueString, double& value)
 {
 	try
@@ -59,40 +90,49 @@ bool BitcoinExchange::isValidValue(const std::string& valueString, double& value
 	return true;
 }
 
-bool BitcoinExchange::isLeapYear(int year)
+void BitcoinExchange::loadExchangeRates()
 {
-	return ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0);
+	std::ifstream inFile("data.csv");
+
+	if (!inFile)
+		throw std::runtime_error("could not open file data.csv");
+
+	std::string line;
+	std::getline(inFile, line);
+	while (std::getline(inFile, line)) // protect?
+	{
+		std::string date;
+		std::string exchangeRateString;
+		std::size_t pos = line.find(',');
+		if (pos != std::string::npos)
+		{
+			date = line.substr(0, pos);
+			exchangeRateString = line.substr(pos + 1);
+			if (date.empty() || exchangeRateString.empty())
+				throw std::runtime_error("invalid data.csv => " + line);
+		}
+		else
+			throw std::runtime_error("invalid data.csv => " + line);
+		if (!isValidDate(date))
+			throw std::runtime_error("data.csv contains invalid date => " + line);
+		double exchangeRate;
+		std::size_t last_num_index;
+		exchangeRate = std::stod(exchangeRateString, &last_num_index);
+		if ( last_num_index != exchangeRateString.size() || exchangeRate < 0)
+			throw std::runtime_error("data.csv contains invalid exchange rate => " + line);
+		_exchangeRates[date] = exchangeRate;
+	}
 }
 
-bool BitcoinExchange::isValidDate(const std::string& date)
+double BitcoinExchange::findExchangeRate(const std::string&)
 {
-	// regular expression to match the date format: YYYY-MM-DD
-	const std::regex datePattern(R"(^(\d{4})-(\d{2})-(\d{2})$)");
-	std::smatch match;
-
-	if (!std::regex_match(date, match, datePattern))
-		return false;
-	
-	int year = std::stoi(match[1].str());
-	int month = std::stoi(match[2].str());
-	int day = std::stoi(match[3].str());
-	
-	if (month < 1 || month > 12)
-		return false;
-	
-	int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-
-	if (month == 2 && isLeapYear(year))
-		daysInMonth[1] = 29;
-
-	if (day < 1 || day > daysInMonth[month - 1])
-		return false;
-	
-	return true;
+	return 1;
 }
 
 void BitcoinExchange::run(const std::string& filename)
 {
+	loadExchangeRates();
+
 	std::ifstream inFile(filename);
 
 	if (!inFile)
@@ -131,12 +171,21 @@ void BitcoinExchange::run(const std::string& filename)
 		double value;
 		if (!isValidValue(valueString, value))
 			continue ;
-		std::cout << line << std::endl;
+		// std::cout << line << std::endl;
 		_data[date] = value;
+
+		double exchangeRate = findExchangeRate(date);
+		double res = value * exchangeRate;
+		std::cout << line << " => " << res << std::endl;
 	}
 }
 
 const std::map<std::string, double>& BitcoinExchange::getData()
 {
 	return _data;
+}
+
+const std::map<std::string, double>& BitcoinExchange::getExchangeRates()
+{
+	return _exchangeRates;
 }
