@@ -6,14 +6,14 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 12:27:14 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/05 14:57:35 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/05 15:43:09 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "BitcoinExchange.hpp"
 
-std::map<std::string, double> BitcoinExchange::_data;
-std::map<std::string, double> BitcoinExchange::_exchangeRates;
+std::map<std::tuple<int, int, int>, double> BitcoinExchange::_data;
+std::map<std::tuple<int, int, int>, double> BitcoinExchange::_exchangeRates;
 
 BitcoinExchange::BitcoinExchange() {}
 
@@ -26,12 +26,12 @@ BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange&)
 
 BitcoinExchange::~BitcoinExchange() {}
 
-const std::map<std::string, double>& BitcoinExchange::getData()
+const std::map<std::tuple<int, int, int>, double>& BitcoinExchange::getData()
 {
 	return _data;
 }
 
-const std::map<std::string, double>& BitcoinExchange::getExchangeRates()
+const std::map<std::tuple<int, int, int>, double>& BitcoinExchange::getExchangeRates()
 {
 	return _exchangeRates;
 }
@@ -40,13 +40,13 @@ bool BitcoinExchange::isLeapYear(int year)
 {
 	return ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0);
 }
-bool BitcoinExchange::isValidDate(const std::string& date)
+bool BitcoinExchange::isValidDate(const std::string& dateString, std::tuple<int, int, int>& date)
 {
 	// regular expression to match the date format: YYYY-MM-DD
 	const std::regex datePattern(R"(^(\d{4})-(\d{2})-(\d{2})$)");
 	std::smatch match;
 
-	if (!std::regex_match(date, match, datePattern))
+	if (!std::regex_match(dateString, match, datePattern))
 		return false;
 	
 	int year = std::stoi(match[1].str());
@@ -64,6 +64,7 @@ bool BitcoinExchange::isValidDate(const std::string& date)
 	if (day < 1 || day > daysInMonth[month - 1])
 		return false;
 	
+	date = std::make_tuple(year, month, day);
 	return true;
 }
 bool BitcoinExchange::isValidValue(const std::string& valueString, double& value)
@@ -72,7 +73,7 @@ bool BitcoinExchange::isValidValue(const std::string& valueString, double& value
 	{
 		std::size_t last_num_index;
 		value = std::stod(valueString, &last_num_index);
-		if( last_num_index != valueString.size()) {
+		if(last_num_index != valueString.size()) {
 			std::cout << "Error: not a number" << std::endl;
 			return false;
 		}
@@ -111,34 +112,43 @@ void BitcoinExchange::loadExchangeRates()
 	std::getline(inFile, line);
 	while (std::getline(inFile, line)) // protect?
 	{
-		std::string date;
+		std::string dateString;
 		std::string exchangeRateString;
 		std::size_t pos = line.find(',');
 		if (pos != std::string::npos)
 		{
-			date = line.substr(0, pos);
+			dateString = line.substr(0, pos);
 			exchangeRateString = line.substr(pos + 1);
-			if (date.empty() || exchangeRateString.empty())
+			if (dateString.empty() || exchangeRateString.empty())
 				throw std::runtime_error("invalid data.csv => " + line);
 		}
 		else
 			throw std::runtime_error("invalid data.csv => " + line);
-		if (!isValidDate(date))
+		std::tuple<int, int, int> date;
+		if (!isValidDate(dateString, date))
 			throw std::runtime_error("data.csv contains invalid date => " + line);
 		if (_exchangeRates.find(date) != _exchangeRates.end())
 			throw std::runtime_error("data.csv contains a duplicate date");
 		double exchangeRate;
 		std::size_t last_num_index;
 		exchangeRate = std::stod(exchangeRateString, &last_num_index);
-		if ( last_num_index != exchangeRateString.size() || exchangeRate < 0)
+		if (last_num_index != exchangeRateString.size() || exchangeRate < 0)
 			throw std::runtime_error("data.csv contains invalid exchange rate => " + line);
 		_exchangeRates[date] = exchangeRate;
 	}
 }
 
-double BitcoinExchange::findExchangeRate(const std::string&)
+double BitcoinExchange::findExchangeRate(const std::tuple<int, int, int>& date, const std::string& dateString)
 {
-	return 1;
+	if (_exchangeRates.find(date) != _exchangeRates.end())
+		return _exchangeRates[date];
+	
+	auto it = _exchangeRates.upper_bound(date);
+	if (it == _exchangeRates.begin())
+		throw std::runtime_error("exchange rate not available for the date " + dateString);
+	else
+		--it;
+	return it->second;
 }
 
 void BitcoinExchange::run(const std::string& filename)
@@ -154,18 +164,18 @@ void BitcoinExchange::run(const std::string& filename)
 	std::getline(inFile, line);
 	while (std::getline(inFile, line)) // protect?
 	{
-		std::string date;
+		std::string dateString;
 		std::string valueString;
 		// split the line
 		std::size_t pos = line.find('|');
 		if (pos != std::string::npos) {
-			date = line.substr(0, pos);
+			dateString = line.substr(0, pos);
 			valueString = line.substr(pos + 1);
-			date.erase(date.find_last_not_of(" \t\n\v\f\r") + 1);
-			date.erase(0, date.find_first_not_of(" \t\n\v\f\r"));
+			dateString.erase(dateString.find_last_not_of(" \t\n\v\f\r") + 1);
+			dateString.erase(0, dateString.find_first_not_of(" \t\n\v\f\r"));
 			valueString.erase(valueString.find_last_not_of(" \t\n\v\f\r") + 1);
 			valueString.erase(0, valueString.find_first_not_of(" \t\n\v\f\r"));
-			if (date.empty() || valueString.empty()) {
+			if (dateString.empty() || valueString.empty()) {
 				std::cout << "Error: bad input => " << line << std::endl;
 				continue ;
 			}
@@ -176,8 +186,9 @@ void BitcoinExchange::run(const std::string& filename)
 			std::cout << "Error: bad input => " << line << std::endl;
 			continue ;
 		}
-		if (!isValidDate(date))	{
-			std::cout << "Error: invalid date => " << date << std::endl;
+		std::tuple<int, int, int> date;
+		if (!isValidDate(dateString, date))	{
+			std::cout << "Error: invalid date => " << dateString << std::endl;
 			continue ;
 		}
 		double value;
@@ -186,8 +197,13 @@ void BitcoinExchange::run(const std::string& filename)
 		// std::cout << line << std::endl;
 		_data[date] = value;
 
-		double exchangeRate = findExchangeRate(date);
-		double res = value * exchangeRate;
-		std::cout << line << " => " << res << std::endl;
+		try	{
+			double exchangeRate = findExchangeRate(date, dateString);
+			double res = value * exchangeRate;
+			std::cout << line << " => " << res << std::endl;
+		}
+		catch (const std::exception& e)	{
+			std::cout << "Error: " << e.what() << std::endl;
+		}
 	}
 }
