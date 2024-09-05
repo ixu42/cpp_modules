@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 12:27:14 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/05 14:29:11 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/05 14:57:35 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,16 @@ BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange&)
 }
 
 BitcoinExchange::~BitcoinExchange() {}
+
+const std::map<std::string, double>& BitcoinExchange::getData()
+{
+	return _data;
+}
+
+const std::map<std::string, double>& BitcoinExchange::getExchangeRates()
+{
+	return _exchangeRates;
+}
 
 bool BitcoinExchange::isLeapYear(int year)
 {
@@ -115,6 +125,8 @@ void BitcoinExchange::loadExchangeRates()
 			throw std::runtime_error("invalid data.csv => " + line);
 		if (!isValidDate(date))
 			throw std::runtime_error("data.csv contains invalid date => " + line);
+		if (_exchangeRates.find(date) != _exchangeRates.end())
+			throw std::runtime_error("data.csv contains a duplicate date");
 		double exchangeRate;
 		std::size_t last_num_index;
 		exchangeRate = std::stod(exchangeRateString, &last_num_index);
@@ -178,14 +190,4 @@ void BitcoinExchange::run(const std::string& filename)
 		double res = value * exchangeRate;
 		std::cout << line << " => " << res << std::endl;
 	}
-}
-
-const std::map<std::string, double>& BitcoinExchange::getData()
-{
-	return _data;
-}
-
-const std::map<std::string, double>& BitcoinExchange::getExchangeRates()
-{
-	return _exchangeRates;
 }
