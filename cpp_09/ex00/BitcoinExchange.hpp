@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 12:27:12 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/03 17:46:04 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/05 13:44:20 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,14 @@
 #include <iostream>
 #include <stdexcept>
 #include <map>
+#include <regex>
 
 class BitcoinExchange
 {
 	public:
 		static void run(const std::string&);
+
+		static const std::map<std::string, double>& getData();
 
 	private:
 		BitcoinExchange();
@@ -30,5 +33,9 @@ class BitcoinExchange
 		BitcoinExchange& operator=(const BitcoinExchange&);
 		~BitcoinExchange();
 
-		std::map<std::string, double> _data;
+		static bool isLeapYear(int);
+		static bool isValidDate(const std::string&);
+		static bool isValidValue(const std::string&, double&);
+
+		static std::map<std::string, double> _data;
 };
