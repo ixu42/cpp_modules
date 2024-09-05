@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 12:27:10 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/05 15:43:10 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/05 16:08:53 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int main(int argc, char** argv)
 	catch (const std::exception& e)
 	{
 		std::cout << "Error: " << e.what() << std::endl;
+		return 1;
 	}
 	std::cout << "\033[0;32m" << "[ PRINTING DATA ]" << "\033[0m" << std::endl;
 	for (auto& [key, value] : BitcoinExchange::getData())
