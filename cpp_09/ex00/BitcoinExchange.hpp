@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 12:27:12 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/05 16:01:59 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/06 11:27:18 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 #include <string>
 #include <fstream>
-#include <sstream>
 #include <iostream>
 #include <stdexcept>
 #include <map>
@@ -36,7 +35,7 @@ class BitcoinExchange
 		~BitcoinExchange();
 
 		static void loadExchangeRates();
-		static bool getDateValue(const std::string&, std::string&, std::string&);
+		static bool splitLine(const std::string&, std::string&, std::string&);
 		static bool isLeapYear(int);
 		static bool isValidDate(const std::string&, std::tuple<int, int, int>&);
 		static bool isValidValue(const std::string&, double&);

@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 12:27:14 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/05 16:07:15 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/06 11:52:29 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,9 @@ void BitcoinExchange::loadExchangeRates()
 
 	std::string line;
 	std::getline(inFile, line);
-	while (std::getline(inFile, line)) // protect?
+	if (line.compare("date,exchange_rate") != 0)
+		throw std::runtime_error("invalid data.csv => " + line);
+	while (std::getline(inFile, line))
 	{
 		std::string dateString;
 		std::string exchangeRateString;
@@ -73,20 +75,19 @@ void BitcoinExchange::loadExchangeRates()
 	}
 }
 
-bool BitcoinExchange::getDateValue(const std::string& line, std::string& dateString, std::string& valueString)
+bool BitcoinExchange::splitLine(const std::string& line, std::string& dateString, std::string& valueString)
 {
-	std::size_t pos = line.find('|');
+	std::size_t pos = line.find(" | ");
 	if (pos != std::string::npos) {
 		dateString = line.substr(0, pos);
-		valueString = line.substr(pos + 1);
-		dateString.erase(dateString.find_last_not_of(" \t\n\v\f\r") + 1);
-		dateString.erase(0, dateString.find_first_not_of(" \t\n\v\f\r"));
-		valueString.erase(valueString.find_last_not_of(" \t\n\v\f\r") + 1);
-		valueString.erase(0, valueString.find_first_not_of(" \t\n\v\f\r"));
+		valueString = line.substr(pos + 3);
+		if (dateString.find_last_not_of(" \t\n\v\f\r") != dateString.length() - 1
+			|| dateString.find_first_not_of(" \t\n\v\f\r") != 0
+			|| valueString.find_last_not_of(" \t\n\v\f\r") != valueString.length() - 1
+			|| valueString.find_first_not_of(" \t\n\v\f\r") != 0)
+			return false;
 		if (dateString.empty() || valueString.empty())
 			return false ;
-		// std::cout << "date: " << date << std::endl;			
-		// std::cout << "valueString: " << valueString << std::endl;
 	}
 	else
 		return false ;
@@ -132,7 +133,7 @@ bool BitcoinExchange::isValidValue(const std::string& valueString, double& value
 		std::size_t last_num_index;
 		value = std::stod(valueString, &last_num_index);
 		if(last_num_index != valueString.size()) {
-			std::cout << "Error: not a number" << std::endl;
+			std::cout << "Error: not a number." << std::endl;
 			return false;
 		}
 		if (value < 0) {
@@ -145,7 +146,7 @@ bool BitcoinExchange::isValidValue(const std::string& valueString, double& value
 		}
 	}
 	catch (const std::invalid_argument& e) {
-		std::cout << "Error: not a number" << std::endl;
+		std::cout << "Error: not a number." << std::endl;
 		return false;
 	}
 	catch (const std::out_of_range& e) {
@@ -162,9 +163,12 @@ bool BitcoinExchange::isValidValue(const std::string& valueString, double& value
 bool BitcoinExchange::parseInput(const std::string& line, std::string& dateString,
 	std::string& valueString, std::tuple<int, int, int>& date, double& value)
 {
-	if (!getDateValue(line, dateString, valueString))
+	if (!splitLine(line, dateString, valueString))
 	{
-		std::cout << "Error: bad input => " << line << std::endl;
+		if (line.empty())
+			std::cout << "Error: empty line." << std::endl;
+		else
+			std::cout << "Error: bad input => " << line << std::endl;
 		return false;
 	}
 
@@ -187,7 +191,7 @@ double BitcoinExchange::findExchangeRate(const std::tuple<int, int, int>& date, 
 	
 	auto it = _exchangeRates.upper_bound(date);
 	if (it == _exchangeRates.begin())
-		throw std::runtime_error("exchange rate not available for the date " + dateString);
+		throw std::runtime_error("exchange rate not available for date " + dateString);
 	else
 		--it;
 	return it->second;
@@ -203,7 +207,9 @@ void BitcoinExchange::run(const std::string& filename)
 
 	std::string line;
 	std::getline(inFile, line);
-	while (std::getline(inFile, line)) // protect?
+	if (line.compare("date | value") != 0)
+		throw std::runtime_error(filename + " not valid => " + line);
+	while (std::getline(inFile, line))
 	{
 		// parse input
 		std::string dateString;
