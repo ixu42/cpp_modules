@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 12:05:57 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/06 23:16:17 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/06 23:26:07 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ int RPN::calculate(char token)
 	int left = _stack.top();
 	_stack.pop();
 
-	// std::cout << "left=" << left << ", right=" << right << std::endl;
+	/* uncommet the following line to display each calculation */
+	// std::cout << left << token << right << std::endl;
 
 	if (token == '+')
 	{
@@ -100,5 +101,5 @@ void RPN::run(const std::string& input)
 	}
 	if (operators != numbers - 1 || operators == 0)
 		throw std::runtime_error("Error");
-	std::cout << _stack.top();
+	std::cout << _stack.top() << std::endl;
 }
