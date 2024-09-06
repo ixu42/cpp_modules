@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 12:05:57 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/06 15:21:37 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/06 18:12:58 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,23 @@ int RPN::calculate(char token)
 	// std::cout << "left=" << left << ", right=" << right << std::endl;
 
 	if (token == '+')
+	{
+		if (left > std::numeric_limits<int>::max() - right)
+			throw std::runtime_error("Error: overflow occurred");
 		return (left + right);
+	}
 	if (token == '-')
+	{
+		if (left < std::numeric_limits<int>::min() + right)
+			throw std::runtime_error("Error: underflow occurred");
 		return (left - right);
+	}
 	if (token == '*')
+	{
+		if (right != 0 && left > std::numeric_limits<int>::max() / right)
+			throw std::runtime_error("Error: overflow occurred");
 		return (left * right);
+	}
 	if (right == 0)
 		throw std::runtime_error("Error: division by zero");
 	return (left / right);
@@ -56,33 +68,37 @@ int RPN::calculate(char token)
 void RPN::run(const std::string& input)
 {
 	if (input.empty())
-		throw std::runtime_error("Error: empty string");
-	bool skip_sp = false;
+		throw std::runtime_error("Error");
+	int numbers = 0;
+	int operators = 0;
+	bool validCharhandled = false;
 	for (char c : input)
 	{
-		bool isValidChar = isValid(c);
-		if ((!skip_sp && !isValidChar) || (skip_sp && c != ' '))
-			throw std::runtime_error("Error");
-		if (skip_sp && c == ' ')
+		if (std::isspace(c))
 		{
-			skip_sp = false;
+			if (validCharhandled)
+				validCharhandled = false;
 			continue ;
 		}
-		if (!skip_sp && isValidChar)
+		if (isValid(c))
 		{
 			if (std::isdigit(c))
+			{
 				_stack.push(static_cast<int>(c) - 48);
+				numbers++;
+			}
 			else
 			{
 				if (_stack.size() < 2)
-					throw std::runtime_error("Error: less than two numbers in stack");
-				int res = calculate(c); // overflow?
+					throw std::runtime_error("Error");
+				int res = calculate(c);
 				_stack.push(res);
-				// std::cout << "c: " << c << std::endl;
-				// std::cout << "res: " << res << std::endl;
+				operators++;
 			}
-			skip_sp = true;
+			validCharhandled = true;
 		}
 	}
+	if (operators != numbers - 1)
+		throw std::runtime_error("Error");
 	std::cout << _stack.top();
 }

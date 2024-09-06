@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 12:05:59 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/06 15:21:39 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/06 17:35:37 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <stdexcept>
 #include <cctype>
 #include <iostream>
+#include <limits>
 
 class RPN
 {
