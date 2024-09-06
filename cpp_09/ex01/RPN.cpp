@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 12:05:57 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/06 18:12:58 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/06 23:16:17 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void RPN::run(const std::string& input)
 			validCharhandled = true;
 		}
 	}
-	if (operators != numbers - 1)
+	if (operators != numbers - 1 || operators == 0)
 		throw std::runtime_error("Error");
 	std::cout << _stack.top();
 }
