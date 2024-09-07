@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 12:05:57 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/06 23:26:07 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/07 11:34:20 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ RPN& RPN::operator=(const RPN&)
 }
 
 RPN::~RPN() {}
+
+// valid chars: "0123456789+-*/"
 
 bool isValid(char c)
 {
@@ -66,40 +68,52 @@ int RPN::calculate(char token)
 	return (left / right);
 }
 
+void RPN::processChar(char c, int& numbers, int& operators, bool& whitespMode)
+{
+	if (std::isspace(c))
+	{
+		if (whitespMode)
+			whitespMode = false;
+		return ;
+	}
+	if (isValid(c))
+	{
+		if (whitespMode)
+			throw std::runtime_error("Error: valid chars should be separated by whitespace(s)");
+		if (std::isdigit(c))
+		{
+			_stack.push(static_cast<int>(c) - 48);
+			numbers++;
+		}
+		else
+		{
+			if (_stack.size() < 2)
+				throw std::runtime_error("Error: not sufficient numbers for the calculation");
+			int res = calculate(c);
+			_stack.push(res);
+			operators++;
+		}
+		whitespMode = true;
+	}
+	else
+		throw std::runtime_error("Error: unexpected char encountered");
+}
+
 void RPN::run(const std::string& input)
 {
 	if (input.empty())
-		throw std::runtime_error("Error");
-	int numbers = 0;
-	int operators = 0;
-	bool validCharhandled = false;
+		throw std::runtime_error("Error: empty string");
+
+	int numbers = 0, operators = 0;
+	// a flag to inform whether program is in a mode where only whitespaces are expected
+	bool whitespaceMode = false;
+
 	for (char c : input)
-	{
-		if (std::isspace(c))
-		{
-			if (validCharhandled)
-				validCharhandled = false;
-			continue ;
-		}
-		if (isValid(c))
-		{
-			if (std::isdigit(c))
-			{
-				_stack.push(static_cast<int>(c) - 48);
-				numbers++;
-			}
-			else
-			{
-				if (_stack.size() < 2)
-					throw std::runtime_error("Error");
-				int res = calculate(c);
-				_stack.push(res);
-				operators++;
-			}
-			validCharhandled = true;
-		}
-	}
-	if (operators != numbers - 1 || operators == 0)
-		throw std::runtime_error("Error");
+		processChar(c, numbers, operators, whitespaceMode);
+
+	if (operators != numbers - 1)
+		throw std::runtime_error("Error: number of operator should be number of digits minus one");
+	if (numbers == 1)
+		throw std::runtime_error("Error: only one number provided");
 	std::cout << _stack.top() << std::endl;
 }

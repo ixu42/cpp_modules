@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 12:05:59 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/06 17:35:37 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/07 11:12:52 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ class RPN
 		RPN& operator=(const RPN&);
 		~RPN();
 
+		static void processChar(char c, int& numbers, int& operators, bool& whitespMode);
 		static int calculate(char token);
 
 		static std::stack<int> _stack;
