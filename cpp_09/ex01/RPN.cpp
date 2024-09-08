@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 12:05:57 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/07 11:34:20 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/08 11:27:02 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int RPN::calculate(char token)
 	_stack.pop();
 
 	/* uncommet the following line to display each calculation */
-	// std::cout << left << token << right << std::endl;
+	std::cout << left << token << right << '\n';
 
 	if (token == '+')
 	{
@@ -115,5 +115,5 @@ void RPN::run(const std::string& input)
 		throw std::runtime_error("Error: number of operator should be number of digits minus one");
 	if (numbers == 1)
 		throw std::runtime_error("Error: only one number provided");
-	std::cout << _stack.top() << std::endl;
+	std::cout << _stack.top() << '\n';
 }

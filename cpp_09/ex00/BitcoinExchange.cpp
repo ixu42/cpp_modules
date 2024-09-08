@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 12:27:14 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/06 11:52:29 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/08 11:15:44 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,28 +133,28 @@ bool BitcoinExchange::isValidValue(const std::string& valueString, double& value
 		std::size_t last_num_index;
 		value = std::stod(valueString, &last_num_index);
 		if(last_num_index != valueString.size()) {
-			std::cout << "Error: not a number." << std::endl;
+			std::cout << "Error: not a number.\n";
 			return false;
 		}
 		if (value < 0) {
-			std::cout << "Error: not a positive number." << std::endl;
+			std::cout << "Error: not a positive number.\n";
 			return false;
 		}
 		if (value > 1000) {
-			std::cout << "Error: too large a number." << std::endl;
+			std::cout << "Error: too large a number.\n";
 			return false;
 		}
 	}
 	catch (const std::invalid_argument& e) {
-		std::cout << "Error: not a number." << std::endl;
+		std::cout << "Error: not a number.\n";
 		return false;
 	}
 	catch (const std::out_of_range& e) {
-		std::cout << "Error: overflow occurred" << std::endl;
+		std::cout << "Error: overflow occurred.\n";
 		return false;
 	}
 	catch (const std::exception& e) {
-		std::cout << "Error: other exceptions occurred" << std::endl;
+		std::cout << "Error: other exceptions occurred.\n";
 		return false;
 	}
 	return true;
@@ -166,15 +166,15 @@ bool BitcoinExchange::parseInput(const std::string& line, std::string& dateStrin
 	if (!splitLine(line, dateString, valueString))
 	{
 		if (line.empty())
-			std::cout << "Error: empty line." << std::endl;
+			std::cout << "Error: empty line.\n";
 		else
-			std::cout << "Error: bad input => " << line << std::endl;
+			std::cout << "Error: bad input => " << line << '\n';
 		return false;
 	}
 
 	if (!isValidDate(dateString, date))
 	{
-		std::cout << "Error: invalid date => " << dateString << std::endl;
+		std::cout << "Error: invalid date => " << dateString << '\n';
 		return false;
 	}
 
@@ -227,11 +227,11 @@ void BitcoinExchange::run(const std::string& filename)
 		{
 			double exchangeRate = findExchangeRate(date, dateString);
 			double res = value * exchangeRate;
-			std::cout << line << " => " << res << std::endl;
+			std::cout << line << " => " << res << '\n';
 		}
 		catch (const std::exception& e)
 		{
-			std::cout << "Error: " << e.what() << std::endl;
+			std::cout << "Error: " << e.what() << '\n';
 		}
 	}
 }
