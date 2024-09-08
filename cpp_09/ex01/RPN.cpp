@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 12:05:57 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/08 12:14:12 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/08 12:28:17 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,51 +35,75 @@ bool isValid(char c)
 	return false;
 }
 
+int RPN::add(int left, int right)
+{
+	int maxInt = std::numeric_limits<int>::max();
+	int minInt = std::numeric_limits<int>::min();
+
+	if (right > 0 && left > maxInt - right)
+		throw std::runtime_error("Error: overflow occurred");
+	if (right < 0 && left < minInt - right)
+		throw std::runtime_error("Error: underflow occurred");
+	return (left + right);
+}
+
+int RPN::subtract(int left, int right)
+{
+	int maxInt = std::numeric_limits<int>::max();
+	int minInt = std::numeric_limits<int>::min();
+
+	if (right > 0 && left < minInt + right)
+		throw std::runtime_error("Error: underflow occurred");
+	if (right < 0 && left > maxInt + right)
+		throw std::runtime_error("Error: overflow occurred");
+	return (left - right);
+}
+
+int RPN::multiply(int left, int right)
+{
+	int maxInt = std::numeric_limits<int>::max();
+	int minInt = std::numeric_limits<int>::min();
+
+	if (((left > 0 && right > 0) || (left < 0 && right < 0))
+		&& left > maxInt / right)
+		throw std::runtime_error("Error: overflow occurred");
+	if (((left > 0 && right < 0) && right < minInt / left)
+		|| ((left < 0 && right > 0) && left < minInt / right))	
+		throw std::runtime_error("Error: underflow occurred");
+	return (left * right);
+}
+
+int RPN::divide(int left, int right)
+{
+	int minInt = std::numeric_limits<int>::min();
+
+	if (right == 0)
+		throw std::runtime_error("Error: division by zero");
+	if (left == minInt && right == -1)
+		throw std::runtime_error("Error: overflow occurred");
+	return (left / right);
+}
+
 int RPN::calculate(char token)
 {
 	int right = _stack.top();
 	_stack.pop();
 	int left = _stack.top();
 	_stack.pop();
-	int maxInt = std::numeric_limits<int>::max();
-	int minInt = std::numeric_limits<int>::min();
-
 
 	/* uncommet the following line to display each calculation */
-	std::cout << left << " " << token  << " " << right << '\n';
+	// std::cout << left << " " << token  << " " << right << '\n';
 
+	int res = 0;
 	if (token == '+')
-	{
-		if (right > 0 && left > maxInt - right)
-			throw std::runtime_error("Error: overflow occurred");
-		if (right < 0 && left < minInt - right)
-			throw std::runtime_error("Error: underflow occurred");
-		return (left + right);
-	}
-	if (token == '-')
-	{
-		if (right > 0 && left < minInt + right)
-			throw std::runtime_error("Error: underflow occurred");
-		if (right < 0 && left > maxInt + right)
-			throw std::runtime_error("Error: overflow occurred");
-		return (left - right);
-	}
-	if (token == '*')
-	{
-		if (((left > 0 && right > 0) || (left < 0 && right < 0))
-			&& left > maxInt / right)
-			throw std::runtime_error("Error: overflow occurred");
-		if (((left > 0 && right < 0) && right < minInt / left)
-			|| ((left < 0 && right > 0) && left < minInt / right))	
-			throw std::runtime_error("Error: underflow occurred");
-		return (left * right);
-	}
-	// token must be '/'
-	if (right == 0)
-		throw std::runtime_error("Error: division by zero");
-	if (left == minInt && right == -1)
-		throw std::runtime_error("Error: overflow occurred");
-	return (left / right);
+		res = add(left, right);
+	else if (token == '-')
+		res = subtract(left, right);
+	else if (token == '*')
+		res = multiply(left, right);
+	else
+		res = divide(left, right);
+	return res;
 }
 
 void RPN::processChar(char c, int& numbers, int& operators, bool& whitespMode)
