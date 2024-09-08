@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 12:05:57 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/08 12:28:17 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/08 16:32:26 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ int RPN::multiply(int left, int right)
 	int maxInt = std::numeric_limits<int>::max();
 	int minInt = std::numeric_limits<int>::min();
 
-	if (((left > 0 && right > 0) || (left < 0 && right < 0))
-		&& left > maxInt / right)
+	if (((left > 0 && right > 0) && left > maxInt / right)
+		|| ((left < 0 && right < 0) && left < maxInt / right))
 		throw std::runtime_error("Error: overflow occurred");
 	if (((left > 0 && right < 0) && right < minInt / left)
 		|| ((left < 0 && right > 0) && left < minInt / right))	

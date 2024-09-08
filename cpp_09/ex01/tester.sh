@@ -23,6 +23,7 @@ test_error()
 	echo -e "${CYAN}\"${EXP}\"${RESET}"
 
 	"$PROG" "$EXP" > $OUTFILE 2> $ERRFILE
+	cat $ERRFILE
 
 	if diff $OUTFILE $EXPECTED_OUT > /dev/null \
 		&& grep -q "Error" $ERRFILE; then
@@ -46,6 +47,7 @@ test_valid()
 	echo -e "${CYAN}\"${EXP}\"${RESET}"
 
 	"$PROG" "$EXP" > $OUTFILE 2> $ERRFILE
+	cat $OUTFILE
 
 	if diff $OUTFILE $EXPECTED_OUT > /dev/null \
 		&& diff $ERRFILE $EXPECTED_ERR > /dev/null; then
@@ -61,17 +63,34 @@ test_valid()
 	rm -f $EXPECTED_ERR
 }
 
-echo -e "${CYAN}=== TEST INVALID CASES ===${RESET}"
+echo -e "${CYAN}\n=== TEST INVALID CASES ===${RESET}"
+test_error ''
 test_error '(1 + 1)'
+test_error '0 42 +'
+test_error '0 4+'
+test_error '0'
+test_error '0 +'
+test_error '0 1 + 2'
+test_error '1 0 /'
+test_error '9 9 * 9 * 9 * 9 * 9 * 9 * 9 * 9 * 6 *'
+test_error '9 9 * 9 * 9 * 9 * 9 * 9 * 9 * 9 * 1 9 - *'
+test_error '6 7 + 5 * 4 * 3 + 8 * 5 * 1 - 5 * 5 * 2 * 3 + 5 * 5 * 2 * 8 * 3 + 1 - 9 9 * 9 * 9 * 9 * 9 * 9 * 9 * 9 * 5 * + 1 2 - * 1 - 1 2 - *'
 
-echo -e "${CYAN}=== TEST VALID CASES ===${RESET}"
+echo -e "${CYAN}\n=== TEST VALID CASES ===${RESET}"
 test_valid '8 9 * 9 - 9 - 9 - 4 - 1 +' '42'
 test_valid '7 7 * 7 -' '42'
 test_valid '1 2 * 2 / 2 * 2 4 - +' '0'
+test_valid '  1 2 3 4 5  	+ - * / 	' '0'
+test_valid '6 7 * 5 6 + - 3 / 4 1 + + 9 * 1 / 1 - 8 + 6 *' '852'
+test_valid '9 9 * 9 * 9 * 9 * 9 * 9 * 9 * 9 * 5 *' '1937102445'
+test_valid '6 7 + 5 * 4 * 3 + 8 * 5 * 1 - 5 * 5 * 2 * 3 + 5 * 5 * 2 * 8 * 3 + 1 - 9 9 * 9 * 9 * 9 * 9 * 9 * 9 * 9 * 5 * +' '2147483647'
+test_valid '6 7 + 5 * 4 * 3 + 8 * 5 * 1 - 5 * 5 * 2 * 3 + 5 * 5 * 2 * 8 * 3 + 1 - 9 9 * 9 * 9 * 9 * 9 * 9 * 9 * 9 * 5 * + 1 2 - * 1 -' '-2147483648'
 
-echo -e "${CYAN}=== SUMMARY ===${RESET}"
+echo -e "${CYAN}\n=== SUMMARY ===${RESET}"
 if [ $ERROR_COUNT -eq 0 ]; then
-	echo -e "${GREEN}All tests passed! 😎${RESET}"
+	echo -e "${GREEN}All tests passed! 😎\n${RESET}"
 else
-	echo -e "${RED}$ERROR_COUNT test(s) failed 🥹${RESET}"
+	echo -e "${RED}$ERROR_COUNT test(s) failed 🥹\n${RESET}"
 fi
+
+make fclean
