@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 12:05:57 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/08 11:27:02 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/08 12:14:12 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,30 +41,44 @@ int RPN::calculate(char token)
 	_stack.pop();
 	int left = _stack.top();
 	_stack.pop();
+	int maxInt = std::numeric_limits<int>::max();
+	int minInt = std::numeric_limits<int>::min();
+
 
 	/* uncommet the following line to display each calculation */
-	std::cout << left << token << right << '\n';
+	std::cout << left << " " << token  << " " << right << '\n';
 
 	if (token == '+')
 	{
-		if (left > std::numeric_limits<int>::max() - right)
+		if (right > 0 && left > maxInt - right)
 			throw std::runtime_error("Error: overflow occurred");
+		if (right < 0 && left < minInt - right)
+			throw std::runtime_error("Error: underflow occurred");
 		return (left + right);
 	}
 	if (token == '-')
 	{
-		if (left < std::numeric_limits<int>::min() + right)
+		if (right > 0 && left < minInt + right)
 			throw std::runtime_error("Error: underflow occurred");
+		if (right < 0 && left > maxInt + right)
+			throw std::runtime_error("Error: overflow occurred");
 		return (left - right);
 	}
 	if (token == '*')
 	{
-		if (right != 0 && left > std::numeric_limits<int>::max() / right)
+		if (((left > 0 && right > 0) || (left < 0 && right < 0))
+			&& left > maxInt / right)
 			throw std::runtime_error("Error: overflow occurred");
+		if (((left > 0 && right < 0) && right < minInt / left)
+			|| ((left < 0 && right > 0) && left < minInt / right))	
+			throw std::runtime_error("Error: underflow occurred");
 		return (left * right);
 	}
+	// token must be '/'
 	if (right == 0)
 		throw std::runtime_error("Error: division by zero");
+	if (left == minInt && right == -1)
+		throw std::runtime_error("Error: overflow occurred");
 	return (left / right);
 }
 
