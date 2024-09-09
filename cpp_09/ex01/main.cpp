@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 12:05:55 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/08 11:17:53 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/09 11:56:23 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@ int main(int argc, char** argv)
 	catch (const std::exception& e)
 	{
 		std::cerr << e.what() << '\n';
+		return 1;
 	}
 }
