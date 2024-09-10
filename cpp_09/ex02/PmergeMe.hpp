@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:29:22 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/09 15:12:35 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/10 16:01:00 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,20 @@
 #include <string>
 #include <iostream>
 #include <stdexcept>
+#include <utility>
+#include <algorithm>
 
 class PmergeMe
 {
 	public:
-		static std::vector<int> loadInputToVec(int argc, char** argv);
-		static std::deque<int> loadInputToDeq(int argc, char** argv);
+		static std::vector<int> loadInputToVec(int, char**);
+		static std::deque<int> loadInputToDeq(int, char**);
 
-		static void mergeInsertionSort(std::vector<int>& vec);
-		static void mergeInsertionSort(std::deque<int>& deq);
+		static std::vector<int> mergeInsertionSort(const std::vector<int>&);
+		static void mergeInsertionSort(std::deque<int>&);
 
-		static void printVector(std::vector<int>& vec);
-		static void printDeque(std::deque<int>& deq);
+		static void printVector(std::vector<int>&);
+		static void printDeque(std::deque<int>&);
 
 	private:
 		PmergeMe() = default;
@@ -36,5 +38,10 @@ class PmergeMe
 		PmergeMe& operator=(const PmergeMe&) = default;
 		~PmergeMe() = default;
 
-		static void validateInput(int argc, char** argv);
+		static void validateInput(int, char**);
+		static std::vector<std::pair<int, int>> pairAndSort(const std::vector<int>&);
+		static void printPairs(const std::vector<std::pair<int, int>>&);
+		static void binaryInsert(std::vector<int>& sorted, int value);
+		
+		static int counter;
 };
