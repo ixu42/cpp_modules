@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:29:08 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/10 17:28:52 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/11 19:13:57 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,42 +80,42 @@ void PmergeMe::printDeque(std::deque<int>& deq)
 	std::cout << '\n';
 }
 
-std::vector<std::pair<int, int>> PmergeMe::pairAndSort(const std::vector<int>& vec)
-{
-	std::vector<std::pair<int, int>> pairs;
+// std::vector<std::pair<int, int>> PmergeMe::pairAndSort(const std::vector<int>& vec)
+// {
+// 	std::vector<std::pair<int, int>> pairs;
 
-	for (std::size_t i = 0; i < vec.size(); i += 2)
-	{
-		int first = vec[i];
-		int second;
-		if (i + 1 < vec.size())
-			second = vec[i + 1];
-		else
-			second = 0;
+// 	for (std::size_t i = 0; i < vec.size(); i += 2)
+// 	{
+// 		int first = vec[i];
+// 		int second;
+// 		if (i + 1 < vec.size())
+// 			second = vec[i + 1];
+// 		else
+// 			second = 0;
 
-		std::pair<int, int> elemPair = std::make_pair(first, second);
+// 		std::pair<int, int> elemPair = std::make_pair(first, second);
 		
-		if (elemPair.first < elemPair.second)
-			std::swap(elemPair.first, elemPair.second);
+// 		if (elemPair.first < elemPair.second)
+// 			std::swap(elemPair.first, elemPair.second);
 
-		pairs.push_back(elemPair);
-	}
+// 		pairs.push_back(elemPair);
+// 	}
 
-	return pairs;
-}
+// 	return pairs;
+// }
 
-void PmergeMe::printPairs(const std::vector<std::pair<int, int>>& pairs)
-{
-	for (const auto& p : pairs)
-		std::cout << '(' << p.first << ' ' << p.second << ')';
-	std::cout << '\n';
-}
+// void PmergeMe::printPairs(const std::vector<std::pair<int, int>>& pairs)
+// {
+// 	for (const auto& p : pairs)
+// 		std::cout << '(' << p.first << ' ' << p.second << ')';
+// 	std::cout << '\n';
+// }
 
-void PmergeMe::binaryInsert(std::vector<int>& sorted, int value)
-{
-	auto it = std::lower_bound(sorted.begin(), sorted.end(), value);
-	sorted.insert(it, value);
-}
+// void PmergeMe::binaryInsert(std::vector<int>& sorted, int value)
+// {
+// 	auto it = std::lower_bound(sorted.begin(), sorted.end(), value);
+// 	sorted.insert(it, value);
+// }
 
 /**
  * roman numbers: depth of recursion (1st func call, 2nd func call, and so forth)
@@ -154,59 +154,129 @@ void PmergeMe::binaryInsert(std::vector<int>& sorted, int value)
  * 5 && return => 1 2 3 4 5 6 7 8
  */
 
+int PmergeMe::counter = 1;
 std::vector<int> PmergeMe::mergeInsertionSort(const std::vector<int>& vec)
 {
+	std::cout << "recursion depth: " << counter++ << "\n";
 	if (vec.size() <= 1)
 		return vec;
 
 	// step 1 & 2: pair and sort within each pair
-	auto pairs = pairAndSort(vec);
+	// auto pairs = pairAndSort(vec);
 	// printPairs(pairs);
+	std::unordered_map<int, int> pairs;
+
+	for (std::size_t i = 0; i < vec.size(); i += 2)
+	{
+		int first = vec[i];
+		int second;
+		if (i + 1 < vec.size())
+			second = vec[i + 1];
+		else
+			second = 0;
+		
+		if (first > second)
+			pairs[first] = second;
+		else
+			pairs[second] = first;
+	}
+	std::cout << "\033[0;36m";
+	for (auto& [k,v] : pairs)
+		std::cout << "(" << k << " " << v << ")";
+	std::cout << "\033[0m" << std::endl;
 
 	// step 3: recursively sort larger elements
 	std::vector<int> largerElements;
 	for (const auto& p : pairs)
 		largerElements.push_back(p.first);
-	std::vector<int> sortedSequence = mergeInsertionSort(largerElements);
+	std::vector<int> mainChain = mergeInsertionSort(largerElements);
 	std::cout << "\033[0;31m";
-	printVector(sortedSequence);
+	printVector(mainChain);
 	std::cout << "\033[0m" << std::endl;
 
 	// step 4: insert the smallest element and larger elements into sortedSequence
-	// std::vector<int> sortedSequence;
-	int smallest;
-	// for (const auto& p : pairs)
-	for (auto it = pairs.begin(); it != pairs.end(); ++it)
-	{
-		// if (p.first == sortedSequence[0])
-		// 	smallest = p.second;
-		if (it->first == sortedSequence[0])
-		{
-			smallest = it->second;
-			pairs.erase(it);
-			break ;
-		}
-	}
-	sortedSequence.insert(sortedSequence.begin(), smallest);
+	int smallest = pairs[mainChain[0]];
+	mainChain.insert(mainChain.begin(), smallest);
 
 	std::cout << "\033[0;33m";
-	printVector(sortedSequence);
+	printVector(mainChain);
 	std::cout << "\033[0m" << std::endl;
 
 	// step 5: binary search insert remaining smaller elements into sortedSequence
-	for (size_t i = 0; i < pairs.size(); ++i)
-		binaryInsert(sortedSequence, pairs[i].second);
+	std::vector<int> largerNums(std::next(mainChain.begin()), mainChain.end());
+	// std::cout << "largerNums.size(): " << largerNums.size() << "\n";
+	for (std::size_t i = 1; i < largerNums.size(); ++i) {
+		int larger = largerNums[i];
+		// std::cout << larger << "" << pairs[larger] << "\n";
+		auto it = std::lower_bound(mainChain.begin(), mainChain.end(), pairs[larger]);
+		mainChain.insert(it, pairs[larger]);
+	}
+	// TODO: implement order of insertion according to the book
 
 	std::cout << "\033[0;32m";
-	printVector(sortedSequence);
+	printVector(mainChain);
 	std::cout << "\033[0m" << std::endl;
 
-	return sortedSequence;
+	return mainChain;
 }
 
-void PmergeMe::mergeInsertionSort(std::deque<int>& deq)
-{
-	(void)deq;
+// std::vector<int> PmergeMe::mergeInsertionSort(const std::vector<int>& vec)
+// {
+// 	if (vec.size() <= 1)
+// 		return vec;
+
+// 	// step 1 & 2: pair and sort within each pair
+// 	auto pairs = pairAndSort(vec);
+// 	// printPairs(pairs);
+
+// 	// step 3: recursively sort larger elements
+// 	std::vector<int> largerElements;
+// 	for (const auto& p : pairs)
+// 		largerElements.push_back(p.first);
+// 	std::vector<int> sortedSequence = mergeInsertionSort(largerElements);
+// 	// std::cout << "\033[0;31m";
+// 	// printVector(sortedSequence);
+// 	// std::cout << "\033[0m" << std::endl;
+
+// 	// step 4: insert the smallest element and larger elements into sortedSequence
+// 	// std::vector<int> sortedSequence;
+// 	int smallest;
+// 	// for (const auto& p : pairs)
+// 	for (auto it = pairs.begin(); it != pairs.end(); ++it)
+// 	{
+// 		// if (p.first == sortedSequence[0])
+// 		// 	smallest = p.second;
+// 		if (it->first == sortedSequence[0])
+// 		{
+// 			smallest = it->second;
+// 			pairs.erase(it);
+// 			break ;
+// 		}
+// 	}
+// 	sortedSequence.insert(sortedSequence.begin(), smallest);
+
+// 	// std::cout << "\033[0;33m";
+// 	// printVector(sortedSequence);
+// 	// std::cout << "\033[0m" << std::endl;
+
+// 	// step 5: binary search insert remaining smaller elements into sortedSequence
+// 	for (size_t i = 0; i < pairs.size(); ++i)
+// 	{
+// 		auto it = std::lower_bound(sortedSequence.begin(), sortedSequence.end(), pairs[i].second);
+// 		sortedSequence.insert(it, pairs[i].second);
+// 	}
+// 		// binaryInsert(sortedSequence, pairs[i].second); // order of the pairs not according to the book
+
+// 	// std::cout << "\033[0;32m";
+// 	// printVector(sortedSequence);
+// 	// std::cout << "\033[0m" << std::endl;
+
+// 	return sortedSequence;
+// }
+
+// void PmergeMe::mergeInsertionSort(std::deque<int>& deq)
+// {
+// 	(void)deq;
 	// auto pairs = pairAndSort(deq);
 	// printPairs(pairs);
-}
+// }
