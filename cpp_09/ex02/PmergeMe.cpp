@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:29:08 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/12 18:34:50 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/12 22:16:48 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,36 +235,33 @@ std::vector<PmergeMe::pair> PmergeMe::mergeInsertionSort(const std::vector<Pmerg
 	log(recursionDepth, "Step 4:\n", mainChain);
 
 	// step 5: binary search insert remaining smaller elements into mainChain
+	auto comp = [](const pair& left, const pair& right) {
+		return left.large < right.large;
+	};
+
+	std::cout << "mainChain.rbegin()->large: " << mainChain.rbegin()->large << "\n";
+
 	std::vector<PmergeMe::pair> mainChainCpy(mainChain.begin(), mainChain.end());
 	for (std::size_t i = 2; i < mainChainCpy.size(); ++i) {
 		int numToBeInserted = ref[table[mainChainCpy[i].largeIndex][recursionDepth] - 1].first;
 		std::size_t numToBeInsertedIndex = ref[table[mainChainCpy[i].largeIndex][recursionDepth] - 1].second;
 		std::cout << "numToBeInserted: " << numToBeInserted << "\n";
 		std::cout << "numToBeInsertedIndex: " << numToBeInsertedIndex << "\n";
-		if (numToBeInserted > mainChain.rbegin()->large)
-			mainChain.insert(mainChain.end(), {numToBeInserted, 0, numToBeInsertedIndex, 0});
-		else {
-			for (auto it = mainChain.begin(); it != mainChain.end(); ++it) {
-				// std::cout << "large: " << it->large << "\n";
-				if (it->large > numToBeInserted) {
-					mainChain.insert(it, {numToBeInserted, 0, numToBeInsertedIndex, 0});
-					break ;
-				}
-			}
-		}
+		PmergeMe::pair pending = {numToBeInserted, 0, numToBeInsertedIndex, 0};
+		auto insertBefore = std::lower_bound(mainChain.begin(), mainChain.end(), pending, comp); // replace mainChain.end() with paired large
+		if (insertBefore != mainChain.end())
+			mainChain.insert(insertBefore, pending);
+		else
+			mainChain.insert(mainChain.end(), pending);
 	}
+
 	if (odd.large != -1) {
 		log(recursionDepth, "odd number insertion here");
-		if (odd.large > mainChain.rbegin()->large)
-			mainChain.insert(mainChain.end(), {odd.large, odd.small, odd.largeIndex, odd.smallIndex});
-		else {
-			for (auto it = mainChain.begin(); it != mainChain.end(); ++it) {
-				if (it->large > odd.large) {
-					mainChain.insert(it, {odd.large, odd.small, odd.largeIndex, odd.smallIndex});
-					break ;
-				}
-			}
-		}
+		auto it = std::lower_bound(mainChain.begin(), mainChain.end(), odd, comp);
+		if (it != mainChain.end())
+			mainChain.insert(it, odd);
+		else
+			mainChain.insert(mainChain.end(), odd);
 	}
 	// TODO: implement order of insertion according to the book
 
