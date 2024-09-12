@@ -6,11 +6,13 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:29:08 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/12 12:47:17 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/12 18:34:50 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PmergeMe.hpp"
+std::size_t PmergeMe::_size = 0;
+int PmergeMe::_recursionCounter = 1;
 
 void PmergeMe::validateInput(int argc, char** argv)
 {
@@ -48,6 +50,7 @@ std::vector<int> PmergeMe::loadInputToVec(int argc, char** argv)
 		int number = std::stoi(argv[i]);
 		vec.push_back(number);
 	}
+	_size = vec.size();
 	return vec;
 }
 
@@ -61,6 +64,7 @@ std::deque<int> PmergeMe::loadInputToDeq(int argc, char** argv)
 		int number = std::stoi(argv[i]);
 		deq.push_back(number);
 	}
+	_size = deq.size();
 	return deq;
 }
 
@@ -154,12 +158,10 @@ void PmergeMe::printDeque(std::deque<int>& deq)
  * 5 && return => 1 2 3 4 5 6 7 8
  */
 
-int PmergeMe::recursionCounter = 1;
-int PmergeMe::index = 8;
 std::vector<PmergeMe::pair> PmergeMe::mergeInsertionSort(const std::vector<PmergeMe::pair>& vec, \
 	std::vector<std::vector<int>>& table, std::vector<std::pair<int, std::size_t>>& ref)
 {
-	int recursionDepth = recursionCounter++;
+	int recursionDepth = _recursionCounter++;
 
 	if (vec.size() <= 1)
 		return vec;
@@ -167,27 +169,27 @@ std::vector<PmergeMe::pair> PmergeMe::mergeInsertionSort(const std::vector<Pmerg
 	// steps 1 && 2: pair and sort within each pair
 	std::vector<PmergeMe::pair> pairs;
 
-	for (std::size_t i = 0; i < vec.size(); i += 2)
+	for (std::size_t i = 0; i + 1 < vec.size(); i += 2)
 	{
 		int first = vec[i].large;
 		std::size_t firstIndex = vec[i].largeIndex;
 		int second;
 		std::size_t secondIndex;
-		if (i + 1 < vec.size()) {
-			second = vec[i + 1].large;
-			secondIndex = vec[i + 1].largeIndex;
-		}
-		else {
-			second = 0;
-			secondIndex = 0;
-		}
-	
+		second = vec[i + 1].large;
+		secondIndex = vec[i + 1].largeIndex;
+
 		if (first > second) {
 			pairs.push_back({first, second, firstIndex, secondIndex});
 		}
 		else {
 			pairs.push_back({second, first, secondIndex, firstIndex});
 		}
+	}
+	PmergeMe::pair odd;
+	odd.large = -1;
+	if (vec.size() % 2 != 0) {
+		log(recursionDepth, "odd found here!");
+		odd = {vec.back().large, vec.back().small, vec.back().largeIndex, vec.back().smallIndex};
 	}
 
 	for (std::size_t i = 0; i < pairs.size(); ++i) {
@@ -206,8 +208,8 @@ std::vector<PmergeMe::pair> PmergeMe::mergeInsertionSort(const std::vector<Pmerg
 		else {
 			std::cout << "pair: " << pairs[i].small << " " << pairs[i].large << "\n";
 			std::cout << "pairIdx: " << pairs[i].smallIndex << " " << pairs[i].largeIndex << "\n";
-			table[pairs[i].smallIndex].push_back(index++);
-			table[pairs[i].largeIndex].push_back(index++);
+			table[pairs[i].smallIndex].push_back(_size++);
+			table[pairs[i].largeIndex].push_back(_size++);
 		}
 		ref.push_back({pairs[i].small, pairs[i].smallIndex});
 		ref.push_back({pairs[i].large, pairs[i].largeIndex});
@@ -239,12 +241,28 @@ std::vector<PmergeMe::pair> PmergeMe::mergeInsertionSort(const std::vector<Pmerg
 		std::size_t numToBeInsertedIndex = ref[table[mainChainCpy[i].largeIndex][recursionDepth] - 1].second;
 		std::cout << "numToBeInserted: " << numToBeInserted << "\n";
 		std::cout << "numToBeInsertedIndex: " << numToBeInsertedIndex << "\n";
-		for (auto it = mainChain.begin(); it != mainChain.end(); ++it)
-		{
-			// std::cout << "large: " << it->large << "\n";
-			if (it->large > numToBeInserted) {
-				mainChain.insert(it, {numToBeInserted, 0, numToBeInsertedIndex, 0});
-				break ;
+		if (numToBeInserted > mainChain.rbegin()->large)
+			mainChain.insert(mainChain.end(), {numToBeInserted, 0, numToBeInsertedIndex, 0});
+		else {
+			for (auto it = mainChain.begin(); it != mainChain.end(); ++it) {
+				// std::cout << "large: " << it->large << "\n";
+				if (it->large > numToBeInserted) {
+					mainChain.insert(it, {numToBeInserted, 0, numToBeInsertedIndex, 0});
+					break ;
+				}
+			}
+		}
+	}
+	if (odd.large != -1) {
+		log(recursionDepth, "odd number insertion here");
+		if (odd.large > mainChain.rbegin()->large)
+			mainChain.insert(mainChain.end(), {odd.large, odd.small, odd.largeIndex, odd.smallIndex});
+		else {
+			for (auto it = mainChain.begin(); it != mainChain.end(); ++it) {
+				if (it->large > odd.large) {
+					mainChain.insert(it, {odd.large, odd.small, odd.largeIndex, odd.smallIndex});
+					break ;
+				}
 			}
 		}
 	}

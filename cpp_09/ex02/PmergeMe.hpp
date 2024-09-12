@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:29:22 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/12 12:53:36 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/12 18:33:50 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ class PmergeMe
 		// static void printPairs(const std::vector<std::pair<int, int>>&);
 		// static void binaryInsert(std::vector<int>& sorted, int value);
 		
-		static int recursionCounter;
-		static int index;
+		static int _recursionCounter;
+		static std::size_t _size;
 
 		template<typename... Args>
 		static void log(int recursionDepth, const Args&... args) {
