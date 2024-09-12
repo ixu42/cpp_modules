@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:29:08 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/12 10:53:18 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/12 12:47:17 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,17 +156,16 @@ void PmergeMe::printDeque(std::deque<int>& deq)
 
 int PmergeMe::recursionCounter = 1;
 int PmergeMe::index = 8;
-std::vector<PmergeMe::pairs> PmergeMe::mergeInsertionSort(const std::vector<PmergeMe::pairs>& vec, \
+std::vector<PmergeMe::pair> PmergeMe::mergeInsertionSort(const std::vector<PmergeMe::pair>& vec, \
 	std::vector<std::vector<int>>& table, std::vector<std::pair<int, std::size_t>>& ref)
 {
-	int recursionDepth = recursionCounter;
-	std::cout << "recursion depth: " << recursionCounter++ << "\n";
+	int recursionDepth = recursionCounter++;
 
 	if (vec.size() <= 1)
 		return vec;
 
-	// step 1 & 2: pair and sort within each pair
-	std::vector<PmergeMe::pairs> pairs;
+	// steps 1 && 2: pair and sort within each pair
+	std::vector<PmergeMe::pair> pairs;
 
 	for (std::size_t i = 0; i < vec.size(); i += 2)
 	{
@@ -214,27 +213,14 @@ std::vector<PmergeMe::pairs> PmergeMe::mergeInsertionSort(const std::vector<Pmer
 		ref.push_back({pairs[i].large, pairs[i].largeIndex});
 	}
 
-	for (const auto& p : pairs) {
-		std::cout << "\033[0;36m" << "(" << p.small << " " << p.large << ")" << std::endl;
-		std::cout << "\033[0;35m" << "(" << p.smallIndex << " " << p.largeIndex << ")" << "\033[0m" << std::endl;
-	}
-	std::cout << "\033[0m" << std::endl;
+	log(recursionDepth, "Steps 1 && 2:\n", pairs);
 
-	// step 3: recursively sort larger elements
-	std::vector<PmergeMe::pairs> mainChain = mergeInsertionSort(pairs, table, ref);
-	std::cout << "\033[0;31m";
-	for (const auto& p : mainChain)
-		std::cout << "(" << p.small << " " << p.large << ")";
-	std::cout << "\033[0m" << std::endl;
+	// step 3: recursively sort the pairs according to larger elements
+	std::vector<PmergeMe::pair> mainChain = mergeInsertionSort(pairs, table, ref);
+	log(recursionDepth, "Step 3:\n", mainChain);
+	log(recursionDepth, "Step 3:\n", table);
 
-	for (auto& row : table) {
-		for (auto col : row) {
-			std::cout << col << " ";
-		}
-		std::cout << "\n";
-	}
-
-	// step 4: insert the smallest element and larger elements into sortedSequence
+	// step 4: insert the smallest element into mainChain
 	std::cout << "mainChain[0].largeIndex: " << mainChain[0].largeIndex << "\n";
 	std::cout << "recursionDepth: " << recursionDepth << "\n";
 	int smallest = ref[table[mainChain[0].largeIndex][recursionDepth] - 1].first;
@@ -242,15 +228,12 @@ std::vector<PmergeMe::pairs> PmergeMe::mergeInsertionSort(const std::vector<Pmer
 	// std::size_t smallestIndex = mainChain[0].smallIndex;
 	std::cout << "smallest: " << smallest << "\n";
 	std::cout << "smallestIndex: " << smallestIndex << "\n";
-	mainChain.insert(mainChain.begin(), {smallest, 0, smallestIndex, 0}); // 3rd should not be 0
+	mainChain.insert(mainChain.begin(), {smallest, 0, smallestIndex, 0});
 
-	std::cout << "\033[0;33m";
-	for (const auto& p : mainChain)
-		std::cout << "(" << p.small << " " << p.large << ")";
-	std::cout << "\033[0m" << std::endl;
+	log(recursionDepth, "Step 4:\n", mainChain);
 
-	// step 5: binary search insert remaining smaller elements into sortedSequence
-	std::vector<PmergeMe::pairs> mainChainCpy(mainChain.begin(), mainChain.end());
+	// step 5: binary search insert remaining smaller elements into mainChain
+	std::vector<PmergeMe::pair> mainChainCpy(mainChain.begin(), mainChain.end());
 	for (std::size_t i = 2; i < mainChainCpy.size(); ++i) {
 		int numToBeInserted = ref[table[mainChainCpy[i].largeIndex][recursionDepth] - 1].first;
 		std::size_t numToBeInsertedIndex = ref[table[mainChainCpy[i].largeIndex][recursionDepth] - 1].second;
@@ -260,19 +243,41 @@ std::vector<PmergeMe::pairs> PmergeMe::mergeInsertionSort(const std::vector<Pmer
 		{
 			// std::cout << "large: " << it->large << "\n";
 			if (it->large > numToBeInserted) {
-				mainChain.insert(it, {numToBeInserted, 0, numToBeInsertedIndex, 0}); // 3rd should not be 0
+				mainChain.insert(it, {numToBeInserted, 0, numToBeInsertedIndex, 0});
 				break ;
 			}
 		}
 	}
 	// TODO: implement order of insertion according to the book
 
-	std::cout << "\033[0;32m";
-	for (const auto& p : mainChain)
-		std::cout << "(" << p.small << " " << p.large << ")";
-	std::cout << "\033[0m" << std::endl;
+	log(recursionDepth, "Step 5:\n", mainChain);
 
 	return mainChain;
+}
+
+
+std::ostream& operator<<(std::ostream& stream, const std::vector<PmergeMe::pair>& vec)
+{
+	stream << "(small, large):           ";
+	for (const auto& v : vec)
+		stream << "(" << v.small << " " << v.large << ")";
+	stream << "\n";
+	stream << "(smallIndex, largeIndex): ";
+	for (const auto& v : vec)
+		stream << "(" << v.smallIndex << " " << v.largeIndex << ")";
+	return stream;
+}
+
+std::ostream& operator<<(std::ostream& stream, const std::vector<std::vector<int>>& table)
+{
+	stream << "== table ==\n";
+	for (auto& row : table) {
+		for (auto col : row)
+			stream << col << " ";
+		stream << "\n";
+	}
+	
+	return stream;
 }
 
 // std::vector<int> PmergeMe::mergeInsertionSort(const std::vector<int>& vec)

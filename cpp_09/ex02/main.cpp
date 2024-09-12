@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:28:50 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/12 10:41:14 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/12 11:46:01 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,10 @@ int main(int argc, char** argv)
 			// 	std::cout << "\n";
 			// }
 
-			std::vector<PmergeMe::pairs> numbers;
+			std::vector<PmergeMe::pair> numbers;
 			for (std::size_t i = 0; i < vec.size(); ++i)
 			{
-				PmergeMe::pairs number = {vec[i], 0, i, 0};
+				PmergeMe::pair number = {vec[i], 0, i, 0};
 				numbers.push_back(number);
 			}
 
