@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:29:22 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/11 18:50:37 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/12 10:41:35 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,20 @@
 class PmergeMe
 {
 	public:
+		struct pairs
+		{
+			int large;
+			int small;
+			std::size_t largeIndex;
+			std::size_t smallIndex;
+		};
+		
 		static std::vector<int> loadInputToVec(int, char**);
 		static std::deque<int> loadInputToDeq(int, char**);
 
-		static std::vector<int> mergeInsertionSort(const std::vector<int>&);
+		// static std::vector<PmergeMe::pair> mergeInsertionSort(const std::vector<PmergeMe::pair>&);
+		static std::vector<PmergeMe::pairs> mergeInsertionSort(const std::vector<PmergeMe::pairs>&, \
+			std::vector<std::vector<int>>&, std::vector<std::pair<int, std::size_t>>&);
 
 		static void printVector(std::vector<int>&);
 		static void printDeque(std::deque<int>&);
@@ -44,7 +54,7 @@ class PmergeMe
 		// static void printPairs(const std::vector<std::pair<int, int>>&);
 		// static void binaryInsert(std::vector<int>& sorted, int value);
 		
-		static int counter;
-		
+		static int recursionCounter;
+		static int index;
 
 };

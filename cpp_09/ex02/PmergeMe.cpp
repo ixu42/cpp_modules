@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:29:08 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/11 19:13:57 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/12 10:53:18 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,67 +154,122 @@ void PmergeMe::printDeque(std::deque<int>& deq)
  * 5 && return => 1 2 3 4 5 6 7 8
  */
 
-int PmergeMe::counter = 1;
-std::vector<int> PmergeMe::mergeInsertionSort(const std::vector<int>& vec)
+int PmergeMe::recursionCounter = 1;
+int PmergeMe::index = 8;
+std::vector<PmergeMe::pairs> PmergeMe::mergeInsertionSort(const std::vector<PmergeMe::pairs>& vec, \
+	std::vector<std::vector<int>>& table, std::vector<std::pair<int, std::size_t>>& ref)
 {
-	std::cout << "recursion depth: " << counter++ << "\n";
+	int recursionDepth = recursionCounter;
+	std::cout << "recursion depth: " << recursionCounter++ << "\n";
+
 	if (vec.size() <= 1)
 		return vec;
 
 	// step 1 & 2: pair and sort within each pair
-	// auto pairs = pairAndSort(vec);
-	// printPairs(pairs);
-	std::unordered_map<int, int> pairs;
+	std::vector<PmergeMe::pairs> pairs;
 
 	for (std::size_t i = 0; i < vec.size(); i += 2)
 	{
-		int first = vec[i];
+		int first = vec[i].large;
+		std::size_t firstIndex = vec[i].largeIndex;
 		int second;
-		if (i + 1 < vec.size())
-			second = vec[i + 1];
-		else
+		std::size_t secondIndex;
+		if (i + 1 < vec.size()) {
+			second = vec[i + 1].large;
+			secondIndex = vec[i + 1].largeIndex;
+		}
+		else {
 			second = 0;
-		
-		if (first > second)
-			pairs[first] = second;
-		else
-			pairs[second] = first;
+			secondIndex = 0;
+		}
+	
+		if (first > second) {
+			pairs.push_back({first, second, firstIndex, secondIndex});
+		}
+		else {
+			pairs.push_back({second, first, secondIndex, firstIndex});
+		}
 	}
-	std::cout << "\033[0;36m";
-	for (auto& [k,v] : pairs)
-		std::cout << "(" << k << " " << v << ")";
+
+	for (std::size_t i = 0; i < pairs.size(); ++i) {
+		if (recursionDepth == 1) {
+			pairs[i].smallIndex = i * 2;
+			pairs[i].largeIndex = i * 2 + 1;
+			std::vector<int> row1;
+			row1.push_back(pairs[i].small);
+			row1.push_back(i * 2);
+			table.push_back(row1);
+			std::vector<int> row2;
+			row2.push_back(pairs[i].large);
+			row2.push_back(i * 2 + 1);
+			table.push_back(row2);
+		}
+		else {
+			std::cout << "pair: " << pairs[i].small << " " << pairs[i].large << "\n";
+			std::cout << "pairIdx: " << pairs[i].smallIndex << " " << pairs[i].largeIndex << "\n";
+			table[pairs[i].smallIndex].push_back(index++);
+			table[pairs[i].largeIndex].push_back(index++);
+		}
+		ref.push_back({pairs[i].small, pairs[i].smallIndex});
+		ref.push_back({pairs[i].large, pairs[i].largeIndex});
+	}
+
+	for (const auto& p : pairs) {
+		std::cout << "\033[0;36m" << "(" << p.small << " " << p.large << ")" << std::endl;
+		std::cout << "\033[0;35m" << "(" << p.smallIndex << " " << p.largeIndex << ")" << "\033[0m" << std::endl;
+	}
 	std::cout << "\033[0m" << std::endl;
 
 	// step 3: recursively sort larger elements
-	std::vector<int> largerElements;
-	for (const auto& p : pairs)
-		largerElements.push_back(p.first);
-	std::vector<int> mainChain = mergeInsertionSort(largerElements);
+	std::vector<PmergeMe::pairs> mainChain = mergeInsertionSort(pairs, table, ref);
 	std::cout << "\033[0;31m";
-	printVector(mainChain);
+	for (const auto& p : mainChain)
+		std::cout << "(" << p.small << " " << p.large << ")";
 	std::cout << "\033[0m" << std::endl;
 
+	for (auto& row : table) {
+		for (auto col : row) {
+			std::cout << col << " ";
+		}
+		std::cout << "\n";
+	}
+
 	// step 4: insert the smallest element and larger elements into sortedSequence
-	int smallest = pairs[mainChain[0]];
-	mainChain.insert(mainChain.begin(), smallest);
+	std::cout << "mainChain[0].largeIndex: " << mainChain[0].largeIndex << "\n";
+	std::cout << "recursionDepth: " << recursionDepth << "\n";
+	int smallest = ref[table[mainChain[0].largeIndex][recursionDepth] - 1].first;
+	std::size_t smallestIndex = ref[table[mainChain[0].largeIndex][recursionDepth] - 1].second;
+	// std::size_t smallestIndex = mainChain[0].smallIndex;
+	std::cout << "smallest: " << smallest << "\n";
+	std::cout << "smallestIndex: " << smallestIndex << "\n";
+	mainChain.insert(mainChain.begin(), {smallest, 0, smallestIndex, 0}); // 3rd should not be 0
 
 	std::cout << "\033[0;33m";
-	printVector(mainChain);
+	for (const auto& p : mainChain)
+		std::cout << "(" << p.small << " " << p.large << ")";
 	std::cout << "\033[0m" << std::endl;
 
 	// step 5: binary search insert remaining smaller elements into sortedSequence
-	std::vector<int> largerNums(std::next(mainChain.begin()), mainChain.end());
-	// std::cout << "largerNums.size(): " << largerNums.size() << "\n";
-	for (std::size_t i = 1; i < largerNums.size(); ++i) {
-		int larger = largerNums[i];
-		// std::cout << larger << "" << pairs[larger] << "\n";
-		auto it = std::lower_bound(mainChain.begin(), mainChain.end(), pairs[larger]);
-		mainChain.insert(it, pairs[larger]);
+	std::vector<PmergeMe::pairs> mainChainCpy(mainChain.begin(), mainChain.end());
+	for (std::size_t i = 2; i < mainChainCpy.size(); ++i) {
+		int numToBeInserted = ref[table[mainChainCpy[i].largeIndex][recursionDepth] - 1].first;
+		std::size_t numToBeInsertedIndex = ref[table[mainChainCpy[i].largeIndex][recursionDepth] - 1].second;
+		std::cout << "numToBeInserted: " << numToBeInserted << "\n";
+		std::cout << "numToBeInsertedIndex: " << numToBeInsertedIndex << "\n";
+		for (auto it = mainChain.begin(); it != mainChain.end(); ++it)
+		{
+			// std::cout << "large: " << it->large << "\n";
+			if (it->large > numToBeInserted) {
+				mainChain.insert(it, {numToBeInserted, 0, numToBeInsertedIndex, 0}); // 3rd should not be 0
+				break ;
+			}
+		}
 	}
 	// TODO: implement order of insertion according to the book
 
 	std::cout << "\033[0;32m";
-	printVector(mainChain);
+	for (const auto& p : mainChain)
+		std::cout << "(" << p.small << " " << p.large << ")";
 	std::cout << "\033[0m" << std::endl;
 
 	return mainChain;
