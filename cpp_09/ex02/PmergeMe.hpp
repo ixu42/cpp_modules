@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:29:22 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/12 22:15:32 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/12 22:23:29 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,3 +91,4 @@ class PmergeMe
 
 std::ostream& operator<<(std::ostream&, const std::vector<PmergeMe::pair>&);
 std::ostream& operator<<(std::ostream&, const std::vector<std::vector<int>>&);
+std::ostream& operator<<(std::ostream&, const std::vector<std::pair<int, std::size_t>>&);

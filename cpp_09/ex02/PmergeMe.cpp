@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:29:08 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/12 22:16:48 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/12 22:34:41 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ std::vector<int> PmergeMe::loadInputToVec(int argc, char** argv)
 		int number = std::stoi(argv[i]);
 		vec.push_back(number);
 	}
-	_size = vec.size();
 	return vec;
 }
 
@@ -64,7 +63,6 @@ std::deque<int> PmergeMe::loadInputToDeq(int argc, char** argv)
 		int number = std::stoi(argv[i]);
 		deq.push_back(number);
 	}
-	_size = deq.size();
 	return deq;
 }
 
@@ -204,10 +202,12 @@ std::vector<PmergeMe::pair> PmergeMe::mergeInsertionSort(const std::vector<Pmerg
 			row2.push_back(pairs[i].large);
 			row2.push_back(i * 2 + 1);
 			table.push_back(row2);
+			_size += 2;
 		}
 		else {
 			std::cout << "pair: " << pairs[i].small << " " << pairs[i].large << "\n";
 			std::cout << "pairIdx: " << pairs[i].smallIndex << " " << pairs[i].largeIndex << "\n";
+			std::cout << "_size: " << _size << "\n";
 			table[pairs[i].smallIndex].push_back(_size++);
 			table[pairs[i].largeIndex].push_back(_size++);
 		}
@@ -225,6 +225,7 @@ std::vector<PmergeMe::pair> PmergeMe::mergeInsertionSort(const std::vector<Pmerg
 	// step 4: insert the smallest element into mainChain
 	std::cout << "mainChain[0].largeIndex: " << mainChain[0].largeIndex << "\n";
 	std::cout << "recursionDepth: " << recursionDepth << "\n";
+	log(recursionDepth, "Step 4:\n", ref);
 	int smallest = ref[table[mainChain[0].largeIndex][recursionDepth] - 1].first;
 	std::size_t smallestIndex = ref[table[mainChain[0].largeIndex][recursionDepth] - 1].second;
 	// std::size_t smallestIndex = mainChain[0].smallIndex;
@@ -291,7 +292,17 @@ std::ostream& operator<<(std::ostream& stream, const std::vector<std::vector<int
 			stream << col << " ";
 		stream << "\n";
 	}
-	
+	return stream;
+}
+
+std::ostream& operator<<(std::ostream& stream, const std::vector<std::pair<int, std::size_t>>& ref)
+{
+	stream << "== ref ==\n";
+	for (auto& pair : ref)
+		stream << pair.first << " ";
+	stream << "\n";
+	for (auto& pair : ref)
+		stream << pair.second << " ";
 	return stream;
 }
 
