@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:29:08 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/12 22:34:41 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/13 22:00:55 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ void PmergeMe::validateInput(int argc, char** argv)
 	for (int i = 1; i < argc; ++i)
 	{
 		std::string str = argv[i];
-		int number;
+		int nbrber;
 		std::size_t pos;
 		try
 		{
-			number = std::stoi(str, &pos);
+			nbrber = std::stoi(str, &pos);
 		}
 		catch (const std::invalid_argument& e)
 		{
@@ -35,7 +35,7 @@ void PmergeMe::validateInput(int argc, char** argv)
 		}
 		if (pos != str.size())
 			throw std::runtime_error("not an integer => " + str);
-		if (number <= 0)
+		if (nbrber <= 0)
 			throw std::runtime_error("not a positive integer => " + str);
 	}
 }
@@ -47,8 +47,8 @@ std::vector<int> PmergeMe::loadInputToVec(int argc, char** argv)
 	std::vector<int> vec;
 	for (int i = 1; i < argc; ++i)
 	{
-		int number = std::stoi(argv[i]);
-		vec.push_back(number);
+		int nbrber = std::stoi(argv[i]);
+		vec.push_back(nbrber);
 	}
 	return vec;
 }
@@ -60,24 +60,24 @@ std::deque<int> PmergeMe::loadInputToDeq(int argc, char** argv)
 	std::deque<int> deq;
 	for (int i = 1; i < argc; ++i)
 	{
-		int number = std::stoi(argv[i]);
-		deq.push_back(number);
+		int nbrber = std::stoi(argv[i]);
+		deq.push_back(nbrber);
 	}
 	return deq;
 }
 
 void PmergeMe::printVector(std::vector<int>& vec)
 {
-	for (int number : vec)
-		std::cout << number << ' ';
+	for (int nbrber : vec)
+		std::cout << nbrber << ' ';
 
 	std::cout << '\n';
 }
 
 void PmergeMe::printDeque(std::deque<int>& deq)
 {
-	for (int number : deq)
-		std::cout << number << ' ';
+	for (int nbrber : deq)
+		std::cout << nbrber << ' ';
 
 	std::cout << '\n';
 }
@@ -113,15 +113,115 @@ void PmergeMe::printDeque(std::deque<int>& deq)
 // 	std::cout << '\n';
 // }
 
-// void PmergeMe::binaryInsert(std::vector<int>& sorted, int value)
-// {
-// 	auto it = std::lower_bound(sorted.begin(), sorted.end(), value);
-// 	sorted.insert(it, value);
-// }
+std::vector<int> PmergeMe::generateJacobsthalNumbers(int maxVal)
+{
+	if (maxVal == 1)
+		return {3};
+
+	std::vector<int> jacobsthal = {3, 5}; // start with J(0)=3 and J(1)=5
+
+	// generate Jacobsthal numbers until exceeding maxVal
+	while (true)
+	{
+		int next = jacobsthal.back() + 2 * jacobsthal[jacobsthal.size() - 2]; // J(n)=J(n-1)+2*J(n-2)
+		if (next > maxVal)
+			break; // stop when the next Jacobsthal number exceeds maxVal
+		jacobsthal.push_back(next);
+	}
+
+	return jacobsthal;
+}
+
+// perform binary insertion with custom iteration using the Jacobsthal-based groups in reverse order within each group
+void PmergeMe::binaryInsertion(const std::vector<PmergeMe::pair>& pendingNbrs, std::vector<PmergeMe::pair>& mainChain)
+{
+	// generate Jacobsthal numbers that don't exceed the array size
+	std::vector<int> jacobsthalNumbers = generateJacobsthalNumbers(pendingNbrs.size());
+	// for (auto i : jacobsthalNumbers)
+	// 	std::cout << i << " ";
+	// std::cout << "\n";
+ 
+	// j:         0 1 2 3 4 5 6 7 8 9 ...
+	// baseIndex: 0 0 2 2 4 4 4 4 4 4 ...
+	int baseIndex = 0;
+	std::size_t nbrsInserted = 0;
+
+	// compare pairs based on pair.large, used in std::lower_bound()
+	auto comp = [](const pair& left, const pair& right) {
+		return left.large < right.large;
+	};
+
+	if (pendingNbrs.size() > 1)
+	{
+		// iterate through the Jacobsthal numbers to form groups
+		for (int i = 0; i < static_cast<int>(jacobsthalNumbers.size()); ++i)
+		{
+			int groupSize;
+			if (i == 0)
+				groupSize = 2;
+			else
+				groupSize = jacobsthalNumbers[i] - jacobsthalNumbers[i - 1];
+
+			// ensure we don't go out of bounds; stop when array is processed
+			if (baseIndex + groupSize > static_cast<int>(pendingNbrs.size())) 
+				continue;
+
+			// std::cout << "Processing group of size " << groupSize << ": ";
+			
+			// iterate in reverse over this group
+			for (int j = baseIndex + groupSize - 1; j >= baseIndex; --j) {
+				std::vector<PmergeMe::pair>::iterator binarySearchEnd;
+				if (pendingNbrs[j].small != 0) // if the pending nbr is odd pair
+					binarySearchEnd = mainChain.end();
+				else
+				{
+					binarySearchEnd = mainChain.begin();
+					std::advance(binarySearchEnd, j + 2 + nbrsInserted);
+				}
+				auto insertBefore = std::lower_bound(mainChain.begin(), binarySearchEnd, pendingNbrs[j], comp);
+				if (insertBefore != mainChain.end())
+					mainChain.insert(insertBefore, pendingNbrs[j]);
+				else
+					mainChain.insert(mainChain.end(), pendingNbrs[j]);
+				nbrsInserted++;
+				// std::cout << "j: " << j << "\n";
+				// std::cout << "current index: " << baseIndex << "\n";
+				// std::cout << "nbrsInserted: " << nbrsInserted << "\n";
+				// std::cout << "inserted 1:" << pendingNbrs[j].large << " ";
+			}
+			// std::cout << "\n";
+			
+			// move current index forward by group size
+			baseIndex += groupSize;
+
+			// stop if the whole array is processed
+			if (baseIndex >= static_cast<int>(pendingNbrs.size()))
+				break;
+		}
+	}
+	for (int j = static_cast<int>(pendingNbrs.size()) - 1; j >= baseIndex; --j) {
+		std::vector<PmergeMe::pair>::iterator binarySearchEnd;
+		if (pendingNbrs[j].small != 0) // if the pending nbr is odd pair
+			binarySearchEnd = mainChain.end();
+		else
+		{
+			binarySearchEnd = mainChain.begin();
+			std::advance(binarySearchEnd, j + 2 + nbrsInserted);
+		}
+		auto insertBefore = std::lower_bound(mainChain.begin(), binarySearchEnd, pendingNbrs[j], comp);
+		if (insertBefore != mainChain.end())
+			mainChain.insert(insertBefore, pendingNbrs[j]);
+		else
+			mainChain.insert(mainChain.end(), pendingNbrs[j]);
+		nbrsInserted++;
+		// std::cout << "inserted 2:" << pendingNbrs[j].large << " ";
+	}
+	// std::cout << "\n";
+}
 
 /**
- * roman numbers: depth of recursion (1st func call, 2nd func call, and so forth)
- * arabic numbers: steps as explained in the function body
+ * roman nbrbers: depth of recursion (1st func call, 2nd func call, and so forth)
+ * arabic nbrbers: steps as explained in the function body
  * 
  * example: unsorted sequence => 6 7 8 5 3 1 2 4
  * 
@@ -167,8 +267,7 @@ std::vector<PmergeMe::pair> PmergeMe::mergeInsertionSort(const std::vector<Pmerg
 	// steps 1 && 2: pair and sort within each pair
 	std::vector<PmergeMe::pair> pairs;
 
-	for (std::size_t i = 0; i + 1 < vec.size(); i += 2)
-	{
+	for (std::size_t i = 0; i + 1 < vec.size(); i += 2)	{
 		int first = vec[i].large;
 		std::size_t firstIndex = vec[i].largeIndex;
 		int second;
@@ -176,17 +275,14 @@ std::vector<PmergeMe::pair> PmergeMe::mergeInsertionSort(const std::vector<Pmerg
 		second = vec[i + 1].large;
 		secondIndex = vec[i + 1].largeIndex;
 
-		if (first > second) {
+		if (first > second)
 			pairs.push_back({first, second, firstIndex, secondIndex});
-		}
-		else {
+		else
 			pairs.push_back({second, first, secondIndex, firstIndex});
-		}
 	}
-	PmergeMe::pair odd;
-	odd.large = -1;
+	PmergeMe::pair odd = {0, 0, 0, 0};
 	if (vec.size() % 2 != 0) {
-		log(recursionDepth, "odd found here!");
+		// log(recursionDepth, "odd found here!");
 		odd = {vec.back().large, vec.back().small, vec.back().largeIndex, vec.back().smallIndex};
 	}
 
@@ -205,9 +301,9 @@ std::vector<PmergeMe::pair> PmergeMe::mergeInsertionSort(const std::vector<Pmerg
 			_size += 2;
 		}
 		else {
-			std::cout << "pair: " << pairs[i].small << " " << pairs[i].large << "\n";
-			std::cout << "pairIdx: " << pairs[i].smallIndex << " " << pairs[i].largeIndex << "\n";
-			std::cout << "_size: " << _size << "\n";
+			// std::cout << "pair: " << pairs[i].small << " " << pairs[i].large << "\n";
+			// std::cout << "pairIdx: " << pairs[i].smallIndex << " " << pairs[i].largeIndex << "\n";
+			// std::cout << "_size: " << _size << "\n";
 			table[pairs[i].smallIndex].push_back(_size++);
 			table[pairs[i].largeIndex].push_back(_size++);
 		}
@@ -223,54 +319,55 @@ std::vector<PmergeMe::pair> PmergeMe::mergeInsertionSort(const std::vector<Pmerg
 	log(recursionDepth, "Step 3:\n", table);
 
 	// step 4: insert the smallest element into mainChain
-	std::cout << "mainChain[0].largeIndex: " << mainChain[0].largeIndex << "\n";
-	std::cout << "recursionDepth: " << recursionDepth << "\n";
+	// std::cout << "mainChain[0].largeIndex: " << mainChain[0].largeIndex << "\n";
+	// std::cout << "recursionDepth: " << recursionDepth << "\n";
 	log(recursionDepth, "Step 4:\n", ref);
 	int smallest = ref[table[mainChain[0].largeIndex][recursionDepth] - 1].first;
 	std::size_t smallestIndex = ref[table[mainChain[0].largeIndex][recursionDepth] - 1].second;
 	// std::size_t smallestIndex = mainChain[0].smallIndex;
-	std::cout << "smallest: " << smallest << "\n";
-	std::cout << "smallestIndex: " << smallestIndex << "\n";
+	// std::cout << "smallest: " << smallest << "\n";
+	// std::cout << "smallestIndex: " << smallestIndex << "\n";
 	mainChain.insert(mainChain.begin(), {smallest, 0, smallestIndex, 0});
 
 	log(recursionDepth, "Step 4:\n", mainChain);
 
 	// step 5: binary search insert remaining smaller elements into mainChain
-	auto comp = [](const pair& left, const pair& right) {
-		return left.large < right.large;
-	};
 
-	std::cout << "mainChain.rbegin()->large: " << mainChain.rbegin()->large << "\n";
-
-	std::vector<PmergeMe::pair> mainChainCpy(mainChain.begin(), mainChain.end());
-	for (std::size_t i = 2; i < mainChainCpy.size(); ++i) {
-		int numToBeInserted = ref[table[mainChainCpy[i].largeIndex][recursionDepth] - 1].first;
-		std::size_t numToBeInsertedIndex = ref[table[mainChainCpy[i].largeIndex][recursionDepth] - 1].second;
-		std::cout << "numToBeInserted: " << numToBeInserted << "\n";
-		std::cout << "numToBeInsertedIndex: " << numToBeInsertedIndex << "\n";
-		PmergeMe::pair pending = {numToBeInserted, 0, numToBeInsertedIndex, 0};
-		auto insertBefore = std::lower_bound(mainChain.begin(), mainChain.end(), pending, comp); // replace mainChain.end() with paired large
-		if (insertBefore != mainChain.end())
-			mainChain.insert(insertBefore, pending);
-		else
-			mainChain.insert(mainChain.end(), pending);
+	std::vector<PmergeMe::pair> pendingNbrs;
+	for (auto it = std::next(mainChain.begin() + 1); it < mainChain.end(); ++it)
+	{
+		int nbrToBeInserted = ref[table[it->largeIndex][recursionDepth] - 1].first;
+		std::size_t nbrToBeInsertedIndex = ref[table[it->largeIndex][recursionDepth] - 1].second;
+		// std::cout << "nbrToBeInserted: " << nbrToBeInserted << "\n";
+		// std::cout << "nbrToBeInsertedIndex: " << nbrToBeInsertedIndex << "\n";
+		pendingNbrs.push_back({nbrToBeInserted, 0, nbrToBeInsertedIndex, 0});
 	}
+	if (odd.large)
+		pendingNbrs.push_back(odd);
 
-	if (odd.large != -1) {
-		log(recursionDepth, "odd number insertion here");
-		auto it = std::lower_bound(mainChain.begin(), mainChain.end(), odd, comp);
-		if (it != mainChain.end())
-			mainChain.insert(it, odd);
-		else
-			mainChain.insert(mainChain.end(), odd);
-	}
-	// TODO: implement order of insertion according to the book
+	if (!pendingNbrs.empty())
+		binaryInsertion(pendingNbrs, mainChain);
 
 	log(recursionDepth, "Step 5:\n", mainChain);
 
 	return mainChain;
 }
 
+std::vector<int> PmergeMe::sortVec(const std::vector<int>& vec)
+{
+	std::vector<PmergeMe::pair> nbrbers;
+	for (std::size_t i = 0; i < vec.size(); ++i) {
+		PmergeMe::pair nbrber = {vec[i], 0, i, 0};
+		nbrbers.push_back(nbrber);
+	}
+	std::vector<std::vector<int>> table;
+	std::vector<std::pair<int, std::size_t>> empty;
+	std::vector<PmergeMe::pair> sortedPairs = PmergeMe::mergeInsertionSort(nbrbers, table, empty);
+	std::vector <int> sortedVec;
+	for (const auto& p : sortedPairs)
+		sortedVec.push_back(p.large);
+	return sortedVec;
+}
 
 std::ostream& operator<<(std::ostream& stream, const std::vector<PmergeMe::pair>& vec)
 {
@@ -305,64 +402,3 @@ std::ostream& operator<<(std::ostream& stream, const std::vector<std::pair<int, 
 		stream << pair.second << " ";
 	return stream;
 }
-
-// std::vector<int> PmergeMe::mergeInsertionSort(const std::vector<int>& vec)
-// {
-// 	if (vec.size() <= 1)
-// 		return vec;
-
-// 	// step 1 & 2: pair and sort within each pair
-// 	auto pairs = pairAndSort(vec);
-// 	// printPairs(pairs);
-
-// 	// step 3: recursively sort larger elements
-// 	std::vector<int> largerElements;
-// 	for (const auto& p : pairs)
-// 		largerElements.push_back(p.first);
-// 	std::vector<int> sortedSequence = mergeInsertionSort(largerElements);
-// 	// std::cout << "\033[0;31m";
-// 	// printVector(sortedSequence);
-// 	// std::cout << "\033[0m" << std::endl;
-
-// 	// step 4: insert the smallest element and larger elements into sortedSequence
-// 	// std::vector<int> sortedSequence;
-// 	int smallest;
-// 	// for (const auto& p : pairs)
-// 	for (auto it = pairs.begin(); it != pairs.end(); ++it)
-// 	{
-// 		// if (p.first == sortedSequence[0])
-// 		// 	smallest = p.second;
-// 		if (it->first == sortedSequence[0])
-// 		{
-// 			smallest = it->second;
-// 			pairs.erase(it);
-// 			break ;
-// 		}
-// 	}
-// 	sortedSequence.insert(sortedSequence.begin(), smallest);
-
-// 	// std::cout << "\033[0;33m";
-// 	// printVector(sortedSequence);
-// 	// std::cout << "\033[0m" << std::endl;
-
-// 	// step 5: binary search insert remaining smaller elements into sortedSequence
-// 	for (size_t i = 0; i < pairs.size(); ++i)
-// 	{
-// 		auto it = std::lower_bound(sortedSequence.begin(), sortedSequence.end(), pairs[i].second);
-// 		sortedSequence.insert(it, pairs[i].second);
-// 	}
-// 		// binaryInsert(sortedSequence, pairs[i].second); // order of the pairs not according to the book
-
-// 	// std::cout << "\033[0;32m";
-// 	// printVector(sortedSequence);
-// 	// std::cout << "\033[0m" << std::endl;
-
-// 	return sortedSequence;
-// }
-
-// void PmergeMe::mergeInsertionSort(std::deque<int>& deq)
-// {
-// 	(void)deq;
-	// auto pairs = pairAndSort(deq);
-	// printPairs(pairs);
-// }

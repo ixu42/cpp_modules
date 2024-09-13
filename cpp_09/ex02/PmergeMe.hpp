@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:29:22 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/12 22:23:29 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/13 21:45:45 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <stdexcept>
 #include <utility>
 #include <algorithm>
+#include <iterator>
 
 #define WHITE "\033[0;30m"
 #define RED "\033[0;31m"
@@ -44,13 +45,13 @@ class PmergeMe
 		static std::vector<int> loadInputToVec(int, char**);
 		static std::deque<int> loadInputToDeq(int, char**);
 
-		// static std::vector<PmergeMe::pair> mergeInsertionSort(const std::vector<PmergeMe::pair>&);
 		static std::vector<PmergeMe::pair> mergeInsertionSort(const std::vector<PmergeMe::pair>&, \
 			std::vector<std::vector<int>>&, std::vector<std::pair<int, std::size_t>>&);
 
+		static std::vector<int> sortVec(const std::vector<int>&);
+
 		static void printVector(std::vector<int>&);
 		static void printDeque(std::deque<int>&);
-
 
 	private:
 		PmergeMe() = default;
@@ -59,9 +60,11 @@ class PmergeMe
 		~PmergeMe() = default;
 
 		static void validateInput(int, char**);
+		
 		// static std::vector<std::pair<int, int>> pairAndSort(const std::vector<int>&);
 		// static void printPairs(const std::vector<std::pair<int, int>>&);
-		// static void binaryInsert(std::vector<int>& sorted, int value);
+		static std::vector<int> generateJacobsthalNumbers(int);
+		static void binaryInsertion(const std::vector<PmergeMe::pair>&, std::vector<PmergeMe::pair>&);
 		
 		static int _recursionCounter;
 		static std::size_t _size;
