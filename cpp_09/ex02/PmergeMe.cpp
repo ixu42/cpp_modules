@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:29:08 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/14 16:57:39 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/14 20:09:01 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void PmergeMe::validateInput(int argc, char** argv)
 	}
 }
 
+/* sort numbers with std::vector */
+
 std::vector<int> PmergeMe::loadInputToVec(int argc, char** argv)
 {
 	validateInput(argc, argv);
@@ -51,19 +53,6 @@ std::vector<int> PmergeMe::loadInputToVec(int argc, char** argv)
 		vec.push_back(nbr);
 	}
 	return vec;
-}
-
-std::deque<int> PmergeMe::loadInputToDeq(int argc, char** argv)
-{
-	validateInput(argc, argv);
-
-	std::deque<int> deq;
-	for (int i = 1; i < argc; ++i)
-	{
-		int nbr = std::stoi(argv[i]);
-		deq.push_back(nbr);
-	}
-	return deq;
 }
 
 PmergeMe::PairVec PmergeMe::pairAndSort(const PairVec& vec)
@@ -88,7 +77,7 @@ PmergeMe::PairVec PmergeMe::pairAndSort(const PairVec& vec)
 	return pairs;
 }
 
-void PmergeMe::updateTable(Int2DVec& table, PairVec& pairs, int recursionDepth)
+void PmergeMe::updateTable(Int2dVec& table, PairVec& pairs, int recursionDepth)
 {
 	for (std::size_t i = 0; i < pairs.size(); ++i)
 	{
@@ -112,13 +101,13 @@ void PmergeMe::updateTable(Int2DVec& table, PairVec& pairs, int recursionDepth)
 }
 
 std::size_t PmergeMe::getPairedSmallIndex(const Pair& pair, \
-	const Int2DVec& table, int recursionDepth)
+	const Int2dVec& table, int recursionDepth)
 {
 	return static_cast<std::size_t>(table[pair.largeIndex][recursionDepth + 1]);
 }
 
 void PmergeMe::insertSmallestIntoMainChain(PairVec& mainChain, \
-	const Int2DVec& table, int recursionDepth)
+	const Int2dVec& table, int recursionDepth)
 {
 	std::size_t smallestIndex;
 	int smallest;
@@ -138,7 +127,7 @@ void PmergeMe::insertSmallestIntoMainChain(PairVec& mainChain, \
 }
 
 PmergeMe::PairVec PmergeMe::extractPendingNbrs(const PairVec& mainChain, \
-	const Pair& odd, const Int2DVec& table, int recursionDepth)
+	const Pair& odd, const Int2dVec& table, int recursionDepth)
 {
 	PairVec pendingNbrs;
 	for (auto it = std::next(mainChain.begin() + 1); it < mainChain.end(); ++it)
@@ -154,7 +143,7 @@ PmergeMe::PairVec PmergeMe::extractPendingNbrs(const PairVec& mainChain, \
 	return pendingNbrs;
 }
 
-std::vector<int> PmergeMe::generateJacobsthalNbrs(int maxVal)
+std::vector<int> PmergeMe::genJacobsthalVec(int maxVal)
 {
 	if (maxVal == 1)
 		return {3};
@@ -208,7 +197,7 @@ void PmergeMe::insert(PairVec& mainChain, const PairVec& pendingNbrs, int j, std
 void PmergeMe::binaryInsertion(const PairVec& pendingNbrs, PairVec& mainChain)
 {
 	// generate Jacobsthal numbers that don't exceed the array size
-	std::vector<int> jacobsthalNbrs = generateJacobsthalNbrs(pendingNbrs.size());
+	std::vector<int> jacobsthalNbrs = genJacobsthalVec(pendingNbrs.size());
 
 	int baseIndex = 0;
 	std::size_t nbrsInserted = 0;
@@ -291,7 +280,7 @@ void PmergeMe::binaryInsertion(const PairVec& pendingNbrs, PairVec& mainChain)
  * 5 && return => 1 2 3 4 5 6 7 8
  */
 
-PmergeMe::PairVec PmergeMe::mergeInsertionSort(const PairVec& vec, Int2DVec& table)
+PmergeMe::PairVec PmergeMe::mergeInsertionSort(const PairVec& vec, Int2dVec& table)
 {
 	int recursionDepth = _recursionCounter++;
 
@@ -331,7 +320,8 @@ std::vector<int> PmergeMe::sortVec(const std::vector<int>& vec)
 		Pair nbr = {vec[i], 0, 0, 0};
 		nbrs.push_back(nbr);
 	}
-	Int2DVec table;
+	Int2dVec table;
+	_recursionCounter = 1;
 	PairVec sortedPairs = PmergeMe::mergeInsertionSort(nbrs, table);
 	std::vector<int> sortedVec;
 	for (const auto& p : sortedPairs)
@@ -351,7 +341,7 @@ std::ostream& operator<<(std::ostream& stream, const PmergeMe::PairVec& vec)
 	return stream;
 }
 
-std::ostream& operator<<(std::ostream& stream, const PmergeMe::Int2DVec& table)
+std::ostream& operator<<(std::ostream& stream, const PmergeMe::Int2dVec& table)
 {
 	stream << "\n== table ==\n";
 	for (auto& row : table) {
@@ -365,6 +355,224 @@ std::ostream& operator<<(std::ostream& stream, const PmergeMe::Int2DVec& table)
 std::ostream& operator<<(std::ostream& stream, const std::vector<int>& vec)
 {
 	for (int nbr : vec)
+		std::cout << nbr << " ";
+	std::cout << "\n";
+	return stream;
+}
+
+/* sort numbers with std::deque */
+
+std::deque<int> PmergeMe::loadInputToDeq(int argc, char** argv)
+{
+	validateInput(argc, argv);
+
+	std::deque<int> deq;
+	for (int i = 1; i < argc; ++i)
+	{
+		int nbr = std::stoi(argv[i]);
+		deq.push_back(nbr);
+	}
+	return deq;
+}
+
+PmergeMe::PairDeq PmergeMe::pairAndSort(const PairDeq& vec)
+{
+	PairDeq pairs;
+
+	for (std::size_t i = 0; i + 1 < vec.size(); i += 2)
+	{
+		int first = vec[i].large;
+		std::size_t firstIndex = vec[i].largeIndex;
+		int second;
+		std::size_t secondIndex;
+		second = vec[i + 1].large;
+		secondIndex = vec[i + 1].largeIndex;
+
+		if (first > second)
+			pairs.push_back({first, second, firstIndex, secondIndex});
+		else
+			pairs.push_back({second, first, secondIndex, firstIndex});
+	}
+
+	return pairs;
+}
+
+void PmergeMe::updateTable(Int2dDeq& table, PairDeq& pairs, int recursionDepth)
+{
+	for (std::size_t i = 0; i < pairs.size(); ++i)
+	{
+		if (recursionDepth == 1)
+		{
+			pairs[i].smallIndex = i * 2;
+			pairs[i].largeIndex = i * 2 + 1;
+			std::deque<int> row1;
+			row1.push_back(pairs[i].small);
+			row1.push_back(i * 2);
+			table.push_back(row1);
+			std::deque<int> row2;
+			row2.push_back(pairs[i].large);
+			row2.push_back(i * 2 + 1);
+			row2.push_back(pairs[i].smallIndex);
+			table.push_back(row2);
+		}
+		else
+			table[pairs[i].largeIndex].push_back(pairs[i].smallIndex);
+	}
+}
+
+std::size_t PmergeMe::getPairedSmallIndex(const Pair& pair, \
+	const Int2dDeq& table, int recursionDepth)
+{
+	return static_cast<std::size_t>(table[pair.largeIndex][recursionDepth + 1]);
+}
+
+void PmergeMe::insertSmallestIntoMainChain(PairDeq& mainChain, \
+	const Int2dDeq& table, int recursionDepth)
+{
+	std::size_t smallestIndex;
+	int smallest;
+	if (mainChain.size() == 1)
+	{
+		smallestIndex = mainChain[0].smallIndex;
+		smallest = mainChain[0].small;
+	}
+	else 
+	{
+		smallestIndex = getPairedSmallIndex(mainChain[0], table, recursionDepth);
+		smallest = table[smallestIndex][0];
+	}
+	mainChain.insert(mainChain.begin(), {smallest, 0, smallestIndex, 0});
+}
+
+PmergeMe::PairDeq PmergeMe::extractPendingNbrs(const PairDeq& mainChain, \
+	const Pair& odd, const Int2dDeq& table, int recursionDepth)
+{
+	PairDeq pendingNbrs;
+	for (auto it = std::next(mainChain.begin() + 1); it < mainChain.end(); ++it)
+	{
+		std::size_t nbrToBeInsertedIndex = getPairedSmallIndex(*it, table, recursionDepth);
+		int nbrToBeInserted = table[nbrToBeInsertedIndex][0];
+		pendingNbrs.push_back({nbrToBeInserted, 0, nbrToBeInsertedIndex, 0});
+	}
+	if (odd.large)
+		pendingNbrs.push_back(odd);
+	return pendingNbrs;
+}
+
+std::deque<int> PmergeMe::genJacobsthalDeq(int maxVal)
+{
+	if (maxVal == 1)
+		return {3};
+
+	std::deque<int> jacobsthal = {3, 5};
+
+	while (true)
+	{
+		int next = jacobsthal.back() + 2 * jacobsthal[jacobsthal.size() - 2];
+		if (next > maxVal)
+			break;
+		jacobsthal.push_back(next);
+	}
+
+	return jacobsthal;
+}
+
+void PmergeMe::insert(PairDeq& mainChain, const PairDeq& pendingNbrs, int j, std::size_t& nbrsInserted)
+{
+	auto comp = [](const Pair& left, const Pair& right)
+	{
+		return left.large < right.large;
+	};
+
+	PairDeq::iterator binarySearchEnd;
+	if (pendingNbrs[j].small != 0)
+		binarySearchEnd = mainChain.end();
+	else
+	{
+		binarySearchEnd = mainChain.begin();
+		std::advance(binarySearchEnd, j + 2 + nbrsInserted);
+	}
+	auto insertBefore = std::lower_bound(mainChain.begin(), binarySearchEnd, pendingNbrs[j], comp);
+	if (insertBefore != mainChain.end())
+		mainChain.insert(insertBefore, pendingNbrs[j]);
+	else
+		mainChain.insert(mainChain.end(), pendingNbrs[j]);
+	nbrsInserted++;
+}
+
+void PmergeMe::binaryInsertion(const PairDeq& pendingNbrs, PairDeq& mainChain)
+{
+	std::deque<int> jacobsthalNbrs = genJacobsthalDeq(pendingNbrs.size());
+
+	int baseIndex = 0;
+	std::size_t nbrsInserted = 0;
+
+	if (pendingNbrs.size() > 1)
+	{
+		for (int i = 0; i < static_cast<int>(jacobsthalNbrs.size()); ++i)
+		{
+			int groupSize = (i == 0) ? 2 : jacobsthalNbrs[i] - jacobsthalNbrs[i - 1];
+
+			if (baseIndex + groupSize > static_cast<int>(pendingNbrs.size())) 
+				break;
+
+			for (int j = baseIndex + groupSize - 1; j >= baseIndex; --j)
+				insert(mainChain, pendingNbrs, j, nbrsInserted);
+
+			baseIndex += groupSize;
+
+			if (baseIndex >= static_cast<int>(pendingNbrs.size()))
+				break;
+		}
+	}
+	for (int j = static_cast<int>(pendingNbrs.size()) - 1; j >= baseIndex; --j)
+		insert(mainChain, pendingNbrs, j, nbrsInserted);
+}
+
+PmergeMe::PairDeq PmergeMe::mergeInsertionSort(const PairDeq& deq, Int2dDeq& table)
+{
+	int recursionDepth = _recursionCounter++;
+
+	if (deq.size() <= 1)
+		return deq;
+
+	PairDeq pairs = pairAndSort(deq);
+	Pair odd = {0, 0, 0, 0};
+	if (deq.size() % 2 != 0)
+		odd = {deq.back().large, deq.back().small, deq.back().largeIndex, deq.back().smallIndex};
+	updateTable(table, pairs, recursionDepth);
+
+	PairDeq mainChain = mergeInsertionSort(pairs, table);
+
+	insertSmallestIntoMainChain(mainChain, table, recursionDepth);
+
+	PairDeq pendingNbrs = extractPendingNbrs(mainChain, odd, table, recursionDepth);
+	if (!pendingNbrs.empty())
+		binaryInsertion(pendingNbrs, mainChain);
+
+	return mainChain;
+}
+
+std::deque<int> PmergeMe::sortDeq(const std::deque<int>& deq)
+{
+	PairDeq nbrs;
+	for (std::size_t i = 0; i < deq.size(); ++i)
+	{
+		Pair nbr = {deq[i], 0, 0, 0};
+		nbrs.push_back(nbr);
+	}
+	Int2dDeq table;
+	_recursionCounter = 1;
+	PairDeq sortedPairs = PmergeMe::mergeInsertionSort(nbrs, table);
+	std::deque<int> sortedDeq;
+	for (const auto& p : sortedPairs)
+		sortedDeq.push_back(p.large);
+	return sortedDeq;
+}
+
+std::ostream& operator<<(std::ostream& stream, const std::deque<int>& deq)
+{
+	for (int nbr : deq)
 		std::cout << nbr << " ";
 	std::cout << "\n";
 	return stream;

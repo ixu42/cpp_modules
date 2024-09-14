@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:29:22 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/14 16:57:48 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/14 20:07:57 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,11 @@
 #include <deque>
 #include <string>
 #include <iostream>
-#include <sstream>
 #include <stdexcept>
-#include <utility>
-#include <algorithm>
-#include <iterator>
+#include <algorithm> // std::lower_bound
+#include <iterator> // std::next, std::advance
 
 #define WHITE "\033[0;30m"
-#define RED "\033[0;31m"
 #define GREEN "\033[0;32m"
 #define YELLOW "\033[0;33m"
 #define BLUE "\033[0;34m"
@@ -42,12 +39,17 @@ class PmergeMe
 			std::size_t smallIndex;
 		};
 
-		using PairVec = std::vector<PmergeMe::Pair>;
-		using Int2DVec = std::vector<std::vector<int>>;
-
+		// std::vector
+		using PairVec = std::vector<Pair>;
+		using Int2dVec = std::vector<std::vector<int>>;
 		static std::vector<int> loadInputToVec(int, char**);
-		static std::deque<int> loadInputToDeq(int, char**);
 		static std::vector<int> sortVec(const std::vector<int>&);
+
+		// std::deque
+		using PairDeq = std::deque<Pair>;
+		using Int2dDeq = std::deque<std::deque<int>>;
+		static std::deque<int> loadInputToDeq(int, char**);
+		static std::deque<int> sortDeq(const std::deque<int>&);
 
 	private:
 		PmergeMe() = default;
@@ -56,15 +58,28 @@ class PmergeMe
 		~PmergeMe() = default;
 
 		static void validateInput(int, char**);
+
+		// std::vector
 		static PairVec pairAndSort(const PairVec&);
-		static void updateTable(Int2DVec&, PairVec&, int);
-		static std::size_t getPairedSmallIndex(const Pair&, const Int2DVec&, int);
-		static void insertSmallestIntoMainChain(PairVec&, const Int2DVec&, int);
-		static PairVec extractPendingNbrs(const PairVec&, const Pair&, const Int2DVec&, int);
-		static std::vector<int> generateJacobsthalNbrs(int);
+		static void updateTable(Int2dVec&, PairVec&, int);
+		static std::size_t getPairedSmallIndex(const Pair&, const Int2dVec&, int);
+		static void insertSmallestIntoMainChain(PairVec&, const Int2dVec&, int);
+		static PairVec extractPendingNbrs(const PairVec&, const Pair&, const Int2dVec&, int);
+		static std::vector<int> genJacobsthalVec(int);
 		static void insert(PairVec&, const PairVec&, int, std::size_t&);
 		static void binaryInsertion(const PairVec&, PairVec&);
-		static PairVec mergeInsertionSort(const PairVec&, Int2DVec&);
+		static PairVec mergeInsertionSort(const PairVec&, Int2dVec&);
+
+		// std::deque
+		static PairDeq pairAndSort(const PairDeq&);
+		static void updateTable(Int2dDeq&, PairDeq&, int);
+		static std::size_t getPairedSmallIndex(const Pair&, const Int2dDeq&, int);
+		static void insertSmallestIntoMainChain(PairDeq&, const Int2dDeq&, int);
+		static PairDeq extractPendingNbrs(const PairDeq&, const Pair&, const Int2dDeq&, int);
+		static std::deque<int> genJacobsthalDeq(int);
+		static void insert(PairDeq&, const PairDeq&, int, std::size_t&);
+		static void binaryInsertion(const PairDeq&, PairDeq&);
+		static PairDeq mergeInsertionSort(const PairDeq&, Int2dDeq&);
 
 		template<typename... Args>
 		static void log(int recursionDepth, const Args&... args)
@@ -97,5 +112,6 @@ class PmergeMe
 };
 
 std::ostream& operator<<(std::ostream&, const PmergeMe::PairVec&);
-std::ostream& operator<<(std::ostream&, const PmergeMe::Int2DVec&);
+std::ostream& operator<<(std::ostream&, const PmergeMe::Int2dVec&);
 std::ostream& operator<<(std::ostream&, const std::vector<int>&);
+std::ostream& operator<<(std::ostream&, const std::deque<int>&);
