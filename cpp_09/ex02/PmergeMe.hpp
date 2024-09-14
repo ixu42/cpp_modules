@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:29:22 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/14 12:30:02 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/14 16:57:48 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,24 +34,20 @@
 class PmergeMe
 {
 	public:
-		struct pair
+		struct Pair
 		{
 			int large;
 			int small;
 			std::size_t largeIndex;
 			std::size_t smallIndex;
 		};
-		
+
+		using PairVec = std::vector<PmergeMe::Pair>;
+		using Int2DVec = std::vector<std::vector<int>>;
+
 		static std::vector<int> loadInputToVec(int, char**);
 		static std::deque<int> loadInputToDeq(int, char**);
-
-		static std::vector<PmergeMe::pair> mergeInsertionSort(\
-			const std::vector<PmergeMe::pair>&, std::vector<std::vector<int>>&);
-
 		static std::vector<int> sortVec(const std::vector<int>&);
-
-		static void printVector(std::vector<int>&);
-		static void printDeque(std::deque<int>&);
 
 	private:
 		PmergeMe() = default;
@@ -60,27 +56,33 @@ class PmergeMe
 		~PmergeMe() = default;
 
 		static void validateInput(int, char**);
-		
-		// static std::vector<std::pair<int, int>> pairAndSort(const std::vector<int>&);
-		// static void printPairs(const std::vector<std::pair<int, int>>&);
-		static std::vector<int> generateJacobsthalNumbers(int);
-		static void binaryInsertion(const std::vector<PmergeMe::pair>&, std::vector<PmergeMe::pair>&);
-		
-		static int _recursionCounter;
-		static std::size_t _size;
+		static PairVec pairAndSort(const PairVec&);
+		static void updateTable(Int2DVec&, PairVec&, int);
+		static std::size_t getPairedSmallIndex(const Pair&, const Int2DVec&, int);
+		static void insertSmallestIntoMainChain(PairVec&, const Int2DVec&, int);
+		static PairVec extractPendingNbrs(const PairVec&, const Pair&, const Int2DVec&, int);
+		static std::vector<int> generateJacobsthalNbrs(int);
+		static void insert(PairVec&, const PairVec&, int, std::size_t&);
+		static void binaryInsertion(const PairVec&, PairVec&);
+		static PairVec mergeInsertionSort(const PairVec&, Int2DVec&);
 
 		template<typename... Args>
-		static void log(int recursionDepth, const Args&... args) {
+		static void log(int recursionDepth, const Args&... args)
+		{
 			#if DEBUG_MODE
-				std::string color = WHITE;
-				switch (recursionDepth % 5) {
-					case 1: color = GREEN; break;
-					case 2: color = CYAN; break;
-					case 3: color = YELLOW; break;
-					case 4: color = MAGENTA; break;
-					case 0: color = BLUE; break;
+				if (recursionDepth)
+				{
+					std::string color = WHITE;
+					switch (recursionDepth % 5)
+					{
+						case 1: color = GREEN; break;
+						case 2: color = CYAN; break;
+						case 3: color = YELLOW; break;
+						case 4: color = MAGENTA; break;
+						case 0: color = BLUE; break;
+					}
+					std::cout << color << "Recursion depth: " << recursionDepth << " | ";
 				}
-				std::cout << color << "Recursion depth: " << recursionDepth << " | ";
 				if constexpr (sizeof...(args) > 0)
 					((std::cout << args), ...) << RESET << std::endl;
 				else
@@ -90,7 +92,10 @@ class PmergeMe
 				(static_cast<void>(args), ...);
 			#endif
 		}
+
+		static int _recursionCounter;
 };
 
-std::ostream& operator<<(std::ostream&, const std::vector<PmergeMe::pair>&);
-std::ostream& operator<<(std::ostream&, const std::vector<std::vector<int>>&);
+std::ostream& operator<<(std::ostream&, const PmergeMe::PairVec&);
+std::ostream& operator<<(std::ostream&, const PmergeMe::Int2DVec&);
+std::ostream& operator<<(std::ostream&, const std::vector<int>&);

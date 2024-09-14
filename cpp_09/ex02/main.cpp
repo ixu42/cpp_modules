@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:28:50 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/13 21:00:25 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/14 16:56:16 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,10 @@ int main(int argc, char** argv)
 	{
 		try
 		{
-			std::vector<int> vec = PmergeMe::loadInputToVec(argc, argv);
-			PmergeMe::printVector(vec);
-			std::vector<int> sorted = PmergeMe::sortVec(vec);
-			for (int s : sorted)
-				std::cout << s << " ";
-			std::cout << "\n";
-
-			// std::vector<int>ints = PmergeMe::generateJacobsthalNumbers(20);
-			// for (auto i : ints)
-			// 	std::cout << i << " ";
-			// std::cout << "\n";
-			
+			std::vector<int> unsorted = PmergeMe::loadInputToVec(argc, argv);
+			std::cout << unsorted;
+			std::vector<int> sorted = PmergeMe::sortVec(unsorted);
+			std::cout << sorted;
 		}
 		catch (const std::exception& e)
 		{
