@@ -6,12 +6,13 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:28:50 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/14 16:56:16 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/14 17:38:56 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PmergeMe.hpp"
 #include <iostream>
+#include <chrono>
 
 int main(int argc, char** argv)
 {
@@ -21,14 +22,20 @@ int main(int argc, char** argv)
 		return 1;
 	}
 
-	std::cout << "std::vector\n";
 	{
 		try
 		{
+			auto start = std::chrono::high_resolution_clock::now();
 			std::vector<int> unsorted = PmergeMe::loadInputToVec(argc, argv);
-			std::cout << unsorted;
+			// std::cout << unsorted;
 			std::vector<int> sorted = PmergeMe::sortVec(unsorted);
-			std::cout << sorted;
+			// std::cout << sorted;
+			auto stop = std::chrono::high_resolution_clock::now();
+			auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+			std::cout << "Before: " << unsorted;
+			std::cout << "After:  " << sorted;
+			std::cout << "Time to process a range of " << unsorted.size() 
+						<< " elements with std::vector: " << duration.count() << " us\n";
 		}
 		catch (const std::exception& e)
 		{
