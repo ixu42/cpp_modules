@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:29:22 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/13 21:45:45 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/14 12:30:02 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ class PmergeMe
 		static std::vector<int> loadInputToVec(int, char**);
 		static std::deque<int> loadInputToDeq(int, char**);
 
-		static std::vector<PmergeMe::pair> mergeInsertionSort(const std::vector<PmergeMe::pair>&, \
-			std::vector<std::vector<int>>&, std::vector<std::pair<int, std::size_t>>&);
+		static std::vector<PmergeMe::pair> mergeInsertionSort(\
+			const std::vector<PmergeMe::pair>&, std::vector<std::vector<int>>&);
 
 		static std::vector<int> sortVec(const std::vector<int>&);
 
@@ -94,4 +94,3 @@ class PmergeMe
 
 std::ostream& operator<<(std::ostream&, const std::vector<PmergeMe::pair>&);
 std::ostream& operator<<(std::ostream&, const std::vector<std::vector<int>>&);
-std::ostream& operator<<(std::ostream&, const std::vector<std::pair<int, std::size_t>>&);

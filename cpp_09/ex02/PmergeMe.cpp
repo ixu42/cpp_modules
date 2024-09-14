@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:29:08 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/13 22:00:55 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/14 12:29:48 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,8 +256,8 @@ void PmergeMe::binaryInsertion(const std::vector<PmergeMe::pair>& pendingNbrs, s
  * 5 && return => 1 2 3 4 5 6 7 8
  */
 
-std::vector<PmergeMe::pair> PmergeMe::mergeInsertionSort(const std::vector<PmergeMe::pair>& vec, \
-	std::vector<std::vector<int>>& table, std::vector<std::pair<int, std::size_t>>& ref)
+std::vector<PmergeMe::pair> PmergeMe::mergeInsertionSort(\
+	const std::vector<PmergeMe::pair>& vec, std::vector<std::vector<int>>& table)
 {
 	int recursionDepth = _recursionCounter++;
 
@@ -281,10 +281,8 @@ std::vector<PmergeMe::pair> PmergeMe::mergeInsertionSort(const std::vector<Pmerg
 			pairs.push_back({second, first, secondIndex, firstIndex});
 	}
 	PmergeMe::pair odd = {0, 0, 0, 0};
-	if (vec.size() % 2 != 0) {
-		// log(recursionDepth, "odd found here!");
+	if (vec.size() % 2 != 0)
 		odd = {vec.back().large, vec.back().small, vec.back().largeIndex, vec.back().smallIndex};
-	}
 
 	for (std::size_t i = 0; i < pairs.size(); ++i) {
 		if (recursionDepth == 1) {
@@ -297,49 +295,45 @@ std::vector<PmergeMe::pair> PmergeMe::mergeInsertionSort(const std::vector<Pmerg
 			std::vector<int> row2;
 			row2.push_back(pairs[i].large);
 			row2.push_back(i * 2 + 1);
+			row2.push_back(pairs[i].smallIndex);
 			table.push_back(row2);
 			_size += 2;
 		}
-		else {
-			// std::cout << "pair: " << pairs[i].small << " " << pairs[i].large << "\n";
-			// std::cout << "pairIdx: " << pairs[i].smallIndex << " " << pairs[i].largeIndex << "\n";
-			// std::cout << "_size: " << _size << "\n";
-			table[pairs[i].smallIndex].push_back(_size++);
-			table[pairs[i].largeIndex].push_back(_size++);
-		}
-		ref.push_back({pairs[i].small, pairs[i].smallIndex});
-		ref.push_back({pairs[i].large, pairs[i].largeIndex});
+		else
+			table[pairs[i].largeIndex].push_back(pairs[i].smallIndex);
 	}
-
 	log(recursionDepth, "Steps 1 && 2:\n", pairs);
+	log(recursionDepth, "Step 1 && 2:\n", table);
 
 	// step 3: recursively sort the pairs according to larger elements
-	std::vector<PmergeMe::pair> mainChain = mergeInsertionSort(pairs, table, ref);
+	std::vector<PmergeMe::pair> mainChain = mergeInsertionSort(pairs, table);
 	log(recursionDepth, "Step 3:\n", mainChain);
-	log(recursionDepth, "Step 3:\n", table);
 
 	// step 4: insert the smallest element into mainChain
-	// std::cout << "mainChain[0].largeIndex: " << mainChain[0].largeIndex << "\n";
-	// std::cout << "recursionDepth: " << recursionDepth << "\n";
-	log(recursionDepth, "Step 4:\n", ref);
-	int smallest = ref[table[mainChain[0].largeIndex][recursionDepth] - 1].first;
-	std::size_t smallestIndex = ref[table[mainChain[0].largeIndex][recursionDepth] - 1].second;
-	// std::size_t smallestIndex = mainChain[0].smallIndex;
-	// std::cout << "smallest: " << smallest << "\n";
-	// std::cout << "smallestIndex: " << smallestIndex << "\n";
+	std::size_t smallestIndex;
+	int smallest;
+	if (mainChain.size() == 1) {
+		smallestIndex = mainChain[0].smallIndex;
+		smallest = mainChain[0].small;
+	}
+	else {
+		smallestIndex = static_cast<std::size_t>(table[mainChain[0].largeIndex][recursionDepth + 1]);
+		smallest = table[smallestIndex][0];
+	}
+	std::cout << "smallest: " << smallest << "\n";
+	std::cout << "smallestIndex: " << smallestIndex << "\n";
 	mainChain.insert(mainChain.begin(), {smallest, 0, smallestIndex, 0});
 
 	log(recursionDepth, "Step 4:\n", mainChain);
 
 	// step 5: binary search insert remaining smaller elements into mainChain
-
 	std::vector<PmergeMe::pair> pendingNbrs;
 	for (auto it = std::next(mainChain.begin() + 1); it < mainChain.end(); ++it)
 	{
-		int nbrToBeInserted = ref[table[it->largeIndex][recursionDepth] - 1].first;
-		std::size_t nbrToBeInsertedIndex = ref[table[it->largeIndex][recursionDepth] - 1].second;
-		// std::cout << "nbrToBeInserted: " << nbrToBeInserted << "\n";
-		// std::cout << "nbrToBeInsertedIndex: " << nbrToBeInsertedIndex << "\n";
+		std::size_t nbrToBeInsertedIndex = static_cast<std::size_t>(table[it->largeIndex][recursionDepth + 1]);
+		int nbrToBeInserted = table[nbrToBeInsertedIndex][0];
+		std::cout << "nbrToBeInserted: " << nbrToBeInserted << "\n";
+		std::cout << "nbrToBeInsertedIndex: " << nbrToBeInsertedIndex << "\n";
 		pendingNbrs.push_back({nbrToBeInserted, 0, nbrToBeInsertedIndex, 0});
 	}
 	if (odd.large)
@@ -361,8 +355,7 @@ std::vector<int> PmergeMe::sortVec(const std::vector<int>& vec)
 		nbrbers.push_back(nbrber);
 	}
 	std::vector<std::vector<int>> table;
-	std::vector<std::pair<int, std::size_t>> empty;
-	std::vector<PmergeMe::pair> sortedPairs = PmergeMe::mergeInsertionSort(nbrbers, table, empty);
+	std::vector<PmergeMe::pair> sortedPairs = PmergeMe::mergeInsertionSort(nbrbers, table);
 	std::vector <int> sortedVec;
 	for (const auto& p : sortedPairs)
 		sortedVec.push_back(p.large);
@@ -389,16 +382,5 @@ std::ostream& operator<<(std::ostream& stream, const std::vector<std::vector<int
 			stream << col << " ";
 		stream << "\n";
 	}
-	return stream;
-}
-
-std::ostream& operator<<(std::ostream& stream, const std::vector<std::pair<int, std::size_t>>& ref)
-{
-	stream << "== ref ==\n";
-	for (auto& pair : ref)
-		stream << pair.first << " ";
-	stream << "\n";
-	for (auto& pair : ref)
-		stream << pair.second << " ";
 	return stream;
 }
