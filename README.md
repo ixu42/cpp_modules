@@ -29,3 +29,6 @@
 
 ### cpp_08
 > Templated containers, iterators, algorithms
+
+### cpp_09
+> Use of some standard containers, i.e., std::map, std::stack, std::vector and std::deque were used in tackling various problems in this module
