@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 12:27:14 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/15 14:59:32 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/15 15:54:32 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,7 +221,7 @@ bool BitcoinExchange::processInputLine(const std::string& line)
 	{
 		double exchangeRate = findExchangeRate(date, dateString);
 		double res = value * exchangeRate;
-		std::cout << line << " => " << res << '\n';
+		std::cout << dateString << " => " << valueString << " = " << res << '\n';
 	}
 	catch (const std::exception& e)
 	{
