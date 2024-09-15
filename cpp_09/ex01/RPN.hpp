@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 12:05:59 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/08 12:24:40 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/15 17:56:43 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,13 @@ class RPN
 		static void run(const std::string&);
 
 	private:
-		RPN();
-		RPN(const RPN&);
-		RPN& operator=(const RPN&);
-		~RPN();
+		RPN() = default;
+		RPN(const RPN&) = default;
+		RPN& operator=(const RPN&) = default;
+		~RPN() = default;
 
 		static void processChar(char c, int& numbers, int& operators, bool& whitespMode);
-		static int add(int left, int right);
-		static int subtract(int left, int right);
-		static int multiply(int left, int right);
-		static int divide(int left, int right);
-		static int calculate(char token);
+		static double calculate(char token);
 
-		static std::stack<int> _stack;
+		static std::stack<double> _stack;
 };
