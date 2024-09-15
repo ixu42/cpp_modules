@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 12:27:14 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/08 11:15:44 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/15 14:59:32 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,43 +36,50 @@ const std::map<std::tuple<int, int, int>, double>& BitcoinExchange::getExchangeR
 	return _exchangeRates;
 }
 
+void BitcoinExchange::processDataLine(const std::string& line)
+{
+	std::string dateString, exchangeRateString;
+	std::size_t pos = line.find(',');
+	if (pos != std::string::npos)
+	{
+		dateString = line.substr(0, pos);
+		exchangeRateString = line.substr(pos + 1);
+		if (dateString.empty() || exchangeRateString.empty())
+			throw std::runtime_error("invalid data.csv => " + line);
+	}
+	else
+		throw std::runtime_error("invalid data.csv => " + line);
+
+	std::tuple<int, int, int> date;
+	if (!isValidDate(dateString, date))
+		throw std::runtime_error("data.csv contains invalid date => " + line);
+	if (_exchangeRates.find(date) != _exchangeRates.end())
+		throw std::runtime_error("data.csv contains a duplicate date");
+
+	double exchangeRate;
+	std::size_t last_num_index;
+	exchangeRate = std::stod(exchangeRateString, &last_num_index);
+	if (last_num_index != exchangeRateString.size() || exchangeRate < 0)
+		throw std::runtime_error("data.csv contains invalid exchange rate => " + line);
+
+	_exchangeRates[date] = exchangeRate;
+}
+
 void BitcoinExchange::loadExchangeRates()
 {
 	std::ifstream inFile("data.csv");
 
 	if (!inFile)
 		throw std::runtime_error("could not open file data.csv");
+	if (inFile.peek() == std::ifstream::traits_type::eof())
+		throw std::runtime_error("data.csv is empty");
 
 	std::string line;
 	std::getline(inFile, line);
 	if (line.compare("date,exchange_rate") != 0)
 		throw std::runtime_error("invalid data.csv => " + line);
 	while (std::getline(inFile, line))
-	{
-		std::string dateString;
-		std::string exchangeRateString;
-		std::size_t pos = line.find(',');
-		if (pos != std::string::npos)
-		{
-			dateString = line.substr(0, pos);
-			exchangeRateString = line.substr(pos + 1);
-			if (dateString.empty() || exchangeRateString.empty())
-				throw std::runtime_error("invalid data.csv => " + line);
-		}
-		else
-			throw std::runtime_error("invalid data.csv => " + line);
-		std::tuple<int, int, int> date;
-		if (!isValidDate(dateString, date))
-			throw std::runtime_error("data.csv contains invalid date => " + line);
-		if (_exchangeRates.find(date) != _exchangeRates.end())
-			throw std::runtime_error("data.csv contains a duplicate date");
-		double exchangeRate;
-		std::size_t last_num_index;
-		exchangeRate = std::stod(exchangeRateString, &last_num_index);
-		if (last_num_index != exchangeRateString.size() || exchangeRate < 0)
-			throw std::runtime_error("data.csv contains invalid exchange rate => " + line);
-		_exchangeRates[date] = exchangeRate;
-	}
+		processDataLine(line);
 }
 
 bool BitcoinExchange::splitLine(const std::string& line, std::string& dateString, std::string& valueString)
@@ -197,6 +204,32 @@ double BitcoinExchange::findExchangeRate(const std::tuple<int, int, int>& date, 
 	return it->second;
 }
 
+bool BitcoinExchange::processInputLine(const std::string& line)
+{
+	// parse the line
+	std::string dateString, valueString;
+	std::tuple<int, int, int> date;
+	double value;
+	if (!parseInput(line, dateString, valueString, date, value))
+		return false;
+
+	// store data in std::map
+	_data[date] = value;
+
+	// calculate and print the result
+	try
+	{
+		double exchangeRate = findExchangeRate(date, dateString);
+		double res = value * exchangeRate;
+		std::cout << line << " => " << res << '\n';
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "Error: " << e.what() << '\n';
+	}
+	return true;
+}
+
 void BitcoinExchange::run(const std::string& filename)
 {
 	loadExchangeRates();
@@ -204,34 +237,16 @@ void BitcoinExchange::run(const std::string& filename)
 	std::ifstream inFile(filename);
 	if (!inFile)
 		throw std::runtime_error("could not open file " + filename);
+	if (inFile.peek() == std::ifstream::traits_type::eof())
+		throw std::runtime_error(filename + " is empty");
 
 	std::string line;
 	std::getline(inFile, line);
-	if (line.compare("date | value") != 0)
+	if (line.compare("date | value") != 0) // validate the first line
 		throw std::runtime_error(filename + " not valid => " + line);
 	while (std::getline(inFile, line))
 	{
-		// parse input
-		std::string dateString;
-		std::string valueString;
-		std::tuple<int, int, int> date;
-		double value;
-		if (!parseInput(line, dateString, valueString, date, value))
+		if (!processInputLine(line))
 			continue ;
-
-		// store data in map
-		_data[date] = value;
-
-		// calculate and print the result
-		try
-		{
-			double exchangeRate = findExchangeRate(date, dateString);
-			double res = value * exchangeRate;
-			std::cout << line << " => " << res << '\n';
-		}
-		catch (const std::exception& e)
-		{
-			std::cout << "Error: " << e.what() << '\n';
-		}
 	}
 }

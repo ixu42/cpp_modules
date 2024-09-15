@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 12:27:12 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/06 11:27:18 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/15 14:56:59 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,16 @@ class BitcoinExchange
 		BitcoinExchange& operator=(const BitcoinExchange&);
 		~BitcoinExchange();
 
+		static void processDataLine(const std::string&);
 		static void loadExchangeRates();
 		static bool splitLine(const std::string&, std::string&, std::string&);
 		static bool isLeapYear(int);
 		static bool isValidDate(const std::string&, std::tuple<int, int, int>&);
 		static bool isValidValue(const std::string&, double&);
-		static bool parseInput(const std::string& line, std::string& dateString,
-			std::string& valueString, std::tuple<int, int, int>& date, double& value);
+		static bool parseInput(const std::string&, std::string&,std::string&, \
+								std::tuple<int, int, int>&, double&);
 		static double findExchangeRate(const std::tuple<int, int, int>&, const std::string&);
+		static bool processInputLine(const std::string&);
 
 		static std::map<std::tuple<int, int, int>, double> _data;
 		static std::map<std::tuple<int, int, int>, double> _exchangeRates;
