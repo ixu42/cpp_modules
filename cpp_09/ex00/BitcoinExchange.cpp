@@ -6,13 +6,12 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 12:27:14 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/15 15:54:32 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/16 18:26:08 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "BitcoinExchange.hpp"
 
-std::map<std::tuple<int, int, int>, double> BitcoinExchange::_data;
 std::map<std::tuple<int, int, int>, double> BitcoinExchange::_exchangeRates;
 
 BitcoinExchange::BitcoinExchange() {}
@@ -25,11 +24,6 @@ BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange&)
 }
 
 BitcoinExchange::~BitcoinExchange() {}
-
-const std::map<std::tuple<int, int, int>, double>& BitcoinExchange::getData()
-{
-	return _data;
-}
 
 const std::map<std::tuple<int, int, int>, double>& BitcoinExchange::getExchangeRates()
 {
@@ -212,9 +206,6 @@ bool BitcoinExchange::processInputLine(const std::string& line)
 	double value;
 	if (!parseInput(line, dateString, valueString, date, value))
 		return false;
-
-	// store data in std::map
-	_data[date] = value;
 
 	// calculate and print the result
 	try

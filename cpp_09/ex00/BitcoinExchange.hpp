@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 12:27:12 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/15 14:56:59 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/16 18:26:16 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,5 @@ class BitcoinExchange
 		static double findExchangeRate(const std::tuple<int, int, int>&, const std::string&);
 		static bool processInputLine(const std::string&);
 
-		static std::map<std::tuple<int, int, int>, double> _data;
 		static std::map<std::tuple<int, int, int>, double> _exchangeRates;
 };
