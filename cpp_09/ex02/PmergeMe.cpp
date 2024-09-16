@@ -6,7 +6,7 @@
 /*   By: ixu <ixu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:29:08 by ixu               #+#    #+#             */
-/*   Updated: 2024/09/14 20:09:01 by ixu              ###   ########.fr       */
+/*   Updated: 2024/09/16 08:41:33 by ixu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -441,7 +441,8 @@ void PmergeMe::insertSmallestIntoMainChain(PairDeq& mainChain, \
 		smallestIndex = getPairedSmallIndex(mainChain[0], table, recursionDepth);
 		smallest = table[smallestIndex][0];
 	}
-	mainChain.insert(mainChain.begin(), {smallest, 0, smallestIndex, 0});
+	// optimized for adding elements to the front of the deque
+	mainChain.push_front({smallest, 0, smallestIndex, 0});
 }
 
 PmergeMe::PairDeq PmergeMe::extractPendingNbrs(const PairDeq& mainChain, \
